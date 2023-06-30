@@ -4,7 +4,7 @@ import {
   materialCells,
 } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
-import RatingControl, { ratingControlTester } from "../renderers/RatingControl";
+import TextControl, { textControlTester } from "../renderers/TextControl";
 
 const schema = {
   type: "object",
@@ -33,7 +33,7 @@ const initialData = {};
 const renderers = [
   ...materialRenderers,
   //register custom renderers
-  { tester: ratingControlTester, renderer: RatingControl },
+  { tester: textControlTester, renderer: TextControl },
 ];
 
 export default function App() {
@@ -45,7 +45,10 @@ export default function App() {
       data={data}
       renderers={renderers}
       cells={materialCells}
-      onChange={({ data, _errors }) => setData(data)}
+      onChange={({ data, _errors }) => {
+        console.log(data);
+        setData(data);
+      }}
     />
   );
 }
