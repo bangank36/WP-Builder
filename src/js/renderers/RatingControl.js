@@ -1,47 +1,33 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
-import { DuotonePicker, DuotoneSwatch } from "@wordpress/components";
-import { useState } from "@wordpress/element";
-import { rankWith, scopeEndsWith } from "@jsonforms/core";
+import { rankWith, scopeEndsWith, isStringControl } from "@jsonforms/core";
+import { TextControl } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
-const DUOTONE_PALETTE = [
-  {
-    colors: ["#8c00b7", "#fcff41"],
-    name: "Purple and yellow",
-    slug: "purple-yellow",
-  },
-  { colors: ["#000097", "#ff4747"], name: "Blue and red", slug: "blue-red" },
-];
+const RatingControl = (props) => {
+  const {
+    id,
+    description,
+    errors,
+    label,
+    uischema,
+    visible,
+    required,
+    config,
+    input,
+  } = props;
 
-const COLOR_PALETTE = [
-  { color: "#ff4747", name: "Red", slug: "red" },
-  { color: "#fcff41", name: "Yellow", slug: "yellow" },
-  { color: "#000097", name: "Blue", slug: "blue" },
-  { color: "#8c00b7", name: "Purple", slug: "purple" },
-];
-
-const Example = () => {
-  const [duotone, setDuotone] = useState(["#000000", "#ffffff"]);
-  return (
-    <>
-      <DuotonePicker
-        duotonePalette={DUOTONE_PALETTE}
-        colorPalette={COLOR_PALETTE}
-        value={duotone}
-        onChange={setDuotone}
-      />
-      <DuotoneSwatch values={duotone} />
-    </>
-  );
+  return ( <TextControl
+    help={description}
+    label={label}
+    onChange={function noRefCheck(){}}
+    value=""
+  /> )
 };
 
-const RatingControl = ({ data, handleChange, path }) => (
-  <Example values={["#000", "#fff"]} />
-);
-
 export const ratingControlTester = rankWith(
-  3, //increase rank as needed
-  scopeEndsWith("rating")
+  4, //increase rank as needed
+  isStringControl
 );
 
 export default withJsonFormsControlProps(RatingControl);
