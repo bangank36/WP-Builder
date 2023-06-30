@@ -12,6 +12,6 @@ The goal of this project is to replace all controls in @mui into @wordpress/comp
 | |Toggle|✅| |
 |integer|Number|✅| |
 | |Text|❌| |
-|String|Text|✅| |
+|String|Text|✅| https://github.com/bangank36/WP-Builder/issues/4 |
 | |Textarea|✅| |
 
