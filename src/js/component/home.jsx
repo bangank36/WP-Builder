@@ -9,20 +9,11 @@ import RatingControl, { ratingControlTester } from "../renderers/RatingControl";
 const schema = {
   type: "object",
   properties: {
-    rating: {
-      type: "integer",
-    },
-    done: {
-      type: "boolean",
-    },
-    due_date: {
+    textControl: {
       type: "string",
-      format: "date",
-    },
-    recurrence: {
-      type: "string",
-      enum: ["Never", "Daily", "Weekly", "Monthly"],
-    },
+      label: "Text Control Label",
+      description: "Text Control displays a 'string' Control"
+    }
   },
 };
 
@@ -31,26 +22,8 @@ const uischema = {
   elements: [
     {
       type: "Control",
-      scope: "#/properties/rating",
-    },
-    {
-      type: "Control",
-      label: false,
-      scope: "#/properties/done",
-    },
-    {
-      type: "HorizontalLayout",
-      elements: [
-        {
-          type: "Control",
-          scope: "#/properties/due_date",
-        },
-        {
-          type: "Control",
-          scope: "#/properties/recurrence",
-        },
-      ],
-    },
+      scope: "#/properties/textControl",
+    }
   ],
 };
 
