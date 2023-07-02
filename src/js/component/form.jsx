@@ -5,6 +5,7 @@ import {
 } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/TextControl";
+import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
 
 const schema = {
   type: "object",
@@ -32,6 +33,9 @@ const uischema = {
     {
       type: "Control",
       scope: "#/properties/multilineTextControl",
+      options: {
+        multi: true,
+      },
     }
   ],
 };
@@ -43,6 +47,7 @@ const renderers = [
   ...materialRenderers,
   //register custom renderers
   { tester: textControlTester, renderer: TextControl },
+  { tester: multilineTextControlTester, renderer: MultilineTextControl },
 ];
 
 export default function App() {
