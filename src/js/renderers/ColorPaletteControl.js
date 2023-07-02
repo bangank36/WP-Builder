@@ -20,7 +20,7 @@ const TextControl = (props) => {
     handleChange
   } = props;
   
-  const colors = [
+  const colors = uischema.options.colors || [
     { name: 'red', color: '#f00' },
     { name: 'white', color: '#fff' },
     { name: 'blue', color: '#00f' },
@@ -30,7 +30,9 @@ const TextControl = (props) => {
     <ColorPalette
       colors={ colors }
       value={ data }
-      onChange={ ( color ) => handleChange( color ) }
+      onChange={ ( value ) => 
+        handleChange(path, value === '' ? undefined : value)
+      }
     />
   )
 };
