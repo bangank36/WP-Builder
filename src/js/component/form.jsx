@@ -6,6 +6,7 @@ import {
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/TextControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
+import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
 
 const schema = {
   type: "object",
@@ -19,6 +20,11 @@ const schema = {
       type: "string",
       label: "Muliline Text Control Label",
       description: "Multiline Text Control displays a 'string' Control supports multiline"
+    },
+    colorPaletteControl: {
+      type: "string",
+      label: "Color Palette Control Label",
+      description: "Color Picker with predefine palette"
     }
   },
 };
@@ -36,6 +42,27 @@ const uischema = {
       options: {
         multi: true,
       },
+    },
+    {
+      type: "Control",
+      scope: "#/properties/colorPaletteControl",
+      options: {
+        format: 'color',
+        colors:[
+          {
+            color: '#f00',
+            name: 'Red'
+          },
+          {
+            color: '#fff',
+            name: 'White'
+          },
+          {
+            color: '#00f',
+            name: 'Blue'
+          }
+        ]
+      },
     }
   ],
 };
@@ -48,6 +75,7 @@ const renderers = [
   //register custom renderers
   { tester: textControlTester, renderer: TextControl },
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
+  { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
 ];
 
 export default function App() {
