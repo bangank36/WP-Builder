@@ -13,6 +13,11 @@ const schema = {
       type: "string",
       label: "Text Control Label",
       description: "Text Control displays a 'string' Control"
+    },
+    multilineTextControl: {
+      type: "string",
+      label: "Muliline Text Control Label",
+      description: "Multiline Text Control displays a 'string' Control supports multiline"
     }
   },
 };
@@ -23,6 +28,10 @@ const uischema = {
     {
       type: "Control",
       scope: "#/properties/textControl",
+    },
+    {
+      type: "Control",
+      scope: "#/properties/multilineTextControl",
     }
   ],
 };
