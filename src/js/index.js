@@ -5,6 +5,9 @@ import ReactDOM from "react-dom";
 // include your styles into the webpack bundle
 import "../styles/index.css";
 
+// include @wordpress/components styles
+import '@wordpress/components/build-style/style.css';
+
 //import your own components
 import Home from "./component/form.jsx";
 
