@@ -1,7 +1,7 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isStringControl, and, optionIs } from "@jsonforms/core";
-import { ColorPalette } from '@wordpress/components';
+import { ColorPalette, SlotFillProvider, Popover } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 const TextControl = (props) => {
@@ -27,13 +27,16 @@ const TextControl = (props) => {
   ];
 
   return ( 
-    <ColorPalette
-      colors={ colors }
-      value={ data }
-      onChange={ ( value ) => 
-        handleChange(path, value === '' ? undefined : value)
-      }
-    />
+    <SlotFillProvider>
+      <ColorPalette
+        colors={ colors }
+        value={ data }
+        onChange={ ( value ) => 
+          handleChange(path, value === '' ? undefined : value)
+        }
+      />
+      <Popover.Slot />
+    </SlotFillProvider>
   )
 };
 
