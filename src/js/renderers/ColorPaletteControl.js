@@ -1,4 +1,5 @@
 import React from "react";
+import isEmpty from 'lodash/isEmpty';
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isStringControl, and, optionIs } from "@jsonforms/core";
 import { ColorPalette, SlotFillProvider, Popover } from '@wordpress/components';
@@ -40,9 +41,20 @@ const TextControl = (props) => {
   )
 };
 
+  const optionIsNotEmpty =
+  (optionName) =>
+  (uischema) => {
+    if (isEmpty(uischema)) {
+      return false;
+    }
+
+    const options = uischema.options;
+    return !isEmpty(options) && !isEmpty(options[optionName]);
+  };
+
 export const colorPaletteControlTester = rankWith(
   6, //increase rank as needed
-  and(isStringControl, optionIs('format', 'color'))
+  and(isStringControl, optionIs('format', 'color'), optionIsNotEmpty('colors'))
 );
 
 export default withJsonFormsControlProps(TextControl);
