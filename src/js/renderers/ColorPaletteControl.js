@@ -2,8 +2,35 @@ import React from "react";
 import isEmpty from 'lodash/isEmpty';
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isStringControl, and, optionIs } from "@jsonforms/core";
-import { ColorPalette, SlotFillProvider, Popover } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import {
+	__experimentalHStack as HStack,
+	__experimentalZStack as ZStack,
+	__experimentalDropdownContentWrapper as DropdownContentWrapper,
+	ColorIndicator,
+	Flex,
+	FlexItem,
+	Dropdown,
+	Button,
+  ColorPalette, SlotFillProvider, Popover
+} from '@wordpress/components';
+
+const LabeledColorIndicators = ( { indicators, label } ) => (
+	<HStack justify="flex-start">
+		<ZStack isLayered={ false } offset={ -8 }>
+			{ indicators.map( ( indicator, index ) => (
+				<Flex key={ index } expanded={ false }>
+					<ColorIndicator colorValue={ indicator } />
+				</Flex>
+			) ) }
+		</ZStack>
+		<FlexItem
+			className="block-editor-panel-color-gradient-settings__color-name"
+			title={ label }
+		>
+			{ label }
+		</FlexItem>
+	</HStack>
+);
 
 const TextControl = (props) => {
   const {
@@ -28,16 +55,43 @@ const TextControl = (props) => {
   ];
 
   return ( 
-    <SlotFillProvider>
-      <ColorPalette
-        colors={ colors }
-        value={ data }
-        onChange={ ( value ) => 
-          handleChange(path, value === '' ? undefined : value)
-        }
+    <>
+      <Dropdown
+        popoverProps={ {
+          placement: 'left-start',
+          offset: 36,
+          shift: true,
+        } }
+        className="my-container-class-name"
+        contentClassName="my-dropdown-content-classname"
+        renderToggle={ ( { isOpen, onToggle } ) => (
+          <Button
+            onClick={ onToggle }
+            aria-expanded={ isOpen }
+          >
+            <LabeledColorIndicators
+              indicators={ [ data ] }
+              label={ label }
+            />
+          </Button>
+        ) }
+        renderContent={ () => (
+          <DropdownContentWrapper paddingSize="none">
+            <SlotFillProvider>
+              <ColorPalette
+                colors={ colors }
+                value={ data }
+                onChange={ ( value ) => 
+                  handleChange(path, value === '' ? undefined : value)
+                }
+              />
+              <Popover.Slot />
+            </SlotFillProvider>
+          </DropdownContentWrapper>
+        ) }
       />
-      <Popover.Slot />
-    </SlotFillProvider>
+      
+    </>
   )
 };
 
