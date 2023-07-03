@@ -2,8 +2,38 @@ import React from "react";
 import isEmpty from 'lodash/isEmpty';
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isStringControl, and, optionIs } from "@jsonforms/core";
-import { ColorPalette, SlotFillProvider, Popover } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import {
+	__experimentalToolsPanel as ToolsPanel,
+	__experimentalToolsPanelItem as ToolsPanelItem,
+	__experimentalHStack as HStack,
+	__experimentalZStack as ZStack,
+	__experimentalDropdownContentWrapper as DropdownContentWrapper,
+	TabPanel,
+	ColorIndicator,
+	Flex,
+	FlexItem,
+	Dropdown,
+	Button,
+  ColorPalette, SlotFillProvider, Popover
+} from '@wordpress/components';
+
+const LabeledColorIndicators = ( { indicators, label } ) => (
+	<HStack justify="flex-start">
+		<ZStack isLayered={ false } offset={ -8 }>
+			{ indicators.map( ( indicator, index ) => (
+				<Flex key={ index } expanded={ false }>
+					<ColorIndicator colorValue={ indicator } />
+				</Flex>
+			) ) }
+		</ZStack>
+		<FlexItem
+			className="block-editor-panel-color-gradient-settings__color-name"
+			title={ label }
+		>
+			{ label }
+		</FlexItem>
+	</HStack>
+);
 
 const TextControl = (props) => {
   const {
@@ -28,16 +58,22 @@ const TextControl = (props) => {
   ];
 
   return ( 
-    <SlotFillProvider>
-      <ColorPalette
-        colors={ colors }
-        value={ data }
-        onChange={ ( value ) => 
-          handleChange(path, value === '' ? undefined : value)
-        }
+    <>
+      <LabeledColorIndicators
+        indicators={ ['#ccc'] }
+        label={ label }
       />
-      <Popover.Slot />
-    </SlotFillProvider>
+      <SlotFillProvider>
+        <ColorPalette
+          colors={ colors }
+          value={ data }
+          onChange={ ( value ) => 
+            handleChange(path, value === '' ? undefined : value)
+          }
+        />
+        <Popover.Slot />
+      </SlotFillProvider>
+    </>
   )
 };
 
