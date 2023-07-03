@@ -59,20 +59,41 @@ const TextControl = (props) => {
 
   return ( 
     <>
-      <LabeledColorIndicators
-        indicators={ ['#ccc'] }
-        label={ label }
+      <Dropdown
+        popoverProps={ {
+          placement: 'left-start',
+          offset: 36,
+          shift: true,
+        } }
+        className="my-container-class-name"
+        contentClassName="my-dropdown-content-classname"
+        renderToggle={ ( { isOpen, onToggle } ) => (
+          <Button
+            onClick={ onToggle }
+            aria-expanded={ isOpen }
+          >
+            <LabeledColorIndicators
+              indicators={ [ data ] }
+              label={ label }
+            />
+          </Button>
+        ) }
+        renderContent={ () => (
+          <DropdownContentWrapper paddingSize="none">
+            <SlotFillProvider>
+              <ColorPalette
+                colors={ colors }
+                value={ data }
+                onChange={ ( value ) => 
+                  handleChange(path, value === '' ? undefined : value)
+                }
+              />
+              <Popover.Slot />
+            </SlotFillProvider>
+          </DropdownContentWrapper>
+        ) }
       />
-      <SlotFillProvider>
-        <ColorPalette
-          colors={ colors }
-          value={ data }
-          onChange={ ( value ) => 
-            handleChange(path, value === '' ? undefined : value)
-          }
-        />
-        <Popover.Slot />
-      </SlotFillProvider>
+      
     </>
   )
 };
