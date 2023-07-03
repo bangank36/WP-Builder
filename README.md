@@ -14,5 +14,5 @@ The goal of this project is to replace all controls in @mui into @wordpress/comp
 | |Text|❌| |
 |String|Text|✅| https://github.com/bangank36/WP-Builder/issues/4 |
 | |Textarea|✅| https://github.com/bangank36/WP-Builder/issues/6 |
-| |[ColorPalette](https://wordpress.github.io/gutenberg/?path=/docs/components-colorpalette--default)|✅|  |
+| |[ColorPalette](https://wordpress.github.io/gutenberg/?path=/docs/components-colorpalette--default)|✅| https://github.com/bangank36/WP-Builder/issues/8 |
 
