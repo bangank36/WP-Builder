@@ -3,12 +3,9 @@ import isEmpty from 'lodash/isEmpty';
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isStringControl, and, optionIs } from "@jsonforms/core";
 import {
-	__experimentalToolsPanel as ToolsPanel,
-	__experimentalToolsPanelItem as ToolsPanelItem,
 	__experimentalHStack as HStack,
 	__experimentalZStack as ZStack,
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
-	TabPanel,
 	ColorIndicator,
 	Flex,
 	FlexItem,
