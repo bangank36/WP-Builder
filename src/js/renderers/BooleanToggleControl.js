@@ -1,7 +1,7 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isBooleanControl, optionIs, and } from "@jsonforms/core";
-import { FormToggle } from '@wordpress/components';
+import { ToggleControl as UiToggleControl } from '@wordpress/components';
 
 const ToggleControl = (props) => {
   const {
@@ -20,11 +20,13 @@ const ToggleControl = (props) => {
   } = props;
   
   return ( 
-    <FormToggle
-      checked={ !!data }
-      onChange={(event) =>
-        handleChange(path, !event ? undefined : event.target.checked)
-      }
+    <UiToggleControl
+        checked={ !!data }
+        help={description}
+        label={label}
+        onChange={(value) =>
+            handleChange(path, value === '' ? undefined : value)
+        }
     />
   )
 };
