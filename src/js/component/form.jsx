@@ -8,6 +8,7 @@ import TextControl, { textControlTester } from "../renderers/TextControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
+import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
 
 const schema = {
   type: "object",
@@ -31,6 +32,11 @@ const schema = {
       type: "boolean",
       label: "Boolean Toggle Control Label",
       description: "Boolean Control with Toggle Renderer"
+    },
+    booleanCheckboxControl: {
+      type: "boolean",
+      label: "Boolean Checkbox Control Label",
+      description: "Boolean Control with Checkbox Renderer"
     }
   },
 };
@@ -76,6 +82,10 @@ const uischema = {
       options: {
         toggle: true
       }
+    },
+    {
+      type: "Control",
+      scope: "#/properties/booleanCheckboxControl",
     }
   ],
 };
@@ -89,7 +99,8 @@ const renderers = [
   { tester: textControlTester, renderer: TextControl },
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
-  { tester: booleanToggleControlTester, renderer: BooleanToggleControl}
+  { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
+  { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl}
 ];
 
 export default function App() {
