@@ -8,8 +8,8 @@ The goal of this project is to replace all controls in @mui into @wordpress/comp
 
 |JSON Schema|Renderer|React Material|Gutenberg|
 |:----|:----|:----|:----|
-|boolean|Checkbox| ✅ | |
-| |Toggle|✅| |
+|boolean|Checkbox| ✅ | https://github.com/bangank36/WP-Builder/issues/14 |
+| |Toggle|✅| https://github.com/bangank36/WP-Builder/issues/14 |
 |integer|Number|✅| |
 | |Text|❌| |
 |String|Text|✅| https://github.com/bangank36/WP-Builder/issues/4 |
