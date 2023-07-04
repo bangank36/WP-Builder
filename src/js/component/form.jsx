@@ -7,6 +7,7 @@ import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/TextControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
+import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
 
 const schema = {
   type: "object",
@@ -25,6 +26,11 @@ const schema = {
       type: "string",
       label: "Color Palette Control Label",
       description: "Color Picker with predefine palette"
+    },
+    booleanToggleControl: {
+      type: "boolean",
+      label: "Boolean Toggle Control Label",
+      description: "Boolean Control with Toggle Renderer"
     }
   },
 };
@@ -63,6 +69,13 @@ const uischema = {
           }
         ]
       },
+    },
+    {
+      type: "Control",
+      scope: "#/properties/booleanToggleControl",
+      options: {
+        toggle: true
+      }
     }
   ],
 };
@@ -76,6 +89,7 @@ const renderers = [
   { tester: textControlTester, renderer: TextControl },
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
+  { tester: booleanToggleControlTester, renderer: BooleanToggleControl}
 ];
 
 export default function App() {
