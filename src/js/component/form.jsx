@@ -9,6 +9,9 @@ import MultilineTextControl, { multilineTextControlTester } from "../renderers/M
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
+import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer"; 
+
+import MyNavigation from "./navigator";
 
 const schema = {
   type: "object",
@@ -37,7 +40,24 @@ const schema = {
       type: "boolean",
       label: "Boolean Checkbox Control Label",
       description: "Boolean Control with Checkbox Renderer"
-    }
+    }, 
+    address: {
+      type: 'object',
+      properties: {
+        street_address: { type: 'string' },
+        city: { type: 'string' },
+        state: { type: 'string' },
+        user: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            mail: { type: 'string' },
+          },
+          required: ['name', 'mail'],
+        },
+          },
+          required: ['street_address', 'city', 'state'],
+        }
   },
 };
 
@@ -86,6 +106,32 @@ const uischema = {
     {
       type: "Control",
       scope: "#/properties/booleanCheckboxControl",
+    },
+    {
+      type: 'VerticalLayout',
+      elements: [
+        {
+          type: 'Control',
+          scope: '#/properties/address',
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/user',
+          options: {
+            detail: {
+              type: 'Group',
+              label: 'User Data',
+              elements: [
+                { type: 'Control', scope: '#/properties/address/properties/name' },
+                {
+                  type: 'Control',
+                  scope: '#/properties/address/properties/email',
+                },
+              ],
+            },
+          },
+        },
+      ],
     }
   ],
 };
@@ -100,22 +146,28 @@ const renderers = [
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
-  { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl}
+  { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
+  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer}
 ];
 
 export default function App() {
   const [data, setData] = useState(initialData);
   return (
-    <JsonForms
-      schema={schema}
-      uischema={uischema}
-      data={data}
-      renderers={renderers}
-      cells={materialCells}
-      onChange={({ data, _errors }) => {
-        console.log(data);
-        setData(data);
-      }}
-    />
+    <>
+      <MyNavigation>
+        <JsonForms
+          schema={schema}
+          uischema={uischema}
+          data={data}
+          renderers={renderers}
+          cells={materialCells}
+          onChange={({ data, _errors }) => {
+            console.log(data);
+            setData(data);
+          }}
+        />
+      </MyNavigation>
+    </>
+    
   );
 }
