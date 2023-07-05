@@ -45,11 +45,16 @@ module.exports = {
             options: { name: '[name].[ext]' } 
           }
         }, //for images
-        { test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/, use: ['file-loader'] } //for fonts
+        { test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/, use: ['file-loader'] }, //for fonts
+        {
+          test: /\.(ts|tsx)$/, // Add a rule for TypeScript files
+          exclude: /node_modules/,
+          use: 'ts-loader',
+        },
     ]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['.js', '.ts', '.jsx', '.tsx'], // Add '.ts' and '.tsx' extensions
   },
   devtool: "source-map",
   devServer: {
