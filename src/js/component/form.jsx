@@ -11,7 +11,12 @@ import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/B
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer"; 
 
-import MyNavigation from "./navigator";
+import {
+  MaterialLabelRenderer,
+  materialLabelRendererTester,
+  MaterialListWithDetailRenderer,
+  materialListWithDetailTester,
+} from '../renderers/additional';
 
 const schema = {
   type: "object",
@@ -40,24 +45,33 @@ const schema = {
       type: "boolean",
       label: "Boolean Checkbox Control Label",
       description: "Boolean Control with Checkbox Renderer"
-    }, 
-    address: {
-      type: 'object',
-      properties: {
-        street_address: { type: 'string' },
-        city: { type: 'string' },
-        state: { type: 'string' },
-        user: {
-          type: 'object',
-          properties: {
-            name: { type: 'string' },
-            mail: { type: 'string' },
+    },
+    "users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "title": "Users",
+        "properties": {
+          "firstname": {
+            "type": "string"
           },
-          required: ['name', 'mail'],
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "age": {
+            "type": "number",
+            "minimum": 0
+          }
         },
-          },
-          required: ['street_address', 'city', 'state'],
-        }
+        "required": [
+          "firstname"
+        ]
+      }
+    }
   },
 };
 
@@ -132,11 +146,55 @@ const uischema = {
           },
         },
       ],
+    },
+    {
+      "type": "ListWithDetail",
+      "scope": "#/properties/users",
+      "options": {
+        "detail": {
+          "type": "VerticalLayout",
+          "elements": [
+            {
+              "type": "HorizontalLayout",
+              "elements": [
+                {
+                  "type": "Control",
+                  "scope": "#/properties/firstname",
+                  "label": "First Name"
+                },
+                {
+                  "type": "Control",
+                  "scope": "#/properties/lastname",
+                  "label": "Last Name"
+                }
+              ]
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/age",
+              "label": "Age"
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/email",
+              "label": "Email"
+            }
+          ]
+        }
+      }
     }
   ],
 };
 
 const initialData = {};
+
+const overridenRenderers = [
+  { tester: materialLabelRendererTester, renderer: MaterialLabelRenderer },
+  {
+    tester: materialListWithDetailTester,
+    renderer: MaterialListWithDetailRenderer,
+  },
+]
 
 // list of renderers declared outside the App component
 const renderers = [
@@ -147,14 +205,14 @@ const renderers = [
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
-  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer}
+  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
+  ...overridenRenderers
 ];
 
 export default function App() {
   const [data, setData] = useState(initialData);
   return (
     <>
-      <MyNavigation>
         <JsonForms
           schema={schema}
           uischema={uischema}
@@ -166,7 +224,6 @@ export default function App() {
             setData(data);
           }}
         />
-      </MyNavigation>
     </>
     
   );
