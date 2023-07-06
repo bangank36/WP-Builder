@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import {
-  materialRenderers,
-  materialCells,
-} from "@jsonforms/material-renderers";
+  vanillaRenderers as materialRenderers,
+  vanillaCells as materialCells,
+} from "@jsonforms/vanilla-renderers";
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/TextControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
+import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 
 const schema = {
@@ -68,6 +69,7 @@ const renderers = [
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
+  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
 ];
 
