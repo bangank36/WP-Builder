@@ -50,9 +50,12 @@ export const GutenbergObjectRenderer = ({
     [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
   );
 
+  // Extract object prop 
+  const userProp = detailUiSchema.label === 'User' ? true : false;
+
   return (
     <Hidden xsUp={!visible}>
-      <JsonFormsDispatch
+      {!userProp ? (<JsonFormsDispatch
         visible={visible}
         enabled={enabled}
         schema={schema}
@@ -60,7 +63,11 @@ export const GutenbergObjectRenderer = ({
         path={path}
         renderers={renderers}
         cells={cells}
-      />
+      />) : (
+        <NavigatorButton path='/address/user'>
+          Go to User
+        </NavigatorButton>
+      )}
     </Hidden>
   );
 };
