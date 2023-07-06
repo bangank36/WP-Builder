@@ -86,7 +86,7 @@ export const MaterialObjectRenderer = ({
 };
 
 export const gutenbergObjectControlTester = rankWith(
-  3,
+  5,
   isObjectControl
 );
 

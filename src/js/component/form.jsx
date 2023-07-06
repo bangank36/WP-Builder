@@ -46,6 +46,23 @@ const schema = {
       label: "Boolean Checkbox Control Label",
       description: "Boolean Control with Checkbox Renderer"
     },
+      address: {
+        type: 'object',
+        properties: {
+          street_address: { type: 'string' },
+          city: { type: 'string' },
+          state: { type: 'string' },
+        },
+        required: ['street_address', 'city', 'state'],
+      },
+      user: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          mail: { type: 'string' },
+        },
+        required: ['name', 'mail'],
+      },
     "users": {
       "type": "array",
       "items": {
@@ -131,15 +148,23 @@ const uischema = {
         {
           type: 'Control',
           scope: '#/properties/user',
+          rule: {
+            effect: 'SHOW',
+            condition: {
+              type: 'LEAF',
+              scope: '#/properties/address/properties/state',
+              expectedValue: 'DC',
+            },
+          },
           options: {
             detail: {
               type: 'Group',
               label: 'User Data',
               elements: [
-                { type: 'Control', scope: '#/properties/address/properties/name' },
+                { type: 'Control', scope: '#/properties/name' },
                 {
                   type: 'Control',
-                  scope: '#/properties/address/properties/email',
+                  scope: '#/properties/mail',
                 },
               ],
             },
