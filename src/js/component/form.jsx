@@ -9,86 +9,53 @@ import MultilineTextControl, { multilineTextControlTester } from "../renderers/M
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
+import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 
 const schema = {
   type: "object",
   properties: {
-    textControl: {
-      type: "string",
-      label: "Text Control Label",
-      description: "Text Control displays a 'string' Control"
+    address: {
+      type: 'object',
+      properties: {
+        street_address: { type: 'string' },
+        city: { type: 'string' },
+        state: { type: 'string' },
+        user: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            mail: { type: 'string' },
+          }
+        }
+      }
     },
-    multilineTextControl: {
-      type: "string",
-      label: "Muliline Text Control Label",
-      description: "Multiline Text Control displays a 'string' Control supports multiline"
-    },
-    colorPaletteControl: {
-      type: "string",
-      label: "Color Palette Control Label",
-      description: "Color Picker with predefine palette"
-    },
-    booleanToggleControl: {
-      type: "boolean",
-      label: "Boolean Toggle Control Label",
-      description: "Boolean Control with Toggle Renderer"
-    },
-    booleanCheckboxControl: {
-      type: "boolean",
-      label: "Boolean Checkbox Control Label",
-      description: "Boolean Control with Checkbox Renderer"
+    business: {
+      type: 'object',
+      properties: {
+        job: { type: 'string' }
+      }
     }
   },
 };
 
 const uischema = {
-  type: "VerticalLayout",
+  type: "NavigatorLayout",
   elements: [
     {
-      type: "Control",
-      scope: "#/properties/textControl",
-    },
-    {
-      type: "Control",
-      scope: "#/properties/multilineTextControl",
-      options: {
-        multi: true,
-      },
-    },
-    {
-      type: "Control",
-      scope: "#/properties/colorPaletteControl",
-      options: {
-        format: 'color',
-        colors:[
-          {
-            color: '#f00',
-            name: 'Red'
-          },
-          {
-            color: '#fff',
-            name: 'White'
-          },
-          {
-            color: '#00f',
-            name: 'Blue'
-          }
-        ]
-      },
-    },
-    {
-      type: "Control",
-      scope: "#/properties/booleanToggleControl",
-      options: {
-        toggle: true
-      }
-    },
-    {
-      type: "Control",
-      scope: "#/properties/booleanCheckboxControl",
+      type: 'VerticalLayout',
+      elements: [
+        {
+          type: 'Control',
+          scope: '#/properties/address',
+        },
+        {
+          type: 'Control',
+          scope: '#/properties/business',
+        }
+      ],
     }
   ],
-};
+}
 
 const initialData = {};
 
@@ -100,7 +67,8 @@ const renderers = [
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
-  { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl}
+  { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
+  { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
 ];
 
 export default function App() {
