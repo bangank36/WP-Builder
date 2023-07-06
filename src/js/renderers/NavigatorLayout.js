@@ -1,7 +1,10 @@
 import React from "react"
 import { rankWith, uiTypeIs } from "@jsonforms/core"
 import { MaterialLayoutRenderer } from "./NavigatorRenderer"
-import { withJsonFormsLayoutProps } from "@jsonforms/react"
+import { 
+    JsonFormsDispatch,
+    withJsonFormsLayoutProps 
+} from "@jsonforms/react"
 
 import {
     __experimentalNavigatorProvider as NavigatorProvider,
@@ -28,18 +31,39 @@ export const GutenbergNavigatorlLayoutRenderer = ({
   renderers,
   cells
 }) => {
+    // nit: move this method into seperate file
+    /*
+     * Recursive method to get all the `object` type property and return them as { path, key }
+     * Note: so far the method skips the root node, and only looking inside the `properties` prop
+    */
+    const getObjectProperties = (obj, parentPath = '') => {
+        const result = [];
+      
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            const path = parentPath ? `${parentPath}/${key}` : `/${key}`;
+            // Convert the slash-string into dot-string, eg: /address/user - address.user
+            const dotPath = path.replace(/^\//, '').replace(/\//g, '.');
+            const prop = obj[key];
+      
+            if (prop.type === 'object') {
+              result.push({ path, key, dotPath });
+              result.push(...getObjectProperties(prop.properties, path));
+            }
+          }
+        }
+      
+        return result;
+    };
 
-    // Hard code: grab all `object` type properties
-    const propertiesArr = Object.keys(schema.properties);
-    propertiesArr.filter((key) => {
-        return schema.properties[key]?.type === 'object'
-    });
+    const navigatableProps = getObjectProperties(schema.properties);
+    console.log(navigatableProps);
 
-    
-    const verticalLayout = uischema
+    // The navigatorLayout should be the root layout
+    const navigatorLayout = uischema
 
     const childProps = {
-        elements: verticalLayout.elements,
+        elements: navigatorLayout.elements,
         schema,
         path,
         enabled,
@@ -49,27 +73,38 @@ export const GutenbergNavigatorlLayoutRenderer = ({
 
   return (
     <>
+        {/* <MaterialLayoutRenderer
+            {...childProps}
+            renderers={renderers}
+            cells={cells}
+        /> */}
         <NavigatorProvider initialPath="/">
             <NavigatorScreen path="/">
-            <p>This is the home screen.</p>
-            {propertiesArr.map((propKey, index) => (
-                <NavigatorButton path={`/${propKey}`}>
-                    <p>Go to <strong>{propKey}</strong> screen.</p>
-                </NavigatorButton>
-            ))}
-            <MaterialLayoutRenderer
-                {...childProps}
-                renderers={renderers}
-                cells={cells}
-            />
+                <p>This is the home screen.</p>
+                {navigatableProps.map(({path, key, dotPath}, index) => (
+                    <NavigatorButton path={`${path}`}>
+                        <p>Go to <strong>{key}</strong> screen. {dotPath}</p>
+                    </NavigatorButton>
+                ))}
             </NavigatorScreen>
 
-            {propertiesArr.map((propKey, index) => (
-                <NavigatorScreen path={`/${propKey}`}>
-                    <p>This is the <strong>{propKey}</strong> screen.</p>
+            {navigatableProps.map(({path, key, dotPath}, index) => (
+                <NavigatorScreen path={`${path}`}>
+                    <p>This is the <strong>{key}</strong> screen. {dotPath}</p>
                     <NavigatorToParentButton>
                         Go back
                     </NavigatorToParentButton>
+                    <NavigatorButton path="/">
+                        <p>Go to home</p>
+                    </NavigatorButton>
+                    <JsonFormsDispatch
+                        uischema={navigatorLayout.elements[0].elements[index]}
+                        schema={schema}
+                        path={dotPath}
+                        enabled={enabled}
+                        renderers={renderers}
+                        cells={cells}
+                    />
                 </NavigatorScreen>
             ))}
         
