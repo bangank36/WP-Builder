@@ -57,7 +57,6 @@ export const GutenbergNavigatorlLayoutRenderer = ({
     };
 
     const navigatableProps = getObjectProperties(schema.properties);
-    console.log(navigatableProps);
 
     // The navigatorLayout should be the root layout
     const navigatorLayout = uischema
