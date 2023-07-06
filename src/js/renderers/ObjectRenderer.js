@@ -31,7 +31,11 @@ import {
   rankWith,
   StatePropsOfControlWithDetail,
 } from '@jsonforms/core';
-import { JsonFormsDispatch, withJsonFormsDetailProps } from '@jsonforms/react';
+import { 
+  JsonFormsDispatch, 
+  withJsonFormsDetailProps,
+  useJsonForms
+ } from '@jsonforms/react';
 import { Hidden } from '@mui/material';
 import React, { useMemo } from 'react';
 
@@ -71,12 +75,24 @@ export const MaterialObjectRenderer = ({
     [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
   );
 
+  const ctx = useJsonForms();
+
   const pathComp = path.split(".");
+  const formScreens = [];
+  
+  // For each object prop, we render a NavigatorScreen
+  if (schema.type === "object") {
+    formScreens.push({
+      path: path
+    })
+  }
+
+  console.log(ctx);
 
   return (
     <Hidden xsUp={!visible}>
       <NavigatorProvider initialPath="/">
-        {pathComp.length < 2 ? (
+        {pathComp.length ? (
           <>
             <NavigatorScreen path="/">
               <p>This is the main screen. {uischema.scope}</p>
