@@ -81,7 +81,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
         <NavigatorProvider initialPath="/">
             <NavigatorScreen path="/">
                 <p>This is the home screen.</p>
-                {navigatableProps.map(({path, key, dotPath}, index) => (
+                {navigatableProps.filter((({dotPath}) => dotPath.split(".").length < 2 )).map(({path, key, dotPath}, index) => (
                     <NavigatorButton path={`${path}`}>
                         <p>Go to <strong>{key}</strong> screen. {dotPath}</p>
                     </NavigatorButton>
