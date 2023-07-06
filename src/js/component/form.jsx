@@ -18,6 +18,13 @@ import {
   materialListWithDetailTester,
 } from '../renderers/additional';
 
+import {
+  __experimentalNavigatorProvider as NavigatorProvider,
+  __experimentalNavigatorScreen as NavigatorScreen,
+  __experimentalNavigatorButton as NavigatorButton,
+  __experimentalNavigatorToParentButton as NavigatorToParentButton,
+} from '@wordpress/components';
+
 const schema = {
   type: "object",
   properties: {
@@ -46,23 +53,22 @@ const schema = {
       label: "Boolean Checkbox Control Label",
       description: "Boolean Control with Checkbox Renderer"
     },
-      address: {
-        type: 'object',
-        properties: {
-          street_address: { type: 'string' },
-          city: { type: 'string' },
-          state: { type: 'string' },
-        },
-        required: ['street_address', 'city', 'state'],
-      },
-      user: {
-        type: 'object',
-        properties: {
-          name: { type: 'string' },
-          mail: { type: 'string' },
-        },
-        required: ['name', 'mail'],
-      },
+    address: {
+      type: 'object',
+      properties: {
+        street_address: { type: 'string' },
+        city: { type: 'string' },
+        state: { type: 'string' },
+        user: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            mail: { type: 'string' },
+          },
+          required: ['name', 'mail'],
+        }
+      }
+    },
     "users": {
       "type": "array",
       "items": {
@@ -92,124 +98,117 @@ const schema = {
   },
 };
 
-const uischema = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      scope: "#/properties/textControl",
-    },
-    {
-      type: "Control",
-      scope: "#/properties/multilineTextControl",
-      options: {
-        multi: true,
+const uischema = 
+{
+    type: "VerticalLayout",
+    elements: [
+      {
+        type: "Control",
+        scope: "#/properties/textControl",
       },
-    },
-    {
-      type: "Control",
-      scope: "#/properties/colorPaletteControl",
-      options: {
-        format: 'color',
-        colors:[
-          {
-            color: '#f00',
-            name: 'Red'
-          },
-          {
-            color: '#fff',
-            name: 'White'
-          },
-          {
-            color: '#00f',
-            name: 'Blue'
-          }
-        ]
+      {
+        type: "Control",
+        scope: "#/properties/multilineTextControl",
+        options: {
+          multi: true,
+        },
       },
-    },
-    {
-      type: "Control",
-      scope: "#/properties/booleanToggleControl",
-      options: {
-        toggle: true
-      }
-    },
-    {
-      type: "Control",
-      scope: "#/properties/booleanCheckboxControl",
-    },
-    {
-      type: 'VerticalLayout',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/address',
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/user',
-          rule: {
-            effect: 'SHOW',
-            condition: {
-              type: 'LEAF',
-              scope: '#/properties/address/properties/state',
-              expectedValue: 'DC',
-            },
-          },
-          options: {
-            detail: {
-              type: 'Group',
-              label: 'User Data',
-              elements: [
-                { type: 'Control', scope: '#/properties/name' },
-                {
-                  type: 'Control',
-                  scope: '#/properties/mail',
-                },
-              ],
-            },
-          },
-        },
-      ],
-    },
-    {
-      "type": "ListWithDetail",
-      "scope": "#/properties/users",
-      "options": {
-        "detail": {
-          "type": "VerticalLayout",
-          "elements": [
+      {
+        type: "Control",
+        scope: "#/properties/colorPaletteControl",
+        options: {
+          format: 'color',
+          colors:[
             {
-              "type": "HorizontalLayout",
-              "elements": [
-                {
-                  "type": "Control",
-                  "scope": "#/properties/firstname",
-                  "label": "First Name"
-                },
-                {
-                  "type": "Control",
-                  "scope": "#/properties/lastname",
-                  "label": "Last Name"
-                }
-              ]
+              color: '#f00',
+              name: 'Red'
             },
             {
-              "type": "Control",
-              "scope": "#/properties/age",
-              "label": "Age"
+              color: '#fff',
+              name: 'White'
             },
             {
-              "type": "Control",
-              "scope": "#/properties/email",
-              "label": "Email"
+              color: '#00f',
+              name: 'Blue'
             }
           ]
+        },
+      },
+      {
+        type: "Control",
+        scope: "#/properties/booleanToggleControl",
+        options: {
+          toggle: true
+        }
+      },
+      {
+        type: "Control",
+        scope: "#/properties/booleanCheckboxControl",
+      },
+      {
+        type: 'VerticalLayout',
+        elements: [
+          {
+            type: 'Control',
+            scope: '#/properties/address',
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/address/properties/user',
+            options: {
+              detail: {
+                type: 'Group',
+                label: 'User Data',
+                elements: [
+                  { type: 'Control', scope: '#/properties/address/properties/user/properties/name' },
+                  {
+                    type: 'Control',
+                    scope: '#/properties/address/properties/user/properties/mail',
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
+      {
+        "type": "ListWithDetail",
+        "scope": "#/properties/users",
+        "options": {
+          "detail": {
+            "type": "VerticalLayout",
+            "elements": [
+              {
+                "type": "HorizontalLayout",
+                "elements": [
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/firstname",
+                    "label": "First Name"
+                  },
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/lastname",
+                    "label": "Last Name"
+                  }
+                ]
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/age",
+                "label": "Age"
+              },
+              {
+                "type": "Control",
+                "scope": "#/properties/email",
+                "label": "Email"
+              }
+            ]
+          }
         }
       }
-    }
-  ],
-};
+    ],
+  }
 
 const initialData = {};
 
@@ -231,13 +230,20 @@ const renderers = [
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
-  ...overridenRenderers
+  // ...overridenRenderers
 ];
+
+const Forms = ({children}) => (
+  <>
+    <div>{children}</div>
+  </>
+  )
 
 export default function App() {
   const [data, setData] = useState(initialData);
   return (
     <>
+    <Forms>
         <JsonForms
           schema={schema}
           uischema={uischema}
@@ -249,7 +255,7 @@ export default function App() {
             setData(data);
           }}
         />
+    </Forms>
     </>
-    
   );
 }
