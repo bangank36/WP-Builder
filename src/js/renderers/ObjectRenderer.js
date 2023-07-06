@@ -70,18 +70,52 @@ export const MaterialObjectRenderer = ({
       ),
     [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
   );
+
+  const pathComp = path.split(".");
+
   return (
     <Hidden xsUp={!visible}>
-      <JsonFormsDispatch
-        visible={visible}
-        enabled={enabled}
-        schema={schema}
-        uischema={detailUiSchema}
-        path={path}
-        renderers={renderers}
-        cells={cells}
-      />
+      <NavigatorProvider initialPath="/">
+        {pathComp.length < 2 ? (
+          <>
+            <NavigatorScreen path="/">
+              <p>This is the main screen. {uischema.scope}</p>
+              <NavigatorButton path="/child">
+                Navigate to detail screen. {uischema.scope}
+              </NavigatorButton>
+            </NavigatorScreen>
+
+            <NavigatorScreen path="/child">
+              <JsonFormsDispatch
+                visible={visible}
+                enabled={enabled}
+                schema={schema}
+                uischema={detailUiSchema}
+                path={path}
+                renderers={renderers}
+                cells={cells}
+              />
+              <p>This is the child screen.</p>
+              <NavigatorToParentButton>
+                Go back
+              </NavigatorToParentButton>
+            </NavigatorScreen>
+          </>
+        ) : (
+          <JsonFormsDispatch
+            visible={visible}
+            enabled={enabled}
+            schema={schema}
+            uischema={detailUiSchema}
+            path={path}
+            renderers={renderers}
+            cells={cells}
+          />
+        )}
+        
+      </NavigatorProvider>
     </Hidden>
+    
   );
 };
 
