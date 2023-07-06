@@ -24,35 +24,30 @@
 */
 import {
   and,
-  ArrayLayoutProps,
   composePaths,
   computeLabel,
   createDefaultValue,
   findUISchema,
   isObjectArray,
-  RankedTester,
   rankWith,
-  uiTypeIs,
-} from '@jsonforms/core';
+  uiTypeIs
+} from "@jsonforms/core"
 import {
   JsonFormsDispatch,
-  withJsonFormsArrayLayoutProps,
-} from '@jsonforms/react';
-import { Grid, Hidden, List, Typography } from '@mui/material';
-import map from 'lodash/map';
-import range from 'lodash/range';
-import React, { useCallback, useMemo, useState } from 'react';
-import { ArrayLayoutToolbar } from '@jsonforms/material-renderers';
-import ListWithDetailMasterItem from './ListWithDetailMasterItem';
-import merge from 'lodash/merge';
+  withJsonFormsArrayLayoutProps
+} from "@jsonforms/react"
+import { Grid, Hidden, List, Typography } from "@mui/material"
+import map from "lodash/map"
+import range from "lodash/range"
+import React, { useCallback, useMemo, useState } from "react"
+import { ArrayLayoutToolbar } from "@jsonforms/material-renderers"
+import ListWithDetailMasterItem from "./ListWithDetailMasterItem"
+import merge from "lodash/merge"
 import {
   __experimentalNavigatorProvider as NavigatorProvider,
   __experimentalNavigatorScreen as NavigatorScreen,
-  __experimentalNavigatorButton as NavigatorButton,
-  __experimentalNavigatorToParentButton as NavigatorToParentButton,
-  __experimentalUseNavigator as useNavigator,
-  Button
-} from '@wordpress/components';
+  __experimentalNavigatorButton as NavigatorButton
+} from "@wordpress/components"
 
 export const MaterialListWithDetailRenderer = ({
   uischemas,
@@ -71,28 +66,28 @@ export const MaterialListWithDetailRenderer = ({
   cells,
   config,
   rootSchema,
-  translations,
-}: ArrayLayoutProps) => {
-  const [selectedIndex, setSelectedIndex] = useState(undefined);
+  translations
+}) => {
+  const [selectedIndex, setSelectedIndex] = useState(undefined)
   const handleRemoveItem = useCallback(
-    (p: string, value: any) => () => {
-      removeItems(p, [value])();
+    (p, value) => () => {
+      removeItems(p, [value])()
       if (selectedIndex === value) {
-        setSelectedIndex(undefined);
+        setSelectedIndex(undefined)
       } else if (selectedIndex > value) {
-        setSelectedIndex(selectedIndex - 1);
+        setSelectedIndex(selectedIndex - 1)
       }
     },
     [removeItems, setSelectedIndex]
-  );
+  )
   const handleListItemClick = useCallback(
-    (index: number) => () => setSelectedIndex(index),
+    index => () => setSelectedIndex(index),
     [setSelectedIndex]
-  );
+  )
   const handleCreateDefaultValue = useCallback(
     () => createDefaultValue(schema),
     [createDefaultValue]
-  );
+  )
   const foundUISchema = useMemo(
     () =>
       findUISchema(
@@ -105,12 +100,12 @@ export const MaterialListWithDetailRenderer = ({
         rootSchema
       ),
     [uischemas, schema, uischema.scope, path, uischema, rootSchema]
-  );
-  const appliedUiSchemaOptions = merge({}, config, uischema.options);
+  )
+  const appliedUiSchemaOptions = merge({}, config, uischema.options)
 
   React.useEffect(() => {
-    setSelectedIndex(undefined);
-  }, [schema]);
+    setSelectedIndex(undefined)
+  }, [schema])
 
   return (
     <Hidden xsUp={!visible}>
@@ -128,60 +123,59 @@ export const MaterialListWithDetailRenderer = ({
         createDefault={handleCreateDefaultValue}
       />
       <NavigatorProvider initialPath="/">
-      <Grid container direction='row' spacing={2}>
-        <Grid item xs={12}>
-          <NavigatorScreen path="/">
-          <List>
-            {data > 0 ? (
-              map(range(data), (index) => (
-                <ListWithDetailMasterItem
-                  index={index}
-                  path={path}
+        <Grid container direction="row" spacing={2}>
+          <Grid item xs={12}>
+            <NavigatorScreen path="/">
+              <List>
+                {data > 0 ? (
+                  map(range(data), index => (
+                    <ListWithDetailMasterItem
+                      index={index}
+                      path={path}
+                      schema={schema}
+                      enabled={enabled}
+                      handleSelect={handleListItemClick}
+                      removeItem={handleRemoveItem}
+                      selected={selectedIndex === index}
+                      key={index}
+                      translations={translations}
+                    />
+                  ))
+                ) : (
+                  <p>No data</p>
+                )}
+              </List>
+            </NavigatorScreen>
+          </Grid>
+          <Grid item xs>
+            {selectedIndex !== undefined ? (
+              <NavigatorScreen path={`/item${selectedIndex}`}>
+                <p>This is the detail screen.</p>
+                <NavigatorButton path="/">
+                  Navigate to home screen.
+                </NavigatorButton>
+                <JsonFormsDispatch
+                  renderers={renderers}
+                  cells={cells}
+                  visible={true}
                   schema={schema}
-                  enabled={enabled}
-                  handleSelect={handleListItemClick}
-                  removeItem={handleRemoveItem}
-                  selected={selectedIndex === index}
-                  key={index}
-                  translations={translations}
+                  uischema={foundUISchema}
+                  path={composePaths(path, `${selectedIndex}`)}
                 />
-              ))
+              </NavigatorScreen>
             ) : (
-              <p>No data</p>
+              <Typography variant="h6">{translations.noSelection}</Typography>
             )}
-          </List>
-          </NavigatorScreen>
+          </Grid>
         </Grid>
-        <Grid item xs>
-          {selectedIndex !== undefined ? (
-            <NavigatorScreen path={`/item${selectedIndex}`}>
-            <p>This is the detail screen.</p>
-            <NavigatorButton path="/">
-              Navigate to home screen.
-            </NavigatorButton>
-            <JsonFormsDispatch
-              renderers={renderers}
-              cells={cells}
-              visible={true}
-              schema={schema}
-              uischema={foundUISchema}
-              path={composePaths(path, `${selectedIndex}`)}
-            />
-          </NavigatorScreen>
-            
-          ) : (
-            <Typography variant='h6'>{translations.noSelection}</Typography>
-          )}
-        </Grid>
-      </Grid>
       </NavigatorProvider>
     </Hidden>
-  );
-};
+  )
+}
 
-export const materialListWithDetailTester: RankedTester = rankWith(
+export const materialListWithDetailTester = rankWith(
   6,
-  and(uiTypeIs('ListWithDetail'), isObjectArray)
-);
+  and(uiTypeIs("ListWithDetail"), isObjectArray)
+)
 
-export default withJsonFormsArrayLayoutProps(MaterialListWithDetailRenderer);
+export default withJsonFormsArrayLayoutProps(MaterialListWithDetailRenderer)

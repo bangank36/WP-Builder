@@ -22,11 +22,11 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import { MaterialLabelRenderer } from './MaterialLabelRenderer';
+import { MaterialLabelRenderer } from "./MaterialLabelRenderer"
 
-import { MaterialListWithDetailRenderer } from './MaterialListWithDetailRenderer';
+import { MaterialListWithDetailRenderer } from "./MaterialListWithDetailRenderer"
 
 export const UnwrappedAdditional = {
   MaterialLabelRenderer,
-  MaterialListWithDetailRenderer,
-};
+  MaterialListWithDetailRenderer
+}

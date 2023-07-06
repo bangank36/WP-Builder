@@ -22,29 +22,46 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
 */
-import React from 'react';
-import { LabelProps, RankedTester, rankWith, uiTypeIs } from '@jsonforms/core';
-import { withJsonFormsLabelProps } from '@jsonforms/react';
-import { Hidden, Typography } from '@mui/material';
+import { withJsonFormsMasterListItemProps } from "@jsonforms/react"
+import {
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText
+} from "@mui/material"
+import React from "react"
+import {
+  __experimentalNavigatorButton as NavigatorButton,
+  __experimentalUseNavigator as useNavigator
+} from "@wordpress/components"
 
-/**
- * Default tester for a label.
- * @type {RankedTester}
- */
-export const materialLabelRendererTester: RankedTester = rankWith(
-  3,
-  uiTypeIs('Label')
-);
-
-/**
- * Default renderer for a label.
- */
-export const MaterialLabelRenderer = ({ text, visible }: LabelProps) => {
+export const ListWithDetailMasterItem = ({
+  index,
+  childLabel,
+  selected,
+  enabled,
+  handleSelect,
+  removeItem,
+  path,
+  translations
+}) => {
+  const navigator = useNavigator()
   return (
-    <Hidden xsUp={!visible}>
-      <Typography variant='h6'>{text}</Typography>
-    </Hidden>
-  );
-};
+    <ListItem button selected={selected} onClick={handleSelect(index)}>
+      <ListItemAvatar>
+        <Avatar aria-label="Index">{index + 1}</Avatar>
+      </ListItemAvatar>
+      <ListItemText primary={childLabel} />
+      {enabled && (
+        <ListItemSecondaryAction>
+          <NavigatorButton path={`/item${index}`}>
+            Navigate to detail screen.
+          </NavigatorButton>
+        </ListItemSecondaryAction>
+      )}
+    </ListItem>
+  )
+}
 
-export default withJsonFormsLabelProps(MaterialLabelRenderer);
+export default withJsonFormsMasterListItemProps(ListWithDetailMasterItem)
