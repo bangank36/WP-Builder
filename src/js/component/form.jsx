@@ -12,6 +12,10 @@ import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../rendere
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 
+import {
+  __experimentalGrid as Grid,
+} from '@wordpress/components';
+
 const schema = {
   type: "object",
   properties: {
@@ -76,16 +80,27 @@ const renderers = [
 export default function App() {
   const [data, setData] = useState(initialData);
   return (
-    <JsonForms
-      schema={schema}
-      uischema={uischema}
-      data={data}
-      renderers={renderers}
-      cells={materialCells}
-      onChange={({ data, _errors }) => {
-        console.log(data);
-        setData(data);
-      }}
-    />
+    <>
+      <Grid columns={ 3 }>
+        <JsonForms
+          schema={schema}
+          uischema={uischema}
+          data={data}
+          renderers={renderers}
+          cells={materialCells}
+          onChange={({ data, _errors }) => {
+            console.log(data);
+            setData(data);
+          }}
+        />
+        <div>
+          <pre>
+          {JSON.stringify(data, null, 4)}
+          </pre>
+        </div>
+      </Grid>
+      
+    </>
+    
   );
 }
