@@ -1,10 +1,13 @@
 import React from "react"
-import { rankWith, uiTypeIs } from "@jsonforms/core"
-import { MaterialLayoutRenderer } from "./NavigatorRenderer"
+import isEmpty from 'lodash/isEmpty';
+import { rankWith, uiTypeIs, findUISchema, Generate } from "@jsonforms/core"
+// import { MaterialLayoutRenderer } from "./NavigatorRenderer"
 import { 
     JsonFormsDispatch,
     withJsonFormsLayoutProps 
 } from "@jsonforms/react"
+
+import { Grid, Hidden } from "@mui/material"
 
 import {
     __experimentalNavigatorProvider as NavigatorProvider,
@@ -20,6 +23,65 @@ import {
 export const gutenbergNavigatorLayoutTester = rankWith(
   2,
   uiTypeIs("NavigatorLayout")
+)
+
+export const renderLayoutElements = (
+  elements,
+  schema,
+  path,
+  enabled,
+  renderers,
+  cells
+) => {
+  return elements.map((child, index) => (
+    <Grid item key={`${path}-${index}`} xs>
+      <JsonFormsDispatch
+        uischema={child}
+        schema={schema}
+        path={path}
+        enabled={enabled}
+        renderers={renderers}
+        cells={cells}
+      />
+    </Grid>
+  ))
+}
+
+const MaterialLayoutRendererComponent = ({
+  visible,
+  elements,
+  schema,
+  path,
+  enabled,
+  direction,
+  renderers,
+  cells
+}) => {
+  if (isEmpty(elements)) {
+    return null
+  } else {
+    return (
+      <Hidden xsUp={!visible}>
+        <Grid
+          container
+          direction={direction}
+          spacing={direction === "row" ? 2 : 0}
+        >
+          {renderLayoutElements(
+            elements,
+            schema,
+            path,
+            enabled,
+            renderers,
+            cells
+          )}
+        </Grid>
+      </Hidden>
+    )
+  }
+}
+export const MaterialLayoutRenderer = React.memo(
+  MaterialLayoutRendererComponent
 )
 
 export const GutenbergNavigatorlLayoutRenderer = ({
@@ -48,7 +110,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
       
             if (prop.type === 'object') {
               result.push({ path, key, dotPath });
-              result.push(...getObjectProperties(prop.properties, path));
+              // result.push(...getObjectProperties(prop.properties, path));
             }
           }
         }
@@ -88,23 +150,23 @@ export const GutenbergNavigatorlLayoutRenderer = ({
             </NavigatorScreen>
 
             {navigatableProps.map(({path, key, dotPath}, index) => (
-                <NavigatorScreen path={`${path}`}>
-                    <p>This is the <strong>{key}</strong> screen. {dotPath}</p>
-                    <NavigatorToParentButton>
-                        Go back
-                    </NavigatorToParentButton>
-                    <NavigatorButton path="/">
-                        <p>Go to home</p>
-                    </NavigatorButton>
+                    <NavigatorScreen path={`${path}`}>
+                        <p>This is the <strong>{key}</strong> screen. {dotPath}</p>
+                        <NavigatorToParentButton>
+                            Go back
+                        </NavigatorToParentButton>
+                        <NavigatorButton path="/">
+                            <p>Go to home</p>
+                        </NavigatorButton>
                     <JsonFormsDispatch
                         uischema={navigatorLayout.elements[0].elements[index]}
                         schema={schema}
                         path={dotPath}
                         enabled={enabled}
-                        renderers={renderers}
-                        cells={cells}
-                    />
-                </NavigatorScreen>
+                            renderers={renderers}
+                            cells={cells}
+                        />
+                    </NavigatorScreen>
             ))}
         
         </NavigatorProvider>

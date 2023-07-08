@@ -51,7 +51,7 @@ export const GutenbergObjectRenderer = ({
   );
 
   // Extract object prop 
-  const userProp = detailUiSchema.label === 'User' ? true : false;
+  const userProp = detailUiSchema.label === 'Country' ? true : false;
 
   return (
     <Hidden xsUp={!visible}>
