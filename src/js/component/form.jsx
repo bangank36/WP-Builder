@@ -25,11 +25,10 @@ const schema = {
         street_address: { type: 'string' },
         city: { type: 'string' },
         state: { type: 'string' },
-        user: {
+        country: {
           type: 'object',
           properties: {
             name: { type: 'string' },
-            mail: { type: 'string' },
           }
         }
       }
