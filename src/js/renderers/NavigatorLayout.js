@@ -110,7 +110,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
       
             if (prop.type === 'object') {
               result.push({ path, key, dotPath });
-              // result.push(...getObjectProperties(prop.properties, path));
+              result.push(...getObjectProperties(prop.properties, path));
             }
           }
         }
@@ -142,11 +142,11 @@ export const GutenbergNavigatorlLayoutRenderer = ({
         <NavigatorProvider initialPath="/">
             <NavigatorScreen path="/">
                 <p>This is the home screen.</p>
-                {navigatableProps.filter((({dotPath}) => dotPath.split(".").length < 2 )).map(({path, key, dotPath}, index) => (
-                    <NavigatorButton path={`${path}`}>
-                        <p>Go to <strong>{key}</strong> screen. {dotPath}</p>
-                    </NavigatorButton>
-                ))}
+                <MaterialLayoutRenderer
+                  {...childProps}
+                  renderers={renderers}
+                  cells={cells}
+                />
             </NavigatorScreen>
 
             {navigatableProps.map(({path, key, dotPath}, index) => (
@@ -158,13 +158,13 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                         <NavigatorButton path="/">
                             <p>Go to home</p>
                         </NavigatorButton>
-                    <JsonFormsDispatch
-                        uischema={navigatorLayout.elements[0].elements[index]}
-                        schema={schema}
-                        path={dotPath}
-                        enabled={enabled}
-                            renderers={renderers}
-                            cells={cells}
+                        <JsonFormsDispatch
+                          uischema={navigatorLayout.elements[0].elements[index]}
+                          schema={schema}
+                          path={dotPath}
+                          enabled={enabled}
+                              renderers={renderers}
+                              cells={cells}
                         />
                     </NavigatorScreen>
             ))}

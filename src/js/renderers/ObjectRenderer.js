@@ -50,24 +50,25 @@ export const GutenbergObjectRenderer = ({
     [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
   );
 
-  // Extract object prop 
-  const userProp = detailUiSchema.label === 'Country' ? true : false;
+  // Util to convert dot path into slash path: eg: address.country -> /address/country
+  const slashPath = '/' + path.split('.').join('/');
 
   return (
     <Hidden xsUp={!visible}>
-      {!userProp ? (<JsonFormsDispatch
-        visible={visible}
-        enabled={enabled}
-        schema={schema}
-        uischema={detailUiSchema}
-        path={path}
-        renderers={renderers}
-        cells={cells}
-      />) : (
-        <NavigatorButton path='/address/user'>
-          Go to User
+      <>
+        <NavigatorButton path={slashPath}>
+          Go to {detailUiSchema.label} {path}
         </NavigatorButton>
-      )}
+        <JsonFormsDispatch
+          visible={visible}
+          enabled={enabled}
+          schema={schema}
+          uischema={detailUiSchema}
+          path={path}
+          renderers={renderers}
+          cells={cells}
+        />
+      </>
     </Hidden>
   );
 };
