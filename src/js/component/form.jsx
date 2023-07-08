@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import {
-  materialRenderers,
-  materialCells,
-} from "@jsonforms/material-renderers";
+  vanillaRenderers as materialRenderers,
+  vanillaCells as materialCells,
+} from "@jsonforms/vanilla-renderers";
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/TextControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
+import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
+
+import {
+  __experimentalGrid as Grid,
+} from '@wordpress/components';
 
 const schema = {
   type: "object",
@@ -20,11 +25,10 @@ const schema = {
         street_address: { type: 'string' },
         city: { type: 'string' },
         state: { type: 'string' },
-        user: {
+        country: {
           type: 'object',
           properties: {
             name: { type: 'string' },
-            mail: { type: 'string' },
           }
         }
       }
@@ -68,22 +72,32 @@ const renderers = [
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
+  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
 ];
 
 export default function App() {
   const [data, setData] = useState(initialData);
   return (
-    <JsonForms
-      schema={schema}
-      uischema={uischema}
-      data={data}
-      renderers={renderers}
-      cells={materialCells}
-      onChange={({ data, _errors }) => {
-        console.log(data);
-        setData(data);
-      }}
-    />
+    <>
+      <Grid columns={ 3 }>
+        <JsonForms
+          schema={schema}
+          uischema={uischema}
+          data={data}
+          renderers={renderers}
+          cells={materialCells}
+          onChange={({ data, _errors }) => {
+            console.log(data);
+            setData(data);
+          }}
+        />
+        <div>
+          <pre>
+          {JSON.stringify(data, null, 4)}
+          </pre>
+        </div>
+      </Grid>
+    </>
   );
 }
