@@ -83,15 +83,6 @@ export const GutenbergObjectRenderer = ({
         <NavigatorButton path={route}>
           Go to {detailUiSchema.label} {path}
         </NavigatorButton>
-        <JsonFormsDispatch
-          visible={visible}
-          enabled={enabled}
-          schema={schema}
-          uischema={detailUiSchema}
-          path={path}
-          renderers={renderers}
-          cells={cells}
-        />
       </>
     </Hidden>
   );
