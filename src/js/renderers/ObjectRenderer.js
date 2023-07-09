@@ -12,7 +12,8 @@ import {
   withJsonFormsDetailProps,
  } from '@jsonforms/react';
 import { Hidden } from '@mui/material';
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext, useEffect } from 'react';
+import { Context as NavigatorContext } from '../component/context'
 
 import {
   __experimentalNavigatorProvider as NavigatorProvider,
@@ -51,12 +52,35 @@ export const GutenbergObjectRenderer = ({
   );
 
   // Util to convert dot path into slash path: eg: address.country -> /address/country
-  const slashPath = '/' + path.split('.').join('/');
+  const route = '/' + path.split('.').join('/');
+
+  const [screenContent, setScreenContent] = useContext(NavigatorContext);
+
+  //UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
+  useEffect(() => {
+    // Use the callback since the new state is based on the previous state
+    setScreenContent(prevScreenContent => ({
+      ...prevScreenContent,
+      [route]: {
+        component: (<JsonFormsDispatch
+          visible={visible}
+          enabled={enabled}
+          schema={schema}
+          uischema={detailUiSchema}
+          path={path}
+          renderers={renderers}
+          cells={cells}
+        />),
+        label: detailUiSchema.label,
+        path: path
+      }
+    }))
+  }, [route])
 
   return (
     <Hidden xsUp={!visible}>
       <>
-        <NavigatorButton path={slashPath}>
+        <NavigatorButton path={route}>
           Go to {detailUiSchema.label} {path}
         </NavigatorButton>
         <JsonFormsDispatch
