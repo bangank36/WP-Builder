@@ -1,13 +1,13 @@
-import React from "react"
+import React, { createContext, useState, useEffect } from "react"
 import isEmpty from 'lodash/isEmpty';
 import { rankWith, uiTypeIs, findUISchema, Generate } from "@jsonforms/core"
-// import { MaterialLayoutRenderer } from "./NavigatorRenderer"
+import { MaterialLayoutRenderer } from "./NavigatorRenderer"
 import { 
     JsonFormsDispatch,
     withJsonFormsLayoutProps 
 } from "@jsonforms/react"
 
-import { Grid, Hidden } from "@mui/material"
+import { Context as NavigatorContext } from '../component/context'
 
 import {
     __experimentalNavigatorProvider as NavigatorProvider,
@@ -25,65 +25,6 @@ export const gutenbergNavigatorLayoutTester = rankWith(
   uiTypeIs("NavigatorLayout")
 )
 
-export const renderLayoutElements = (
-  elements,
-  schema,
-  path,
-  enabled,
-  renderers,
-  cells
-) => {
-  return elements.map((child, index) => (
-    <Grid item key={`${path}-${index}`} xs>
-      <JsonFormsDispatch
-        uischema={child}
-        schema={schema}
-        path={path}
-        enabled={enabled}
-        renderers={renderers}
-        cells={cells}
-      />
-    </Grid>
-  ))
-}
-
-const MaterialLayoutRendererComponent = ({
-  visible,
-  elements,
-  schema,
-  path,
-  enabled,
-  direction,
-  renderers,
-  cells
-}) => {
-  if (isEmpty(elements)) {
-    return null
-  } else {
-    return (
-      <Hidden xsUp={!visible}>
-        <Grid
-          container
-          direction={direction}
-          spacing={direction === "row" ? 2 : 0}
-        >
-          {renderLayoutElements(
-            elements,
-            schema,
-            path,
-            enabled,
-            renderers,
-            cells
-          )}
-        </Grid>
-      </Hidden>
-    )
-  }
-}
-export const MaterialLayoutRenderer = React.memo(
-  MaterialLayoutRendererComponent
-)
-
 export const GutenbergNavigatorlLayoutRenderer = ({
   uischema,
   schema,
@@ -93,11 +34,11 @@ export const GutenbergNavigatorlLayoutRenderer = ({
   renderers,
   cells
 }) => {
-    // nit: move this method into seperate file
     /*
      * Recursive method to get all the `object` type property and return them as { path, key }
      * Note: so far the method skips the root node, and only looking inside the `properties` prop
     */
+   // nit: move this method into seperate file
     const getObjectProperties = (obj, parentPath = '') => {
         const result = [];
       
@@ -132,13 +73,12 @@ export const GutenbergNavigatorlLayoutRenderer = ({
         visible
     }
 
+    // Update screenContent with correct `path` and `JsonFormDispatch` component
+    const [screenContent, setScreenContent] = useState({})
+
   return (
     <>
-        {/* <MaterialLayoutRenderer
-            {...childProps}
-            renderers={renderers}
-            cells={cells}
-        /> */}
+      <NavigatorContext.Provider value={[screenContent, setScreenContent]}>
         <NavigatorProvider initialPath="/">
             <NavigatorScreen path="/">
                 <p>This is the home screen.</p>
@@ -149,27 +89,21 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                 />
             </NavigatorScreen>
 
-            {navigatableProps.map(({path, key, dotPath}, index) => (
-                    <NavigatorScreen path={`${path}`}>
-                        <p>This is the <strong>{key}</strong> screen. {dotPath}</p>
-                        <NavigatorToParentButton>
-                            Go back
-                        </NavigatorToParentButton>
-                        <NavigatorButton path="/">
-                            <p>Go to home</p>
-                        </NavigatorButton>
-                        <JsonFormsDispatch
-                          uischema={navigatorLayout.elements[0].elements[index]}
-                          schema={schema}
-                          path={dotPath}
-                          enabled={enabled}
-                              renderers={renderers}
-                              cells={cells}
-                        />
-                    </NavigatorScreen>
+            {Object.keys( screenContent ).map(( route, index ) => (
+                <NavigatorScreen path={ `${route}` } key={ `${route}` }>
+                    <p>This is the <strong>{ screenContent[route].label }</strong> screen. { screenContent[route].path }</p>
+                    <NavigatorToParentButton>
+                        Go back
+                    </NavigatorToParentButton>
+                    <NavigatorButton path="/">
+                        <p>Go to home</p>
+                    </NavigatorButton>
+                    { screenContent[route].component }
+                </NavigatorScreen>
             ))}
-        
         </NavigatorProvider>
+        
+      </NavigatorContext.Provider>
     </>
   )
 }

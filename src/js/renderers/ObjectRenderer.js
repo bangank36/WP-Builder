@@ -56,11 +56,11 @@ export const GutenbergObjectRenderer = ({
 
   const [screenContent, setScreenContent] = useContext(NavigatorContext);
 
-
   //UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
   useEffect(() => {
-    setScreenContent({
-      ...screenContent,
+    // Use the callback since the new state is based on the previous state
+    setScreenContent(prevScreenContent => ({
+      ...prevScreenContent,
       [route]: {
         component: (<JsonFormsDispatch
           visible={visible}
@@ -74,7 +74,7 @@ export const GutenbergObjectRenderer = ({
         label: detailUiSchema.label,
         path: path
       }
-    })
+    }))
   }, [route])
 
   return (
