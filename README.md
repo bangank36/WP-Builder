@@ -24,9 +24,9 @@ Development nodes can be found in these issues
 
 |Issue/PR|Notes|
 |:----|:----|
-| https://github.com/bangank36/WP-Builder/issues/17 ||
-| https://github.com/bangank36/WP-Builder/issues/24 ||
-| https://github.com/bangank36/WP-Builder/issues/19 ||
+| [🖍️ WP-Builder: Integrate Form builder with Gutenberg Navigator](https://github.com/bangank36/WP-Builder/issues/17) ||
+| [🖍️ WP-Builder: with or within jsonforms](https://github.com/bangank36/WP-Builder/issues/24) ||
+| [WP-Builder: Introduce new NavigatorLayout #19](https://github.com/bangank36/WP-Builder/issues/19) ||
 
 ## Contributing
 Are very welcome!! Please open new issues, PRs about anything relevant to this project scope and we can have a look together!
