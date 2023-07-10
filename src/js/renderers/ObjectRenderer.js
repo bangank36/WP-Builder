@@ -3,23 +3,23 @@ import {
   findUISchema,
   Generate,
   isObjectControl,
-  RankedTester,
   rankWith,
-  StatePropsOfControlWithDetail,
 } from '@jsonforms/core';
 import { 
   JsonFormsDispatch, 
   withJsonFormsDetailProps,
  } from '@jsonforms/react';
-import { Hidden } from '@mui/material';
 import React, { useMemo, useContext, useEffect } from 'react';
 import { Context as NavigatorContext } from '../component/context'
 
+import { chevronLeft, chevronRight } from '@wordpress/icons';
+import { isRTL, __ } from '@wordpress/i18n';
+import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
+import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
+
 import {
-  __experimentalNavigatorProvider as NavigatorProvider,
-  __experimentalNavigatorScreen as NavigatorScreen,
-  __experimentalNavigatorButton as NavigatorButton,
-  __experimentalNavigatorToParentButton as NavigatorToParentButton,
+	__experimentalHStack as HStack,
+	FlexItem,
 } from '@wordpress/components';
 
 export const GutenbergObjectRenderer = ({
@@ -77,15 +77,23 @@ export const GutenbergObjectRenderer = ({
     }))
   }, [route])
 
-  return (
-    <Hidden xsUp={!visible}>
-      <>
-        <NavigatorButton path={route}>
-          Go to {detailUiSchema.label} {path}
-        </NavigatorButton>
-      </>
-    </Hidden>
-  );
+  return !visible ? null : (
+    <>
+      <NavigationButtonAsItem
+        path={route}
+        aria-label={detailUiSchema.label}
+      >
+        <HStack justify="space-between">
+          <FlexItem>
+            {detailUiSchema.label}
+          </FlexItem>
+          <IconWithCurrentColor
+            icon={isRTL() ? chevronLeft : chevronRight}
+          />
+        </HStack>
+      </NavigationButtonAsItem>
+    </>
+  )
 };
 
 export const gutenbergObjectControlTester = rankWith(
