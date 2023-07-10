@@ -1,19 +1,26 @@
-import React, { createContext, useState, useEffect } from "react"
-import isEmpty from 'lodash/isEmpty';
-import { rankWith, uiTypeIs, findUISchema, Generate } from "@jsonforms/core"
+import React, { useState } from "react"
+import { rankWith, uiTypeIs, } from "@jsonforms/core"
 import { MaterialLayoutRenderer } from "./NavigatorRenderer"
 import { 
-    JsonFormsDispatch,
     withJsonFormsLayoutProps 
 } from "@jsonforms/react"
 
 import { Context as NavigatorContext } from '../component/context'
 
+import { chevronLeft, chevronRight, home } from '@wordpress/icons';
+import { isRTL, __ } from '@wordpress/i18n';
+import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
+import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
+
 import {
-    __experimentalNavigatorProvider as NavigatorProvider,
-    __experimentalNavigatorScreen as NavigatorScreen,
-    __experimentalNavigatorButton as NavigatorButton,
-    __experimentalNavigatorToParentButton as NavigatorToParentButton,
+  __experimentalNavigatorProvider as NavigatorProvider,
+  __experimentalNavigatorScreen as NavigatorScreen,
+  __experimentalNavigatorToParentButton as NavigatorToParentButton,
+	__experimentalHStack as HStack,
+	__experimentalSpacer as Spacer,
+  __experimentalHeading as Heading,
+	CardBody,
+	Card,
 } from '@wordpress/components';
 
 /**
@@ -34,33 +41,6 @@ export const GutenbergNavigatorlLayoutRenderer = ({
   renderers,
   cells
 }) => {
-    /*
-     * Recursive method to get all the `object` type property and return them as { path, key }
-     * Note: so far the method skips the root node, and only looking inside the `properties` prop
-    */
-   // nit: move this method into seperate file
-    const getObjectProperties = (obj, parentPath = '') => {
-        const result = [];
-      
-        for (const key in obj) {
-          if (obj.hasOwnProperty(key)) {
-            const path = parentPath ? `${parentPath}/${key}` : `/${key}`;
-            // Convert the slash-string into dot-string, eg: /address/user - address.user
-            const dotPath = path.replace(/^\//, '').replace(/\//g, '.');
-            const prop = obj[key];
-      
-            if (prop.type === 'object') {
-              result.push({ path, key, dotPath });
-              result.push(...getObjectProperties(prop.properties, path));
-            }
-          }
-        }
-      
-        return result;
-    };
-
-    const navigatableProps = getObjectProperties(schema.properties);
-
     // The navigatorLayout should be the root layout
     const navigatorLayout = uischema
 
@@ -81,28 +61,67 @@ export const GutenbergNavigatorlLayoutRenderer = ({
       <NavigatorContext.Provider value={[screenContent, setScreenContent]}>
         <NavigatorProvider initialPath="/">
             <NavigatorScreen path="/">
-                <p>This is the home screen.</p>
-                <MaterialLayoutRenderer
-                  {...childProps}
-                  renderers={renderers}
-                  cells={cells}
-                />
+                <Card
+                  size="small"
+                  isBorderless
+                  className="jsonforms-navigator-layout-screen"
+                >
+                  <CardBody>
+                    <MaterialLayoutRenderer
+                    {...childProps}
+                    renderers={renderers}
+                    cells={cells}
+                  />
+                  </CardBody>
+                </Card>
             </NavigatorScreen>
 
             {Object.keys( screenContent ).map(( route, index ) => (
                 <NavigatorScreen path={ `${route}` } key={ `${route}` }>
-                    <p>This is the <strong>{ screenContent[route].label }</strong> screen. { screenContent[route].path }</p>
-                    <NavigatorToParentButton>
-                        Go back
-                    </NavigatorToParentButton>
-                    <NavigatorButton path="/">
-                        <p>Go to home</p>
-                    </NavigatorButton>
-                    { screenContent[route].component }
+                    <Card
+                      size="small"
+                      isBorderless
+                      className="jsonforms-navigator-layout-screen"
+                    >
+                      <CardBody>
+                        <HStack spacing={ 2 }>
+                          <NavigatorToParentButton
+                            style={
+                              // TODO: This style override is also used in ToolsPanelHeader.
+                              // It should be supported out-of-the-box by Button.
+                              { minWidth: 24, padding: 0 }
+                            }
+                            icon={ isRTL() ? chevronRight : chevronLeft }
+                            isSmall
+                            aria-label={ __( 'Navigate to the previous view' ) }
+                          />
+                          <Spacer>
+                            <Heading
+                              className="jsonforms-navigator-screen-header"
+                              level={ 2 }
+                              size={ 13 }
+                            >
+                              { screenContent[route].label }
+                            </Heading>
+                          </Spacer>
+
+                          <NavigationButtonAsItem
+                            path={'/'}
+                            aria-label={ __( 'Navigate to the main view' ) }
+                          >
+                            <HStack justify="flex-end">
+                              <IconWithCurrentColor
+                                icon={ home }
+                              />
+                            </HStack>
+                          </NavigationButtonAsItem>
+                        </HStack>
+                        { screenContent[route].component }
+                      </CardBody>
+                    </Card>
                 </NavigatorScreen>
             ))}
         </NavigatorProvider>
-        
       </NavigatorContext.Provider>
     </>
   )
