@@ -4,11 +4,10 @@ import {
   vanillaCells as materialCells,
 } from "@jsonforms/vanilla-renderers";
 import { JsonForms } from "@jsonforms/react";
-import TextControl, { textControlTester } from "../renderers/TextControl";
-import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
-import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
-import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
-import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
+import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
+import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
+import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/Primitive/ColorPaletteControl";
+import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 
@@ -30,7 +29,20 @@ const schema = {
           properties: {
             name: { type: 'string' },
           }
-        }
+        },
+        comments: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              comment: { 
+                type: 'string',
+                maxLength: 5, 
+              },
+            }
+            
+          },
+        },
       }
     },
     business: {
@@ -48,6 +60,10 @@ const uischema = {
     {
       type: 'VerticalLayout',
       elements: [
+        {
+          type: 'Control',
+          scope: '#/properties/comments',
+        },
         {
           type: 'Control',
           scope: '#/properties/address',
