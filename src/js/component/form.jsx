@@ -79,7 +79,15 @@ const uischema = {
   ],
 }
 
-const initialData = {};
+const initialData = {
+  address: {
+    comments: [{
+      comment: 'test'
+    },{
+      comment: 'test1'
+    }]
+  }
+};
 
 // list of renderers declared outside the App component
 const renderers = [
