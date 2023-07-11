@@ -57,15 +57,29 @@ export const GutenbergArrayRenderer = ({
         [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
     );
 
+    const childUiSchema = useMemo(
+        () =>
+        findUISchema(
+            uischemas,
+            schema,
+            uischema.scope,
+            composePaths(path, `${0}`),
+            () =>
+            isEmpty(path)
+                ? Generate.uiSchema(schema, 'VerticalLayout')
+                : { ...Generate.uiSchema(schema, 'Group'), label },
+            uischema,
+            rootSchema
+        ),
+        [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
+    );
+
     // Util to convert dot path into slash path: eg: address.country -> /address/country
     const route = '/' + path.split('.').join('/');
 
     const [screenContent, setScreenContent] = useContext(NavigatorContext);
 
-    console.log(data);
-
     const navigator = useNavigator();
-    console.log(navigator);
 
     //UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
     useEffect(() => {
@@ -90,8 +104,8 @@ export const GutenbergArrayRenderer = ({
                     visible={visible}
                     enabled={enabled}
                     schema={schema}
-                    uischema={detailUiSchema}
-                    path={path}
+                    uischema={childUiSchema}
+                    path={composePaths(path, `${0}`)}
                     renderers={renderers}
                     cells={cells}
                 />),
@@ -136,7 +150,8 @@ export const GutenbergArrayRenderer = ({
                             </NavigationButtonAsItem>
                         </div>
                     )
-                }) ) : null}
+                }) 
+            ) : null}
         </>
   )
 };

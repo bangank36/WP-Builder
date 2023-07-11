@@ -56,6 +56,15 @@ export const GutenbergNavigatorlLayoutRenderer = ({
     // Update screenContent with correct `path` and `JsonFormDispatch` component
     const [screenContent, setScreenContent] = useState({})
     
+    const NavigatorScreenContent = (props) => (
+        <>{props.children}</>
+    )
+
+    // NavigatorScreenContent.whyDidYouRender = {
+    //     logOnDifferentValues: true,
+    //     customName: 'Menu'
+    //   }
+
     return (
       <>
         <NavigatorContext.Provider value={[screenContent, setScreenContent]}>
@@ -85,38 +94,41 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                         >
                         <CardBody>
                             <HStack spacing={ 2 }>
-                            <NavigatorToParentButton
-                                style={
-                                    // TODO: This style override is also used in ToolsPanelHeader.
-                                    // It should be supported out-of-the-box by Button.
-                                    { minWidth: 24, padding: 0 }
-                                }
-                                icon={ isRTL() ? chevronRight : chevronLeft }
-                                isSmall
-                                aria-label={ __( 'Navigate to the previous view' ) }
-                            />
-                            <Spacer>
-                                <Heading
-                                className="jsonforms-navigator-screen-header"
-                                level={ 2 }
-                                size={ 13 }
-                                >
-                                { screenContent[route].label }
-                                </Heading>
-                            </Spacer>
-        
-                            <NavigationButtonAsItem
-                                path={'/'}
-                                aria-label={ __( 'Navigate to the main view' ) }
-                            >
-                                <HStack justify="flex-end">
-                                <IconWithCurrentColor
-                                    icon={ home }
+                                <>{route}</>
+                                <NavigatorToParentButton
+                                    style={
+                                        // TODO: This style override is also used in ToolsPanelHeader.
+                                        // It should be supported out-of-the-box by Button.
+                                        { minWidth: 24, padding: 0 }
+                                    }
+                                    icon={ isRTL() ? chevronRight : chevronLeft }
+                                    isSmall
+                                    aria-label={ __( 'Navigate to the previous view' ) }
                                 />
-                                </HStack>
-                            </NavigationButtonAsItem>
+                                <Spacer>
+                                    <Heading
+                                    className="jsonforms-navigator-screen-header"
+                                    level={ 2 }
+                                    size={ 13 }
+                                    >
+                                    { screenContent[route].label }
+                                    </Heading>
+                                </Spacer>
+            
+                                <NavigationButtonAsItem
+                                    path={'/'}
+                                    aria-label={ __( 'Navigate to the main view' ) }
+                                >
+                                    <HStack justify="flex-end">
+                                    <IconWithCurrentColor
+                                        icon={ home }
+                                    />
+                                    </HStack>
+                                </NavigationButtonAsItem>
                             </HStack>
-                            { screenContent[route].component }
+                            {/* <NavigatorScreenContent> */}
+                                { screenContent[route].component }
+                            {/* </NavigatorScreenContent> */}
                         </CardBody>
                         </Card>
                     </NavigatorScreen>

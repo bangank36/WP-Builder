@@ -11,6 +11,7 @@ import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../rendere
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayRenderer";
+import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 
 import {
@@ -39,7 +40,6 @@ const schema = {
             properties: {
               comment: { 
                 type: 'string',
-                maxLength: 5, 
               },
             }
             
@@ -62,10 +62,6 @@ const uischema = {
     {
       type: 'VerticalLayout',
       elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/comments',
-        },
         {
           type: 'Control',
           scope: '#/properties/address',
@@ -99,7 +95,8 @@ const renderers = [
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
-  { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
+  // { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
+  { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
 ];
 
@@ -115,7 +112,6 @@ export default function App() {
           renderers={renderers}
           cells={materialCells}
           onChange={({ data, _errors }) => {
-            console.log(data);
             setData(data);
           }}
         />
