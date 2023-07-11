@@ -56,15 +56,6 @@ export const GutenbergNavigatorlLayoutRenderer = ({
     // Update screenContent with correct `path` and `JsonFormDispatch` component
     const [screenContent, setScreenContent] = useState({})
     
-    const NavigatorScreenContent = (props) => (
-        <>{props.children}</>
-    )
-
-    // NavigatorScreenContent.whyDidYouRender = {
-    //     logOnDifferentValues: true,
-    //     customName: 'Menu'
-    //   }
-
     return (
       <>
         <NavigatorContext.Provider value={[screenContent, setScreenContent]}>
@@ -94,7 +85,6 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                         >
                         <CardBody>
                             <HStack spacing={ 2 }>
-                                <>{route}</>
                                 <NavigatorToParentButton
                                     style={
                                         // TODO: This style override is also used in ToolsPanelHeader.
@@ -126,9 +116,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                                     </HStack>
                                 </NavigationButtonAsItem>
                             </HStack>
-                            {/* <NavigatorScreenContent> */}
-                                { screenContent[route].component }
-                            {/* </NavigatorScreenContent> */}
+                            { screenContent[route].component }
                         </CardBody>
                         </Card>
                     </NavigatorScreen>
