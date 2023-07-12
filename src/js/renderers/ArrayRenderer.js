@@ -87,28 +87,35 @@ export const GutenbergArrayRenderer = ({
         setScreenContent(prevScreenContent => ({
             ...prevScreenContent,
             [`${route}`]: {
-                component: (<JsonFormsDispatch
-                    visible={visible}
-                    enabled={enabled}
-                    schema={schema}
-                    uischema={detailUiSchema}
-                    path={path}
-                    renderers={renderers}
-                    cells={cells}
-                />),
+                component: ({
+                    renderers,
+                    cells,
+                    uischemas,
+                    schema,
+                    label,
+                    path,
+                    visible,
+                    enabled,
+                    uischema: detailUiSchema,
+                    rootSchema,
+                }),
                 label: detailUiSchema.label,
                 path: path
             },
             [`${route}/:index`]: {
-                component: (<JsonFormsDispatch
-                    visible={visible}
-                    enabled={enabled}
-                    schema={schema}
-                    uischema={childUiSchema}
-                    path={composePaths(path, `${0}`)}
-                    renderers={renderers}
-                    cells={cells}
-                />),
+                component: (
+                {    
+                    renderers,
+                    cells,
+                    uischemas,
+                    schema,
+                    label,
+                    path: composePaths(path, `${0}`),
+                    visible,
+                    enabled,
+                    uischema: childUiSchema,
+                    rootSchema,
+                }),
                 label: detailUiSchema.label,
                 path: path
             },
