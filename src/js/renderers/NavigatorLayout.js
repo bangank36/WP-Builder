@@ -54,8 +54,25 @@ export const GutenbergNavigatorlLayoutRenderer = ({
     }
 
     // Update screenContent with correct `path` and `JsonFormDispatch` component
+    // use memo for the screenContent and setScreenContent context value
     const [screenContent, setScreenContent] = useState({})
-    
+    const screenContentMemo = React.useMemo(() => {
+        const screenContent = {}
+        navigatorLayout.elements.forEach((element) => {
+            const { path, component, label } = element
+            screenContent[path] = { component, label }
+        })
+        return screenContent
+    }, [navigatorLayout.elements])
+    React.useEffect(() => {
+        setScreenContent(screenContentMemo)
+    }, [screenContentMemo])
+
+    const MemoizedChildComponent = (({children}) => {
+        console.log('render', children) // only one time render, because it children memoized in parent component inside useMemo hook. children: [object, object, object]
+        return <div>{children}</div>
+    })
+
     return (
       <>
         <NavigatorContext.Provider value={[screenContent, setScreenContent]}>
@@ -116,7 +133,11 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                                     </HStack>
                                 </NavigationButtonAsItem>
                             </HStack>
+                            <MemoizedChildComponent>
                             { screenContent[route].component }
+                            </MemoizedChildComponent>
+                            
+                           
                         </CardBody>
                         </Card>
                     </NavigatorScreen>
