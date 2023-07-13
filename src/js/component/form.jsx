@@ -4,12 +4,14 @@ import {
   vanillaCells as materialCells,
 } from "@jsonforms/vanilla-renderers";
 import { JsonForms } from "@jsonforms/react";
-import TextControl, { textControlTester } from "../renderers/TextControl";
-import MultilineTextControl, { multilineTextControlTester } from "../renderers/MultilineTextControl";
-import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/ColorPaletteControl";
-import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/BooleanToggleControl";
-import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/BooleanCheckboxControl";
+import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
+import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
+import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/Primitive/ColorPaletteControl";
+import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/Primitive/BooleanCheckboxControl";
+import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
+import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayRenderer";
+import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 
 import {
@@ -30,7 +32,19 @@ const schema = {
           properties: {
             name: { type: 'string' },
           }
-        }
+        },
+        comments: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              comment: { 
+                type: 'string',
+              },
+            }
+            
+          },
+        },
       }
     },
     business: {
@@ -61,7 +75,15 @@ const uischema = {
   ],
 }
 
-const initialData = {};
+const initialData = {
+  address: {
+    comments: [{
+      comment: 'test'
+    },{
+      comment: 'test1'
+    }]
+  }
+};
 
 // list of renderers declared outside the App component
 const renderers = [
@@ -73,6 +95,8 @@ const renderers = [
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
+  { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
+  // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
 ];
 
@@ -88,7 +112,6 @@ export default function App() {
           renderers={renderers}
           cells={materialCells}
           onChange={({ data, _errors }) => {
-            console.log(data);
             setData(data);
           }}
         />
