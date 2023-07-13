@@ -2,12 +2,15 @@ import React, { useState } from "react"
 import { 
     rankWith, 
     uiTypeIs, 
+    composePaths
 } from "@jsonforms/core"
 import { MaterialLayoutRenderer } from "./NavigatorRenderer"
 import { 
     withJsonFormsLayoutProps,
     JsonFormsDispatch 
 } from "@jsonforms/react"
+
+import range from 'lodash/range';
 
 import { Context as NavigatorContext } from '../component/context'
 
@@ -24,6 +27,7 @@ import {
 	__experimentalHStack as HStack,
 	__experimentalSpacer as Spacer,
     __experimentalHeading as Heading,
+    FlexItem,
 	CardBody,
 	Card,
 } from '@wordpress/components';
@@ -40,6 +44,41 @@ export const gutenbergNavigatorLayoutTester = rankWith(
 const MemoizedChildComponent = (({ component, label, path } ) => {
     const navigator = useNavigator();
     console.log(navigator.params);
+
+    // Below 2 conditions are hard coded to handle the array renderers
+    if (navigator.location.path === '/address/comments') {
+        return (
+            component.data ? (
+                range(0, component.data.length).map((index) => {
+                    const childPath = composePaths(path, `${index}`);
+                    return (
+                        <NavigationButtonAsItem
+                            path={`${navigator.location.path}/${index}`}
+                            aria-label={label}
+                        >
+                            <HStack justify="space-between">
+                            <FlexItem>
+                                item #{index}
+                            </FlexItem>
+                            <IconWithCurrentColor
+                                icon={isRTL() ? chevronLeft : chevronRight}
+                            />
+                            </HStack>
+                        </NavigationButtonAsItem>
+                    )
+                }) 
+            ) : null
+        )
+    }
+    if (navigator.params.index) {
+        const childPath = composePaths(path, `${navigator.params.index}`);
+        const childComp = {
+            ...component,
+            path: childPath
+        }
+
+        return <JsonFormsDispatch {...childComp}/>
+    }
 
     return <JsonFormsDispatch {...component}/>
 })
