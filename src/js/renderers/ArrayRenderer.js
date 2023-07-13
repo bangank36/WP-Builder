@@ -11,6 +11,7 @@ import {
 } from '@jsonforms/core';
 import { 
     JsonFormsDispatch, 
+    withJsonFormsArrayControlProps,
     withJsonFormsDetailProps,
  } from '@jsonforms/react';
 import React, { useMemo, useContext, useEffect } from 'react';
@@ -63,7 +64,7 @@ export const GutenbergArrayRenderer = ({
             uischemas,
             schema,
             uischema.scope,
-            composePaths(path, `${0}`),
+            path,
             () =>
             isEmpty(path)
                 ? Generate.uiSchema(schema, 'VerticalLayout')
@@ -98,6 +99,7 @@ export const GutenbergArrayRenderer = ({
                     enabled,
                     uischema: detailUiSchema,
                     rootSchema,
+                    data
                 }),
                 label: detailUiSchema.label,
                 path: path
@@ -168,4 +170,4 @@ export const gutenbergArrayControlTester = rankWith(
     or(isObjectArrayControl, isPrimitiveArrayControl)
 );
 
-export default withJsonFormsDetailProps(GutenbergArrayRenderer);
+export default withJsonFormsArrayControlProps(GutenbergArrayRenderer);

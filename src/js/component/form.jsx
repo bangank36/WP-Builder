@@ -95,8 +95,8 @@ const renderers = [
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
-  // { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
-  { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
+  { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
+  // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
 ];
 
