@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { 
     rankWith, 
     uiTypeIs, 
@@ -24,6 +24,7 @@ import {
     __experimentalNavigatorScreen as NavigatorScreen,
     __experimentalNavigatorToParentButton as NavigatorToParentButton,
     __experimentalUseNavigator as useNavigator,
+    __experimentalNavigatorButton as NavigatorButton,
 	__experimentalHStack as HStack,
 	__experimentalSpacer as Spacer,
     __experimentalHeading as Heading,
@@ -86,104 +87,33 @@ const MemoizedChildComponent = (({ component, label, path } ) => {
 MemoizedChildComponent.whyDidYouRender = true
 
 
-export const GutenbergNavigatorlLayoutRenderer = ({
-    uischema,
-    schema,
-    path,
-    enabled,
-    visible,
-    renderers,
-    cells
-}) => {
-    // The navigatorLayout should be the root layout
-    const navigatorLayout = uischema
-
-    const childProps = {
-        elements: navigatorLayout.elements,
-        schema,
-        path,
-        enabled,
-        direction: "column",
-        visible
-    }
-
-    // Update screenContent with correct `path` and `JsonFormDispatch` component
-    // use memo for the screenContent and setScreenContent context value
-    const [screenContent, setScreenContent] = useState({})
-    
+export const GutenbergNavigatorlLayoutRenderer = (props) => {
+    const controls = useMemo(() => generateControls(props.schema), [props.schema]);
     return (
-      <>
-        <NavigatorContext.Provider value={[screenContent, setScreenContent]}>
-          <NavigatorProvider initialPath="/">
-              <NavigatorScreen path="/">
-                    <Card
-                        size="small"
-                        isBorderless
-                        className="jsonforms-navigator-layout-screen"
-                    >
-                        <CardBody>
-                            <MaterialLayoutRenderer
-                                {...childProps}
-                                renderers={renderers}
-                                cells={cells}
-                            />
-                        </CardBody>
-                    </Card>
-                </NavigatorScreen>
-
-                {Object.keys( screenContent ).map(( route, index ) => (
-                    <NavigatorScreen path={ `${route}` }>
-                        <Card
-                            size="small"
-                            isBorderless
-                            className="jsonforms-navigator-layout-screen"
-                        >
-                        <CardBody>
-                            <HStack spacing={ 2 }>
-                                <NavigatorToParentButton
-                                    style={
-                                        // TODO: This style override is also used in ToolsPanelHeader.
-                                        // It should be supported out-of-the-box by Button.
-                                        { minWidth: 24, padding: 0 }
-                                    }
-                                    icon={ isRTL() ? chevronRight : chevronLeft }
-                                    isSmall
-                                    aria-label={ __( 'Navigate to the previous view' ) }
-                                />
-                                <Spacer>
-                                    <Heading
-                                    className="jsonforms-navigator-screen-header"
-                                    level={ 2 }
-                                    size={ 13 }
-                                    >
-                                    { screenContent[route].label }
-                                    </Heading>
-                                </Spacer>
-            
-                                <NavigationButtonAsItem
-                                    path={'/'}
-                                    aria-label={ __( 'Navigate to the main view' ) }
-                                >
-                                    <HStack justify="flex-end">
-                                    <IconWithCurrentColor
-                                        icon={ home }
-                                    />
-                                    </HStack>
-                                </NavigationButtonAsItem>
-                            </HStack>
-                            <MemoizedChildComponent {...screenContent[route]}>
-                            
-                            </MemoizedChildComponent>
-                            
-                           
-                        </CardBody>
-                        </Card>
-                    </NavigatorScreen>
+        <NavigatorProvider initialPath="/">
+            <NavigatorScreen path="/">
+                <p>{props.label}</p>
+                {Object.keys(props.schema.properties).map((propertyKey) => (
+                    <NavigatorButton path={`/${propertyKey}`} key={propertyKey}>
+                        Navigate to {propertyKey}.
+                    </NavigatorButton>
                 ))}
-            </NavigatorProvider>
-        </NavigatorContext.Provider>
-      </>
-    )
+            </NavigatorScreen>
+            {Object.keys(props.schema.properties).map((propertyKey) => (
+                <NavigatorScreen path={`/${propertyKey}`} key={propertyKey}>
+                    <JsonFormsDispatch schema={props.schema} uischema={controls[propertyKey]} path={props.path} />
+                </NavigatorScreen>
+            ))}
+        </NavigatorProvider>
+    );
+};
+
+const generateControls = (schema) => {
+    const result = {};
+    Object.keys(schema.properties).forEach(key => {
+        result[key] = { type: 'Control', scope: `#/properties/${(key)}` };
+    });
+    return result;
 }
 
 export default withJsonFormsLayoutProps(GutenbergNavigatorlLayoutRenderer)

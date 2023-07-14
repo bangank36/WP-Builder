@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {
-  vanillaRenderers as materialRenderers,
-  vanillaCells as materialCells,
-} from "@jsonforms/vanilla-renderers";
+  materialRenderers,
+  materialCells,
+} from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
@@ -32,19 +32,7 @@ const schema = {
           properties: {
             name: { type: 'string' },
           }
-        },
-        comments: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              comment: { 
-                type: 'string',
-              },
-            }
-            
-          },
-        },
+        }
       }
     },
     business: {
@@ -94,7 +82,7 @@ const renderers = [
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
-  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
+  // { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
   // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
