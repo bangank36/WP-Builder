@@ -27,6 +27,10 @@ const schema = {
         street_address: { type: 'string' },
         city: { type: 'string' },
         state: { type: 'string' },
+        isOffice: { 
+          type: 'boolean',
+          description: 'Is this an office address?',
+        },
         country: {
           type: 'object',
           properties: {
@@ -77,6 +81,7 @@ const uischema = {
 
 const initialData = {
   address: {
+    isOffice: false,
     comments: [{
       comment: 'test'
     },{

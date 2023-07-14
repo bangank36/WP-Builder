@@ -57,12 +57,12 @@ const MemoizedChildComponent = (({ component, label, path } ) => {
                             aria-label={label}
                         >
                             <HStack justify="space-between">
-                            <FlexItem>
-                                item #{index}
-                            </FlexItem>
-                            <IconWithCurrentColor
-                                icon={isRTL() ? chevronLeft : chevronRight}
-                            />
+                                <FlexItem>
+                                    item #{index}
+                                </FlexItem>
+                                <IconWithCurrentColor
+                                    icon={isRTL() ? chevronLeft : chevronRight}
+                                />
                             </HStack>
                         </NavigationButtonAsItem>
                     )
