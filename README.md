@@ -20,7 +20,7 @@ Introduce the new Layout to display the nested object/array properties into `dis
 ### Disclosure Screens
 Brought to jsonforms by a new `NavigatorLayout` which will render a whole set of `NavigatorScreen` by rendering the deep nested node into its own `Screen`, in other words: all the object/array nested nodes will be rendered in `flat` structure instead of `nested`.
 By default, nested nodes will render `JsonFormDispatch` components, but with the new Layout, they will only render a `NavigatorButton` and pass their `JsonFormDispatch` to root node via Context.
-Development nodes can be found in these issues
+Development notes can be found in these issues
 
 |Issue/PR|Notes|
 |:----|:----|
