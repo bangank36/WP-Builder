@@ -1,39 +1,60 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
-import { rankWith, isBooleanControl, optionIs, and } from "@jsonforms/core";
-import { ToggleControl as UiToggleControl } from '@wordpress/components';
+import { rankWith, isBooleanControl } from "@jsonforms/core";
+import {
+	__experimentalHStack as HStack,
+	__experimentalSpacer as Spacer,
+	FormToggle,
+	Tooltip,	
+    FlexItem,
+	HorizontalRule
+} from '@wordpress/components';
 
 const ToggleControl = (props) => {
-  const {
-    id,
-    description,
-    errors,
-    label,
-    uischema,
-    path,
-    visible,
-    required,
-    config,
-    data,
-    input,
-    handleChange
-  } = props;
+  	const {
+		id,
+		description,
+		label,
+		path,
+		data,
+		handleChange
+	} = props;
   
-  return ( 
-    <UiToggleControl
-        checked={ !!data }
-        help={description}
-        label={label}
-        onChange={(value) =>
-            handleChange(path, value === '' ? undefined : value)
-        }
-    />
-  )
+  	return ( 
+		<>
+			<HStack justify="space-between">
+				<FlexItem>
+				{ description ? (
+					<Tooltip text={ description }>
+					<label htmlFor={ id }>
+						{ label }
+					</label>
+				</Tooltip>
+				) : ( 
+					<label htmlFor={ id }>
+						{ label }
+					</label> 
+				) }
+				</FlexItem>
+				<FlexItem>
+					<FormToggle
+						checked={ !!data }
+						onChange={(event) =>
+							handleChange(path, event.target.checked || false)
+						}
+					/>
+				</FlexItem>
+			</HStack>
+			<Spacer marginTop={2} marginBottom={0}>
+				<HorizontalRule />
+			</Spacer>
+		</>
+  	)
 };
 
 export const booleanToggleControlTester = rankWith(
-  5, //increase rank as needed
-  and(isBooleanControl, optionIs('toggle', true))
+	4, //increase rank as needed
+	isBooleanControl
 );
 
 export default withJsonFormsControlProps(ToggleControl);
