@@ -1,23 +1,23 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
-import { rankWith, isBooleanControl, optionIs, and } from "@jsonforms/core";
+import { rankWith, isBooleanControl } from "@jsonforms/core";
 import { ToggleControl as UiToggleControl } from '@wordpress/components';
 
 const ToggleControl = (props) => {
-  const {
-    id,
-    description,
-    errors,
-    label,
-    uischema,
-    path,
-    visible,
-    required,
-    config,
-    data,
-    input,
-    handleChange
-  } = props;
+  	const {
+		id,
+		description,
+		errors,
+		label,
+		uischema,
+		path,
+		visible,
+		required,
+		config,
+		data,
+		input,
+		handleChange
+	} = props;
   
   return ( 
     <UiToggleControl
@@ -32,8 +32,8 @@ const ToggleControl = (props) => {
 };
 
 export const booleanToggleControlTester = rankWith(
-  5, //increase rank as needed
-  and(isBooleanControl, optionIs('toggle', true))
+  4, //increase rank as needed
+  isBooleanControl
 );
 
 export default withJsonFormsControlProps(ToggleControl);
