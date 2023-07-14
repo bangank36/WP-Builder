@@ -38,8 +38,14 @@ export const GutenbergToggleGroup = props => {
   return !visible ? null : (
     <>
         <ToggleGroupControl label="my label" value="vertical" isBlock>
-            <ToggleGroupControlOption value="horizontal" label="Horizontal" />
-            <ToggleGroupControlOption value="vertical" label="Vertical" />
+            {options.map((option) => (
+                <ToggleGroupControlOption 
+                    value={option.value}
+                    key={option.label}
+                    label={option.label}
+                    disabled={!enabled}
+                />
+            ))}
         </ToggleGroupControl>
     </>
   )
