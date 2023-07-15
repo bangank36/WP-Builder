@@ -1,17 +1,21 @@
-import React from "react"
+import React from "react";
+import merge from "lodash/merge";
 import { 
     and, 
     isEnumControl, 
     formatIs, 
     rankWith 
-} from "@jsonforms/core"
-import { withJsonFormsEnumProps } from "@jsonforms/react"
+} from "@jsonforms/core";
+import { withJsonFormsEnumProps } from "@jsonforms/react";
 
-import merge from "lodash/merge"
-import { showAsRequired, isDescriptionHidden } from "@jsonforms/core"
+import { isDescriptionHidden } from "@jsonforms/core";
 import {
     __experimentalToggleGroupControl as ToggleGroupControl,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
+    __experimentalVStack as VStack,
+	__experimentalSpacer as Spacer,
+	Tooltip,	
+    FlexItem,
 } from '@wordpress/components';
 
 export const GutenbergToggleGroup = props => {
@@ -38,25 +42,41 @@ export const GutenbergToggleGroup = props => {
     focused,
     appliedUiSchemaOptions.showUnfocusedDescription
   )
-  const onChange = (value) => handleChange(path, value)
+  const onChange = ( value ) => handleChange( path, value )
 
   return !visible ? null : (
     <>
-        <ToggleGroupControl 
-            label="my label" 
-            value="vertical" 
-            isBlock
-            onChange={onChange}
-        >
-            {options.map((option) => (
-                <ToggleGroupControlOption 
-                    value={option.value}
-                    key={option.label}
-                    label={option.label}
-                    disabled={!enabled}
-                />
-            ))}
-        </ToggleGroupControl>
+        <VStack justify="space-between">
+            <FlexItem>
+            { description ? (
+                <Tooltip text={ description }>
+                <label htmlFor={ id }>
+                    { label }
+                </label>
+            </Tooltip>
+            ) : ( 
+                <label htmlFor={ id }>
+                    { label }
+                </label> 
+            ) }
+            </FlexItem>
+            <FlexItem>
+                <ToggleGroupControl 
+                    value={ data }
+                    isBlock
+                    onChange={ onChange }
+                >
+                    {options.map((option) => (
+                        <ToggleGroupControlOption 
+                            value={option.value}
+                            key={option.label}
+                            label={option.label}
+                            disabled={!enabled}
+                        />
+                    ))}
+                </ToggleGroupControl>
+            </FlexItem>
+        </VStack>
     </>
   )
 }
