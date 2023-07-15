@@ -1,5 +1,10 @@
 import React from "react"
-import { and, isEnumControl, formatIs, rankWith } from "@jsonforms/core"
+import { 
+    and, 
+    isEnumControl, 
+    formatIs, 
+    rankWith 
+} from "@jsonforms/core"
 import { withJsonFormsEnumProps } from "@jsonforms/react"
 
 import merge from "lodash/merge"
@@ -33,11 +38,16 @@ export const GutenbergToggleGroup = props => {
     focused,
     appliedUiSchemaOptions.showUnfocusedDescription
   )
-  const onChange = (_ev, value) => handleChange(path, value)
+  const onChange = (value) => handleChange(path, value)
 
   return !visible ? null : (
     <>
-        <ToggleGroupControl label="my label" value="vertical" isBlock>
+        <ToggleGroupControl 
+            label="my label" 
+            value="vertical" 
+            isBlock
+            onChange={onChange}
+        >
             {options.map((option) => (
                 <ToggleGroupControlOption 
                     value={option.value}
