@@ -16,6 +16,7 @@ Introduce the new Layout to display the nested object/array properties into `dis
 |String|Text|✅| https://github.com/bangank36/WP-Builder/issues/4 |
 | |Textarea|✅| https://github.com/bangank36/WP-Builder/issues/6 |
 | |[ColorPalette](https://wordpress.github.io/gutenberg/?path=/docs/components-colorpalette--default)|✅| https://github.com/bangank36/WP-Builder/issues/8 |
+|Enum|[ToggleGroup](https://wordpress.github.io/gutenberg/?path=/docs/components-experimental-togglegroupcontrol--default)|✅| https://github.com/bangank36/WP-Builder/issues/40 |
 
 ### Disclosure Screens
 Brought to jsonforms by a new `NavigatorLayout` which will render a whole set of `NavigatorScreen` by rendering the deep nested node into its own `Screen`, in other words: all the object/array nested nodes will be rendered in `flat` structure instead of `nested`.
