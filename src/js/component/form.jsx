@@ -9,6 +9,7 @@ import MultilineTextControl, { multilineTextControlTester } from "../renderers/P
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/Primitive/ColorPaletteControl";
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/Primitive/BooleanCheckboxControl";
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
+import GutenbergToggleGroupControl, { gutenbergToggleGroupTester } from "../renderers/Primitive/ToggleGroupControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
@@ -36,6 +37,12 @@ const schema = {
           properties: {
             name: { type: 'string' },
           }
+        },
+        gender: {
+          type: "string",
+          enum: ["male", "female", "other"],
+          format: 'toggle-group',
+          description: "The gender of the user"
         },
         comments: {
           type: 'array',
@@ -99,6 +106,7 @@ const renderers = [
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
+  { tester: gutenbergToggleGroupTester, renderer: GutenbergToggleGroupControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
   // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
