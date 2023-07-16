@@ -10,6 +10,7 @@ import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/Primitive/BooleanCheckboxControl";
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
 import GutenbergToggleGroupControl, { gutenbergToggleGroupTester } from "../renderers/Primitive/ToggleGroupControl";
+import GutenbergToggleGroupOneOfControl, { gutenbergToggleGroupOneOfTester } from "../renderers/Primitive/ToggleGroupOneOfControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
@@ -40,9 +41,18 @@ const schema = {
         },
         gender: {
           type: "string",
-          enum: ["male", "female", "other"],
+          enum: [ "male", "female", "other" ],
           format: 'toggle-group',
           description: "The gender of the user"
+        },
+        oneOfEnum: {
+          type: 'string',
+          format: 'toggle-group',
+          oneOf: [
+            { const: 'foo', title: 'Foo' },
+            { const: 'bar', title: 'Bar' },
+            { const: 'foobar', title: 'FooBar' },
+          ],
         },
         comments: {
           type: 'array',
@@ -89,6 +99,7 @@ const uischema = {
 const initialData = {
   address: {
     isOffice: false,
+    gender: "other",
     comments: [{
       comment: 'test'
     },{
@@ -107,6 +118,7 @@ const renderers = [
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
   { tester: gutenbergToggleGroupTester, renderer: GutenbergToggleGroupControl},
+  { tester: gutenbergToggleGroupOneOfTester, renderer: GutenbergToggleGroupOneOfControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
   // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
