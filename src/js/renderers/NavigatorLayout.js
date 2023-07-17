@@ -124,16 +124,16 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                         >
                             <CardBody>
                                 <MaterialLayoutRenderer
-                                    {...childProps}
-                                    renderers={renderers}
-                                    cells={cells}
+                                    { ...childProps }
+                                    renderers={ renderers }
+                                    cells={ cells }
                                 />
                             </CardBody>
                         </Card>
                     </NavigatorScreen>
                 ) }
 
-                {Object.keys( screenContent ).map(( route, index ) => (
+                {Object.keys( screenContent ).map((  route, index ) => (
                     <NavigatorScreen path={ `${route}` }>
                         <Card
                             size="small"
@@ -175,15 +175,11 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                                     </NavigationButtonAsItem>
                                 </HStack>
                             ) : null }
-                            <MemoizedChildComponent {...screenContent[route]}>
-                            
-                            </MemoizedChildComponent>
-                            
-                           
+                            <MemoizedChildComponent {...screenContent[route]} />
                         </CardBody>
                         </Card>
                     </NavigatorScreen>
-                ))}
+                ) ) }
             </NavigatorProvider>
         </NavigatorContext.Provider>
       </>
