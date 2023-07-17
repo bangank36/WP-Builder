@@ -1,36 +1,31 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
+import range from 'lodash/range';
 import { 
     rankWith, 
     uiTypeIs, 
     composePaths
-} from "@jsonforms/core"
-import { MaterialLayoutRenderer } from "./NavigatorRenderer"
+} from "@jsonforms/core";
 import { 
     withJsonFormsLayoutProps,
     JsonFormsDispatch 
 } from "@jsonforms/react"
-
-import range from 'lodash/range';
-
 import { Context as NavigatorContext } from '../component/context'
-
-import { chevronLeft, chevronRight, home } from '@wordpress/icons';
+import { chevronLeft, chevronRight } from '@wordpress/icons';
 import { isRTL, __ } from '@wordpress/i18n';
-import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
-import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
-
 import {
     __experimentalNavigatorProvider as NavigatorProvider,
     __experimentalNavigatorScreen as NavigatorScreen,
-    __experimentalNavigatorToParentButton as NavigatorToParentButton,
     __experimentalUseNavigator as useNavigator,
 	__experimentalHStack as HStack,
-	__experimentalSpacer as Spacer,
-    __experimentalHeading as Heading,
     FlexItem,
 	CardBody,
 	Card,
 } from '@wordpress/components';
+
+import { MaterialLayoutRenderer } from "./NavigatorRenderer";
+import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
+import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
+import NavigatorTopToolbar from './NavigatorLayout/navigator-top-toolbar';
 
 /**
  * Default tester for a vertical layout.
@@ -41,19 +36,18 @@ export const gutenbergNavigatorLayoutTester = rankWith(
     uiTypeIs("NavigatorLayout")
 )
 
-const MemoizedChildComponent = (({ component, label, path } ) => {
+const MemoizedChildComponent = ( ( { component, label, path } ) => {
     const navigator = useNavigator();
-    console.log(navigator.params);
+    console.log('screen rerendered');
 
     // Below 2 conditions are hard coded to handle the array renderers
-    if (navigator.location.path === '/address/comments') {
+    if ( navigator.location.path === '/address/comments' ) {
         return (
             component.data ? (
-                range(0, component.data.length).map((index) => {
-                    const childPath = composePaths(path, `${index}`);
+                range( 0, component.data.length ).map(( index ) => {
                     return (
                         <NavigationButtonAsItem
-                            path={`${navigator.location.path}/${index}`}
+                            path={ `${ navigator.location.path }/${ index }` }
                             aria-label={label}
                         >
                             <HStack justify="space-between">
@@ -61,7 +55,7 @@ const MemoizedChildComponent = (({ component, label, path } ) => {
                                     item #{index}
                                 </FlexItem>
                                 <IconWithCurrentColor
-                                    icon={isRTL() ? chevronLeft : chevronRight}
+                                    icon={ isRTL() ? chevronLeft : chevronRight}
                                 />
                             </HStack>
                         </NavigationButtonAsItem>
@@ -71,21 +65,21 @@ const MemoizedChildComponent = (({ component, label, path } ) => {
         )
     }
     if (navigator.params.index) {
-        const childPath = composePaths(path, `${navigator.params.index}`);
+        const childPath = composePaths( path, `${ navigator.params.index }` );
         const childComp = {
             ...component,
             path: childPath
         }
 
-        return <JsonFormsDispatch {...childComp}/>
+        return <JsonFormsDispatch { ...childComp }/>
     }
 
-    return <JsonFormsDispatch {...component}/>
+    return <JsonFormsDispatch { ...component }/>
 })
 
 MemoizedChildComponent.whyDidYouRender = true
 
-export const GutenbergNavigatorlLayoutRenderer = ({
+export const GutenbergNavigatorlLayoutRenderer = ( {
     uischema,
     schema,
     path,
@@ -93,7 +87,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
     visible,
     renderers,
     cells
-}) => {
+} ) => {
     // The navigatorLayout should be the root layout
     const navigatorLayout = uischema
 
@@ -108,7 +102,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
 
     // Update screenContent with correct `path` and `JsonFormDispatch` component
     // use memo for the screenContent and setScreenContent context value
-    const [screenContent, setScreenContent] = useState({})
+    const [ screenContent, setScreenContent ] = useState( {} )
     
     return (
       <>
@@ -132,7 +126,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                     </NavigatorScreen>
                 ) }
 
-                {Object.keys( screenContent ).map((  route, index ) => (
+                { Object.keys( screenContent ).map((  route, index ) => (
                     <NavigatorScreen path={ `${route}` }>
                         <Card
                             size="small"
@@ -141,38 +135,7 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                         >
                         <CardBody>
                             { route !== '/' ? (
-                                <HStack spacing={ 2 }>
-                                    <NavigatorToParentButton
-                                        style={
-                                            // TODO: This style override is also used in ToolsPanelHeader.
-                                            // It should be supported out-of-the-box by Button.
-                                            { minWidth: 24, padding: 0 }
-                                        }
-                                        icon={ isRTL() ? chevronRight : chevronLeft }
-                                        isSmall
-                                        aria-label={ __( 'Navigate to the previous view' ) }
-                                    />
-                                    <Spacer>
-                                        <Heading
-                                        className="jsonforms-navigator-screen-header"
-                                        level={ 2 }
-                                        size={ 13 }
-                                        >
-                                        { screenContent[route].label }
-                                        </Heading>
-                                    </Spacer>
-                
-                                    <NavigationButtonAsItem
-                                        path={'/'}
-                                        aria-label={ __( 'Navigate to the main view' ) }
-                                    >
-                                        <HStack justify="flex-end">
-                                        <IconWithCurrentColor
-                                            icon={ home }
-                                        />
-                                        </HStack>
-                                    </NavigationButtonAsItem>
-                                </HStack>
+                                <NavigatorTopToolbar/>
                             ) : null }
                             <MemoizedChildComponent {...screenContent[route]} />
                         </CardBody>
