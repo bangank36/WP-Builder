@@ -85,7 +85,6 @@ const MemoizedChildComponent = (({ component, label, path } ) => {
 
 MemoizedChildComponent.whyDidYouRender = true
 
-
 export const GutenbergNavigatorlLayoutRenderer = ({
     uischema,
     schema,
