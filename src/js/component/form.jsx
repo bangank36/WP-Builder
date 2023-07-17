@@ -78,20 +78,11 @@ const schema = {
 };
 
 const uischema = {
-  type: "NavigatorLayout",
+  type: 'NavigatorLayout',
   elements: [
     {
-      type: 'VerticalLayout',
-      elements: [
-        {
-          type: 'Control',
-          scope: '#/properties/address',
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/business',
-        }
-      ],
+      type: 'Control',
+      scope: '#',
     }
   ],
 }

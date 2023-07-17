@@ -85,7 +85,6 @@ const MemoizedChildComponent = (({ component, label, path } ) => {
 
 MemoizedChildComponent.whyDidYouRender = true
 
-
 export const GutenbergNavigatorlLayoutRenderer = ({
     uischema,
     schema,
@@ -115,23 +114,25 @@ export const GutenbergNavigatorlLayoutRenderer = ({
       <>
         <NavigatorContext.Provider value={[screenContent, setScreenContent]}>
           <NavigatorProvider initialPath="/">
-              <NavigatorScreen path="/">
-                    <Card
-                        size="small"
-                        isBorderless
-                        className="jsonforms-navigator-layout-screen"
-                    >
-                        <CardBody>
-                            <MaterialLayoutRenderer
-                                {...childProps}
-                                renderers={renderers}
-                                cells={cells}
-                            />
-                        </CardBody>
-                    </Card>
-                </NavigatorScreen>
+                { screenContent.hasOwnProperty("/") ? null : (
+                    <NavigatorScreen path="/">
+                        <Card
+                            size="small"
+                            isBorderless
+                            className="jsonforms-navigator-layout-screen"
+                        >
+                            <CardBody>
+                                <MaterialLayoutRenderer
+                                    { ...childProps }
+                                    renderers={ renderers }
+                                    cells={ cells }
+                                />
+                            </CardBody>
+                        </Card>
+                    </NavigatorScreen>
+                ) }
 
-                {Object.keys( screenContent ).map(( route, index ) => (
+                {Object.keys( screenContent ).map((  route, index ) => (
                     <NavigatorScreen path={ `${route}` }>
                         <Card
                             size="small"
@@ -139,47 +140,45 @@ export const GutenbergNavigatorlLayoutRenderer = ({
                             className="jsonforms-navigator-layout-screen"
                         >
                         <CardBody>
-                            <HStack spacing={ 2 }>
-                                <NavigatorToParentButton
-                                    style={
-                                        // TODO: This style override is also used in ToolsPanelHeader.
-                                        // It should be supported out-of-the-box by Button.
-                                        { minWidth: 24, padding: 0 }
-                                    }
-                                    icon={ isRTL() ? chevronRight : chevronLeft }
-                                    isSmall
-                                    aria-label={ __( 'Navigate to the previous view' ) }
-                                />
-                                <Spacer>
-                                    <Heading
-                                    className="jsonforms-navigator-screen-header"
-                                    level={ 2 }
-                                    size={ 13 }
-                                    >
-                                    { screenContent[route].label }
-                                    </Heading>
-                                </Spacer>
-            
-                                <NavigationButtonAsItem
-                                    path={'/'}
-                                    aria-label={ __( 'Navigate to the main view' ) }
-                                >
-                                    <HStack justify="flex-end">
-                                    <IconWithCurrentColor
-                                        icon={ home }
+                            { route !== '/' ? (
+                                <HStack spacing={ 2 }>
+                                    <NavigatorToParentButton
+                                        style={
+                                            // TODO: This style override is also used in ToolsPanelHeader.
+                                            // It should be supported out-of-the-box by Button.
+                                            { minWidth: 24, padding: 0 }
+                                        }
+                                        icon={ isRTL() ? chevronRight : chevronLeft }
+                                        isSmall
+                                        aria-label={ __( 'Navigate to the previous view' ) }
                                     />
-                                    </HStack>
-                                </NavigationButtonAsItem>
-                            </HStack>
-                            <MemoizedChildComponent {...screenContent[route]}>
-                            
-                            </MemoizedChildComponent>
-                            
-                           
+                                    <Spacer>
+                                        <Heading
+                                        className="jsonforms-navigator-screen-header"
+                                        level={ 2 }
+                                        size={ 13 }
+                                        >
+                                        { screenContent[route].label }
+                                        </Heading>
+                                    </Spacer>
+                
+                                    <NavigationButtonAsItem
+                                        path={'/'}
+                                        aria-label={ __( 'Navigate to the main view' ) }
+                                    >
+                                        <HStack justify="flex-end">
+                                        <IconWithCurrentColor
+                                            icon={ home }
+                                        />
+                                        </HStack>
+                                    </NavigationButtonAsItem>
+                                </HStack>
+                            ) : null }
+                            <MemoizedChildComponent {...screenContent[route]} />
                         </CardBody>
                         </Card>
                     </NavigatorScreen>
-                ))}
+                ) ) }
             </NavigatorProvider>
         </NavigatorContext.Provider>
       </>
