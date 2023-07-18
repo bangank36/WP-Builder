@@ -26,7 +26,7 @@ export const renderLayoutElements = (
   ))
 }
 
-const MaterialLayoutRendererComponent = ({
+const NavigatorLayoutRendererComponent = ({
   visible,
   elements,
   schema,
@@ -59,8 +59,8 @@ const MaterialLayoutRendererComponent = ({
     )
   }
 }
-export const MaterialLayoutRenderer = React.memo(
-  MaterialLayoutRendererComponent
+export const NavigatorLayoutRenderer = React.memo(
+  NavigatorLayoutRendererComponent
 )
 
 // TODO fix @typescript-eslint/ban-types

@@ -22,7 +22,8 @@ import {
 	Card,
 } from '@wordpress/components';
 
-import { MaterialLayoutRenderer } from "./NavigatorRenderer";
+import { NavigatorLayoutRenderer } from "./NavigatorRenderer";
+import { ArrayControlRenderer } from "./ArrayLayoutRenderer";
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 import NavigatorTopToolbar from './NavigatorLayout/navigator-top-toolbar';
@@ -39,31 +40,14 @@ export const gutenbergNavigatorLayoutTester = rankWith(
 const MemoizedChildComponent = ( ( { component, label, path, contentType } ) => {
     const navigator = useNavigator();
 
-    // Below 2 conditions are hard coded to handle the array renderers
+    // Handle array renderer
     if ( contentType === 'array' ) {
         return (
-            component.data ? (
-                range( 0, component.data.length ).map(( index ) => {
-                    return (
-                        <NavigationButtonAsItem
-                            path={ `${ navigator.location.path }/${ index }` }
-                            aria-label={label}
-                        >
-                            <HStack justify="space-between">
-                                <FlexItem>
-                                    item #{index}
-                                </FlexItem>
-                                <IconWithCurrentColor
-                                    icon={ isRTL() ? chevronLeft : chevronRight}
-                                />
-                            </HStack>
-                        </NavigationButtonAsItem>
-                    )
-                }) 
-            ) : null
+            <ArrayControlRenderer { ...component }/>
         )
     }
-    if (navigator.params.index) {
+
+    if ( navigator.params.index ) {
         const childPath = composePaths( path, `${ navigator.params.index }` );
         const childComp = {
             ...component,
@@ -100,7 +84,6 @@ export const GutenbergNavigatorlLayoutRenderer = ( {
     }
 
     // Update screenContent with correct `path` and `JsonFormDispatch` component
-    // use memo for the screenContent and setScreenContent context value
     const [ screenContent, setScreenContent ] = useState( {} )
     
     return (
@@ -115,7 +98,7 @@ export const GutenbergNavigatorlLayoutRenderer = ( {
                             className="jsonforms-navigator-layout-screen"
                         >
                             <CardBody>
-                                <MaterialLayoutRenderer
+                                <NavigatorLayoutRenderer
                                     { ...childProps }
                                     renderers={ renderers }
                                     cells={ cells }

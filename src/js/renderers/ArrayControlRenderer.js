@@ -93,24 +93,31 @@ export const GutenbergArrayRenderer = (props) => {
         setScreenContent(prevScreenContent => ({
             ...prevScreenContent,
             [`${route}`]: {
-                component: ({
-                    renderers,
-                    cells,
-                    uischemas,
-                    schema,
-                    label,
-                    path,
-                    visible,
-                    enabled,
-                    uischema: detailUiSchema,
-                    rootSchema,
-                    data
-                }),
+                component: ( {
+                    ...props
+                } ),
                 label: detailUiSchema.label,
                 path: path,
                 contentType: 'array'
             },
             [`${route}/:index`]: {
+                component: (
+                {    
+                    renderers,
+                    cells,
+                    uischemas,
+                    schema,
+                    label,
+                    path: composePaths(path, `${0}`),
+                    visible,
+                    enabled,
+                    uischema: childUiSchema,
+                    rootSchema,
+                }),
+                label: detailUiSchema.label,
+                path: path
+            },
+			[`${route}/new`]: {
                 component: (
                 {    
                     renderers,
@@ -145,35 +152,6 @@ export const GutenbergArrayRenderer = (props) => {
                 />
                 </HStack>
             </NavigationButtonAsItem>
-            <ItemGroup 
-                isBordered={true} 
-                isSeparated={true}
-                size="small"
-            >
-                {(data )? (
-                    range(0, data.length).map((index) => {
-                        const childPath = composePaths(path, `${index}`);
-                        return (
-                            <Item key={index}>
-                                <NavigationButtonAsItem
-                                    path={`${route}/${index}`}
-                                    aria-label={detailUiSchema.label}
-                                >
-                                    <HStack justify="space-between">
-                                    <FlexItem>
-                                        item #{index}
-                                    </FlexItem>
-                                    <IconWithCurrentColor
-                                        icon={isRTL() ? chevronLeft : chevronRight}
-                                    />
-                                    </HStack>
-                                </NavigationButtonAsItem>
-                            </Item>
-                        )
-                    }) 
-                ) : null}
-            </ItemGroup>
-            
         </>
   )
 };
