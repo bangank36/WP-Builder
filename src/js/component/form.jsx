@@ -12,7 +12,7 @@ import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/P
 import GutenbergToggleGroupControl, { gutenbergToggleGroupTester } from "../renderers/Primitive/ToggleGroupControl";
 import GutenbergToggleGroupOneOfControl, { gutenbergToggleGroupOneOfTester } from "../renderers/Primitive/ToggleGroupOneOfControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
-import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayRenderer";
+import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 
