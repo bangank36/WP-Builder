@@ -36,12 +36,11 @@ export const gutenbergNavigatorLayoutTester = rankWith(
     uiTypeIs("NavigatorLayout")
 )
 
-const MemoizedChildComponent = ( ( { component, label, path } ) => {
+const MemoizedChildComponent = ( ( { component, label, path, contentType } ) => {
     const navigator = useNavigator();
-    console.log('screen rerendered');
 
     // Below 2 conditions are hard coded to handle the array renderers
-    if ( navigator.location.path === '/address/comments' ) {
+    if ( contentType === 'array' ) {
         return (
             component.data ? (
                 range( 0, component.data.length ).map(( index ) => {
