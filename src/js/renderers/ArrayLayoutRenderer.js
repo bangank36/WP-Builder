@@ -1,7 +1,6 @@
 import range from "lodash/range"
 import React, { useMemo } from 'react';
 import {
-	composePaths,
 	createDefaultValue,
 	findUISchema,
 	Helpers
@@ -11,8 +10,14 @@ import {
   withJsonFormsArrayControlProps
 } from "@jsonforms/react"
 
-import { chevronLeft, chevronRight, plus } from '@wordpress/icons';
-import { isRTL, __ } from '@wordpress/i18n';
+import { 
+	plus,
+	moreVertical, 
+	edit, 
+	copy, 
+	trash 
+} from '@wordpress/icons';
+import { __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 
@@ -21,15 +26,40 @@ import {
 	__experimentalHStack as HStack,
     __experimentalItemGroup as ItemGroup,
 	__experimentalItem as Item,
+	DropdownMenu, 
+	MenuGroup, 
+	MenuItem,
 	FlexItem,
 	Button
 } from '@wordpress/components';
 
+const ItemActionsMenu = ( { onEdit, onDuplicate, onRemove } ) => (
+    <DropdownMenu icon={ moreVertical } label="Select an action">
+        { () => (
+            <>
+                <MenuGroup>
+                    <MenuItem icon={ edit } onClick={ onEdit }>
+                        Edit
+                    </MenuItem>
+                    <MenuItem icon={ copy } onClick={ onDuplicate }>
+                        Duplicate
+                    </MenuItem>
+                </MenuGroup>
+                <MenuGroup>
+                    <MenuItem icon={ trash } onClick={ onRemove }>
+                        Remove
+                    </MenuItem>
+                </MenuGroup>
+            </>
+        ) }
+    </DropdownMenu>
+);
+
 const { convertToValidClassName } = Helpers
 
-// TODO: add new item button component
 const AddItemButton = ({ route, path, label, schema, addItem }) => {
 	const navigator = useNavigator();
+	
 	return (
 		<Button
 			aria-label={ `Add new item` }
@@ -61,108 +91,16 @@ export const ArrayControl = ( {
 	addItem,
 	removeItems,
 	moveUp,
-	moveDown,
-	uischema,
-	uischemas,
-	getStyleAsClassName = (cls) => cls,
-	renderers,
-	rootSchema,
-	translations
+	moveDown
 } ) => {
-
-  	const controlElement = uischema
-  	const childUiSchema = useMemo(
-		() =>
-		findUISchema(
-			uischemas,
-			schema,
-			uischema.scope,
-			path,
-			undefined,
-			uischema,
-			rootSchema
-		),
-		[ uischemas, schema, uischema.scope, path, uischema, rootSchema ]
-	)
-  	const isValid = errors.length === 0
-  	const validationClass = getStyleAsClassName("array.control.validation")
-  	const divClassNames = [validationClass]
-    	.concat(
-      		isValid ? "" : getStyleAsClassName("array.control.validation.error")
-    	)
-    	.join(" ")
-	const buttonClassAdd = getStyleAsClassName("array.control.add")
-	const labelClass = getStyleAsClassName("array.control.label")
-	const childControlsClass = getStyleAsClassName("array.child.controls")
-	const buttonClassUp = getStyleAsClassName("array.child.controls.up")
-	const buttonClassDown = getStyleAsClassName("array.child.controls.down")
-	const buttonClassDelete = getStyleAsClassName("array.child.controls.delete")
-	const controlClass = [
-		getStyleAsClassName("array.control"),
-		convertToValidClassName(controlElement.scope)
-	].join(" ")
+	const navigator = useNavigator();
 
 	// Util to convert dot path into slash path: eg: address.country -> /address/country
 	const route = '/' + path.split('.').join('/');
 
   	return (
-    	<div className={controlClass}>
-      		<div className={divClassNames}>{errors}</div>
-			<div className={classNames.children}>
-				{data ? (
-				range(0, data.length).map(index => {
-					const childPath = composePaths(path, `${index}`)
-					return (
-					<div key={index}>
-						<JsonFormsDispatch
-						schema={schema}
-						uischema={childUiSchema || uischema}
-						path={childPath}
-						key={childPath}
-						renderers={renderers}
-						/>
-						<div className={childControlsClass}>
-						<button
-							className={buttonClassUp}
-							aria-label={translations.upAriaLabel}
-							onClick={() => {
-							moveUp(path, index)()
-							}}
-						>
-							{translations.up}
-						</button>
-						<button
-							className={buttonClassDown}
-							aria-label={translations.downAriaLabel}
-							onClick={() => {
-							moveDown(path, index)()
-							}}
-						>
-							{translations.down}
-						</button>
-						<button
-							className={buttonClassDelete}
-							aria-label={translations.removeAriaLabel}
-							onClick={() => {
-							if (
-								window.confirm(
-								"Are you sure you wish to delete this item?"
-								)
-							) {
-								removeItems(path, [index])()
-							}
-							}}
-						>
-							{translations.removeTooltip}
-						</button>
-						</div>
-					</div>
-					)
-				})
-				) : (
-				<p>{translations.noDataMessage}</p>
-				)}
-			</div>
+    	<div>
+      		<div>{errors}</div>
 	  		<ItemGroup 
                 isBordered={true} 
                 isSeparated={true}
@@ -170,22 +108,36 @@ export const ArrayControl = ( {
             >
                 { ( data )? (
                     range( 0, data.length ).map(( index ) => {
-                        const childPath = composePaths( path, `${index}` );
                         return (
                             <Item key={ index }>
-                                <NavigationButtonAsItem
-                                    path={ `${route}/${index}` }
-                                    aria-label={ `Item #${index}` }
-                                >
-                                    <HStack justify="space-between">
-                                    <FlexItem>
-                                        item #{ index }
-                                    </FlexItem>
-                                    <IconWithCurrentColor
-                                        icon={ isRTL() ? chevronLeft : chevronRight }
-                                    />
-                                    </HStack>
-                                </NavigationButtonAsItem>
+								<HStack>
+									<NavigationButtonAsItem
+										path={ `${ route }/${ index }` }
+										aria-label={ `Item #${ index }` }
+									>
+										<HStack justify="space-between">
+											<FlexItem>
+												item #{ index }
+											</FlexItem>
+										</HStack>
+									</NavigationButtonAsItem>
+									<ItemActionsMenu 
+										onEdit={ () => navigator.goTo( `${ route }/${ index }` ) }
+										onRemove={ () => {
+											if (
+												window.confirm(
+													"Are you sure you wish to delete this item?"
+												)
+											) {
+												removeItems( path, [index] )()
+											}
+										} }
+										onDuplicate={() => {
+											addItem( path, data[ index ] )();
+											navigator.goTo( `${ route }/${ data.length }` );
+										} }
+									/>
+								</HStack>
                             </Item>
                         )
                     } ) 
