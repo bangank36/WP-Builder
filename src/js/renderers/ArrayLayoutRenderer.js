@@ -37,9 +37,7 @@ const ItemActionsMenu = ( { onEdit, onDuplicate, onRemove } ) => (
     <DropdownMenu icon={ moreVertical } label="Select an action">
         { () => (
             <>
-                <MenuGroup
-					style={ { width: 200 } }
-				>
+                <MenuGroup>
                     <MenuItem icon={ edit } onClick={ onEdit }>
                         Edit
                     </MenuItem>
