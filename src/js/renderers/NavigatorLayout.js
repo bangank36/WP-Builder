@@ -38,27 +38,27 @@ export const gutenbergNavigatorLayoutTester = rankWith(
     uiTypeIs("NavigatorLayout")
 )
 
-const MemoizedChildComponent = ( ( { component, label, path, contentType } ) => {
+const MemoizedChildComponent = ( ( { rendererProps, label, path, contentType } ) => {
     const navigator = useNavigator();
 
     // Handle array renderer
     if ( contentType === 'array' ) {
         return (
-            <ArrayControlRenderer { ...component }/>
+            <ArrayControlRenderer { ...rendererProps }/>
         )
     }
 
     if ( navigator.params.index ) {
         const childPath = composePaths( path, `${ navigator.params.index }` );
-        const childComp = {
-            ...component,
+        const childRendererProps = {
+            ...rendererProps,
             path: childPath
         }
 
-        return <JsonFormsDispatch { ...childComp }/>
+        return <JsonFormsDispatch { ...childRendererProps }/>
     }
 
-    return <JsonFormsDispatch { ...component }/>
+    return <JsonFormsDispatch { ...rendererProps }/>
 })
 
 MemoizedChildComponent.whyDidYouRender = true

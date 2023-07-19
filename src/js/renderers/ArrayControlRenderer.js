@@ -98,16 +98,16 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
         // Use the callback since the new state is based on the previous state
         setScreenContent(prevScreenContent => ({
             ...prevScreenContent,
-            [`${route}`]: {
-                component: ( {
+            [ `${route}` ]: {
+                rendererProps: ( {
                     ...ownControlProps
                 } ),
                 label: detailUiSchema.label,
                 path: path,
                 contentType: 'array'
             },
-            [`${route}/:index`]: {
-                component: (
+            [ `${route}/:index` ]: {
+                rendererProps: (
                 {    
                     renderers,
                     cells,
@@ -123,9 +123,8 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
                 label: detailUiSchema.label,
                 path: path
             },
-			[`${route}/new`]: {
-                component: (
-                {    
+			[ `${route}/new` ]: {
+                rendererProps: ( {    
                     renderers,
                     cells,
                     uischemas,
@@ -136,12 +135,12 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
                     enabled,
                     uischema: childUiSchema,
                     rootSchema,
-                }),
+                } ),
                 label: detailUiSchema.label,
                 path: path
             },
         }))
-    }, [route])
+    }, [ route ] )
 
     return !visible ? null : (
         <>
