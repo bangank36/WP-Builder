@@ -7,7 +7,8 @@ import {
 } from "@jsonforms/core";
 import { 
     withJsonFormsLayoutProps,
-    JsonFormsDispatch 
+    JsonFormsDispatch,
+    withJsonFormsArrayControlProps 
 } from "@jsonforms/react"
 import { Context as NavigatorContext } from '../component/context'
 import { chevronLeft, chevronRight } from '@wordpress/icons';
@@ -23,7 +24,7 @@ import {
 } from '@wordpress/components';
 
 import { NavigatorLayoutRenderer } from "./NavigatorRenderer";
-import { ArrayControlRenderer } from "./ArrayLayoutRenderer";
+import ArrayControlRenderer from "./ArrayLayoutRenderer";
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 import NavigatorTopToolbar from './NavigatorLayout/navigator-top-toolbar';

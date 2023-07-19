@@ -19,20 +19,30 @@
   THE SOFTWARE.
 */
 import range from "lodash/range"
-import React, { useMemo } from 'react';
+import React, { useMemo, useContext, useEffect } from 'react';
 import {
   composePaths,
+  createDefaultValue,
   findUISchema,
   Helpers,
+  rankWith,
+  or,
+  isPrimitiveArrayControl,
+  isObjectArrayControl,
+  isObjectArrayWithNesting
 } from "@jsonforms/core"
 import {
+  JsonFormsDispatch,
   withJsonFormsArrayControlProps
 } from "@jsonforms/react"
+
+import { Context as NavigatorContext } from '../component/context';
 
 import { chevronLeft, chevronRight, plus } from '@wordpress/icons';
 import { isRTL, __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
+
 import {
 	__experimentalHStack as HStack,
     __experimentalItemGroup as ItemGroup,
@@ -97,74 +107,141 @@ export const ArrayControl = ({
 
   return (
     <div className={controlClass}>
-	  	<ItemGroup 
-			isBordered={true} 
-			isSeparated={true}
-			size="small"
-		>
-			{(data )? (
-				range(0, data.length).map((index) => {
-					const childPath = composePaths(path, `${index}`);
-					return (
-						<Item key={index}>
-							<NavigationButtonAsItem
-								path={ `${route}/${index}` }
-								aria-label={ `Item #${index}` }
-							>
-								<HStack justify="space-between">
-								<FlexItem>
-									item #{index}
-								</FlexItem>
-								<IconWithCurrentColor
-									icon={isRTL() ? chevronLeft : chevronRight}
-								/>
-								</HStack>
-							</NavigationButtonAsItem>
-						</Item>
-					)
-				}) 
-			) : null}
-			<Item>
-				<NavigationButtonAsItem
-					path={ `${route}/new` }
-					aria-label={ `Add new item` }
-				>
-					<HStack 
-						justify="center"
+      	<header>
+			<label className={labelClass}>{label}</label>
+			<button
+			className={buttonClassAdd}
+			onClick={addItem(path, createDefaultValue(schema))}
+			>
+			Add to {label}
+			</button>
+      	</header>
+      	<div className={divClassNames}>{errors}</div>
+		<div className={classNames.children}>
+			{data ? (
+			range(0, data.length).map(index => {
+				const childPath = composePaths(path, `${index}`)
+				return (
+				<div key={index}>
+					<JsonFormsDispatch
+					schema={schema}
+					uischema={childUiSchema || uischema}
+					path={childPath}
+					key={childPath}
+					renderers={renderers}
+					/>
+					<div className={childControlsClass}>
+					<button
+						className={buttonClassUp}
+						aria-label={translations.upAriaLabel}
+						onClick={() => {
+						moveUp(path, index)()
+						}}
 					>
-					<FlexItem>
-						<IconWithCurrentColor
-							icon={ plus }
-						/>Add { label }
-					</FlexItem>
-					</HStack>
-				</NavigationButtonAsItem>
-			</Item>
-		</ItemGroup>
+						{translations.up}
+					</button>
+					<button
+						className={buttonClassDown}
+						aria-label={translations.downAriaLabel}
+						onClick={() => {
+						moveDown(path, index)()
+						}}
+					>
+						{translations.down}
+					</button>
+					<button
+						className={buttonClassDelete}
+						aria-label={translations.removeAriaLabel}
+						onClick={() => {
+						if (
+							window.confirm(
+							"Are you sure you wish to delete this item?"
+							)
+						) {
+							removeItems(path, [index])()
+						}
+						}}
+					>
+						{translations.removeTooltip}
+					</button>
+					</div>
+				</div>
+				)
+			})
+			) : (
+			<p>{translations.noDataMessage}</p>
+			)}
+		</div>
+	  <ItemGroup 
+                isBordered={true} 
+                isSeparated={true}
+                size="small"
+            >
+                {(data )? (
+                    range(0, data.length).map((index) => {
+                        const childPath = composePaths(path, `${index}`);
+                        return (
+                            <Item key={index}>
+                                <NavigationButtonAsItem
+                                    path={ `${route}/${index}` }
+                                    aria-label={ `Item #${index}` }
+                                >
+                                    <HStack justify="space-between">
+                                    <FlexItem>
+                                        item #{index}
+                                    </FlexItem>
+                                    <IconWithCurrentColor
+                                        icon={isRTL() ? chevronLeft : chevronRight}
+                                    />
+                                    </HStack>
+                                </NavigationButtonAsItem>
+                            </Item>
+                        )
+                    }) 
+                ) : null}
+				<Item>
+					<NavigationButtonAsItem
+						path={ `${route}/new` }
+						aria-label={ `Add new item` }
+					>
+						<HStack 
+							justify="center"
+						>
+						<FlexItem>
+							<IconWithCurrentColor
+								icon={ plus }
+							/>Add { label }
+						</FlexItem>
+						</HStack>
+					</NavigationButtonAsItem>
+				</Item>
+            </ItemGroup>
     </div>
   )
 }
 
-export const ArrayControlRenderer = ( {
-	schema,
-	uischema,
-	data,
-	path,
-	rootSchema,
-	uischemas,
-	addItem,
-	getStyle,
-	getStyleAsClassName = (cls) => cls,
-	removeItems,
-	moveUp,
-	moveDown,
-	id,
-	visible,
-	enabled,
-	errors,
-	translations
-} ) => {
-  	const controlElement = uischema
+export const ArrayControlRenderer = ( props ) => {
+  	const {
+		schema,
+		uischema,
+		data,
+		path,
+		rootSchema,
+		uischemas,
+		addItem,
+		getStyle,
+		getStyleAsClassName = (cls) => cls,
+		removeItems,
+		moveUp,
+		moveDown,
+		id,
+		visible,
+		enabled,
+		errors,
+		translations
+	} = props
+	
+	const controlElement = uischema
 	const labelDescription = Helpers.createLabelDescriptionFrom(
 		controlElement,
 		schema
@@ -177,10 +254,10 @@ export const ArrayControlRenderer = ( {
   	const buttonClassName = getStyleAsClassName("array.button")
   	const childrenClassName = getStyleAsClassName("array.children")
 	const classNames = {
-		wrapper: controlClassName,
-		fieldSet: fieldSetClassName,
-		button: buttonClassName,
-		children: childrenClassName
+			wrapper: controlClassName,
+			fieldSet: fieldSetClassName,
+			button: buttonClassName,
+			children: childrenClassName
 	}
 
  	return (

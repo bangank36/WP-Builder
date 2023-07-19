@@ -1,5 +1,4 @@
 import isEmpty from 'lodash/isEmpty';
-import range from 'lodash/range';
 import {
     composePaths,
     findUISchema,
@@ -10,9 +9,9 @@ import {
     or
 } from '@jsonforms/core';
 import { 
-    JsonFormsDispatch, 
-    withJsonFormsArrayControlProps,
-    withJsonFormsDetailProps,
+    useJsonForms,
+    ctxToArrayControlProps,
+    ctxDispatchToArrayControlProps
  } from '@jsonforms/react';
 import React, { useMemo, useContext, useEffect } from 'react';
 import { Context as NavigatorContext } from '../component/context'
@@ -25,14 +24,21 @@ import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 import {
     __experimentalUseNavigator as useNavigator,
 	__experimentalHStack as HStack,
-    __experimentalItemGroup as ItemGroup,
-	__experimentalItem as Item,
 	FlexItem,
 } from '@wordpress/components';
 
-export const GutenbergArrayRenderer = (props) => {
+export const GutenbergArrayRenderer = (ownControlProps) => {
+    const ctx = useJsonForms();
+    const stateProps = ctxToArrayControlProps(ctx, ownControlProps);
+    const dispatchProps = ctxDispatchToArrayControlProps(ctx.dispatch);
+
+    const props = {
+        ...ownControlProps,
+        ...stateProps,
+        ...dispatchProps
+    }
+
     const {
-        data,
         renderers,
         cells,
         uischemas,
@@ -94,7 +100,7 @@ export const GutenbergArrayRenderer = (props) => {
             ...prevScreenContent,
             [`${route}`]: {
                 component: ( {
-                    ...props
+                    ...ownControlProps
                 } ),
                 label: detailUiSchema.label,
                 path: path,
@@ -161,4 +167,4 @@ export const gutenbergArrayControlTester = rankWith(
     or(isObjectArrayControl, isPrimitiveArrayControl)
 );
 
-export default withJsonFormsArrayControlProps(GutenbergArrayRenderer);
+export default GutenbergArrayRenderer;
