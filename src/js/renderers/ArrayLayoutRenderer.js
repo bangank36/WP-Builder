@@ -11,7 +11,15 @@ import {
   withJsonFormsArrayControlProps
 } from "@jsonforms/react"
 
-import { chevronLeft, chevronRight, plus } from '@wordpress/icons';
+import { 
+	chevronLeft, 
+	chevronRight, 
+	plus,
+	moreVertical, 
+	edit, 
+	copy, 
+	trash 
+} from '@wordpress/icons';
 import { isRTL, __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
@@ -21,15 +29,43 @@ import {
 	__experimentalHStack as HStack,
     __experimentalItemGroup as ItemGroup,
 	__experimentalItem as Item,
+	DropdownMenu, 
+	MenuGroup, 
+	MenuItem,
 	FlexItem,
 	Button
 } from '@wordpress/components';
+
+const ItemActionsMenu = ( { onEdit, onDuplicate, onRemove } ) => (
+    <DropdownMenu icon={ moreVertical } label="Select an action">
+        { () => (
+            <>
+                <MenuGroup
+					style={ { width: 200 } }
+				>
+                    <MenuItem icon={ edit } onClick={ onEdit }>
+                        Edit
+                    </MenuItem>
+                    <MenuItem icon={ copy } onClick={ onDuplicate }>
+                        Duplicate
+                    </MenuItem>
+                </MenuGroup>
+                <MenuGroup>
+                    <MenuItem icon={ trash } onClick={ onRemove }>
+                        Remove
+                    </MenuItem>
+                </MenuGroup>
+            </>
+        ) }
+    </DropdownMenu>
+);
 
 const { convertToValidClassName } = Helpers
 
 // TODO: add new item button component
 const AddItemButton = ({ route, path, label, schema, addItem }) => {
 	const navigator = useNavigator();
+	
 	return (
 		<Button
 			aria-label={ `Add new item` }
@@ -69,6 +105,7 @@ export const ArrayControl = ( {
 	rootSchema,
 	translations
 } ) => {
+	const navigator = useNavigator();
 
   	const controlElement = uischema
   	const childUiSchema = useMemo(
@@ -173,19 +210,21 @@ export const ArrayControl = ( {
                         const childPath = composePaths( path, `${index}` );
                         return (
                             <Item key={ index }>
-                                <NavigationButtonAsItem
-                                    path={ `${route}/${index}` }
-                                    aria-label={ `Item #${index}` }
-                                >
-                                    <HStack justify="space-between">
-                                    <FlexItem>
-                                        item #{ index }
-                                    </FlexItem>
-                                    <IconWithCurrentColor
-                                        icon={ isRTL() ? chevronLeft : chevronRight }
-                                    />
-                                    </HStack>
-                                </NavigationButtonAsItem>
+								<HStack>
+									<NavigationButtonAsItem
+										path={ `${route}/${index}` }
+										aria-label={ `Item #${index}` }
+									>
+										<HStack justify="space-between">
+											<FlexItem>
+												item #{ index }
+											</FlexItem>
+										</HStack>
+									</NavigationButtonAsItem>
+									<ItemActionsMenu 
+										onEdit={ () => navigator.goTo( `${route}/${index}` ) }
+									/>
+								</HStack>
                             </Item>
                         )
                     } ) 
