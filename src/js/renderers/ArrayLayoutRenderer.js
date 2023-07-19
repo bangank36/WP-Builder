@@ -1,7 +1,6 @@
 import range from "lodash/range"
 import React, { useMemo } from 'react';
 import {
-	composePaths,
 	createDefaultValue,
 	findUISchema,
 	Helpers
@@ -12,15 +11,13 @@ import {
 } from "@jsonforms/react"
 
 import { 
-	chevronLeft, 
-	chevronRight, 
 	plus,
 	moreVertical, 
 	edit, 
 	copy, 
 	trash 
 } from '@wordpress/icons';
-import { isRTL, __ } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 
@@ -62,7 +59,6 @@ const ItemActionsMenu = ( { onEdit, onDuplicate, onRemove } ) => (
 
 const { convertToValidClassName } = Helpers
 
-// TODO: add new item button component
 const AddItemButton = ({ route, path, label, schema, addItem }) => {
 	const navigator = useNavigator();
 	
@@ -97,109 +93,16 @@ export const ArrayControl = ( {
 	addItem,
 	removeItems,
 	moveUp,
-	moveDown,
-	uischema,
-	uischemas,
-	getStyleAsClassName = (cls) => cls,
-	renderers,
-	rootSchema,
-	translations
+	moveDown
 } ) => {
 	const navigator = useNavigator();
-
-  	const controlElement = uischema
-  	const childUiSchema = useMemo(
-		() =>
-		findUISchema(
-			uischemas,
-			schema,
-			uischema.scope,
-			path,
-			undefined,
-			uischema,
-			rootSchema
-		),
-		[ uischemas, schema, uischema.scope, path, uischema, rootSchema ]
-	)
-  	const isValid = errors.length === 0
-  	const validationClass = getStyleAsClassName("array.control.validation")
-  	const divClassNames = [validationClass]
-    	.concat(
-      		isValid ? "" : getStyleAsClassName("array.control.validation.error")
-    	)
-    	.join(" ")
-	const buttonClassAdd = getStyleAsClassName("array.control.add")
-	const labelClass = getStyleAsClassName("array.control.label")
-	const childControlsClass = getStyleAsClassName("array.child.controls")
-	const buttonClassUp = getStyleAsClassName("array.child.controls.up")
-	const buttonClassDown = getStyleAsClassName("array.child.controls.down")
-	const buttonClassDelete = getStyleAsClassName("array.child.controls.delete")
-	const controlClass = [
-		getStyleAsClassName("array.control"),
-		convertToValidClassName(controlElement.scope)
-	].join(" ")
 
 	// Util to convert dot path into slash path: eg: address.country -> /address/country
 	const route = '/' + path.split('.').join('/');
 
   	return (
-    	<div className={controlClass}>
-      		<div className={divClassNames}>{errors}</div>
-			<div className={classNames.children}>
-				{data ? (
-				range(0, data.length).map(index => {
-					const childPath = composePaths(path, `${index}`)
-					return (
-					<div key={index}>
-						<JsonFormsDispatch
-						schema={schema}
-						uischema={childUiSchema || uischema}
-						path={childPath}
-						key={childPath}
-						renderers={renderers}
-						/>
-						<div className={childControlsClass}>
-						<button
-							className={buttonClassUp}
-							aria-label={translations.upAriaLabel}
-							onClick={() => {
-							moveUp(path, index)()
-							}}
-						>
-							{translations.up}
-						</button>
-						<button
-							className={buttonClassDown}
-							aria-label={translations.downAriaLabel}
-							onClick={() => {
-							moveDown(path, index)()
-							}}
-						>
-							{translations.down}
-						</button>
-						<button
-							className={buttonClassDelete}
-							aria-label={translations.removeAriaLabel}
-							onClick={() => {
-							if (
-								window.confirm(
-								"Are you sure you wish to delete this item?"
-								)
-							) {
-								removeItems(path, [index])()
-							}
-							}}
-						>
-							{translations.removeTooltip}
-						</button>
-						</div>
-					</div>
-					)
-				})
-				) : (
-				<p>{translations.noDataMessage}</p>
-				)}
-			</div>
+    	<div>
+      		<div>{errors}</div>
 	  		<ItemGroup 
                 isBordered={true} 
                 isSeparated={true}
