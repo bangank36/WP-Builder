@@ -207,13 +207,12 @@ export const ArrayControl = ( {
             >
                 { ( data )? (
                     range( 0, data.length ).map(( index ) => {
-                        const childPath = composePaths( path, `${index}` );
                         return (
                             <Item key={ index }>
 								<HStack>
 									<NavigationButtonAsItem
-										path={ `${route}/${index}` }
-										aria-label={ `Item #${index}` }
+										path={ `${ route }/${ index }` }
+										aria-label={ `Item #${ index }` }
 									>
 										<HStack justify="space-between">
 											<FlexItem>
@@ -222,7 +221,20 @@ export const ArrayControl = ( {
 										</HStack>
 									</NavigationButtonAsItem>
 									<ItemActionsMenu 
-										onEdit={ () => navigator.goTo( `${route}/${index}` ) }
+										onEdit={ () => navigator.goTo( `${ route }/${ index }` ) }
+										onRemove={ () => {
+											if (
+												window.confirm(
+													"Are you sure you wish to delete this item?"
+												)
+											) {
+												removeItems( path, [index] )()
+											}
+										} }
+										onDuplicate={() => {
+											addItem( path, data[ index ] )();
+											navigator.goTo( `${ route }/${ data.length }` );
+										} }
 									/>
 								</HStack>
                             </Item>
