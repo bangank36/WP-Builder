@@ -44,6 +44,7 @@ import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color'
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 
 import {
+	__experimentalUseNavigator as useNavigator,
 	__experimentalHStack as HStack,
     __experimentalItemGroup as ItemGroup,
 	__experimentalItem as Item,
@@ -70,6 +71,8 @@ export const ArrayControl = ({
   rootSchema,
   translations
 }) => {
+
+	const navigator = useNavigator();
   const controlElement = uischema
   const childUiSchema = useMemo(
     () =>
@@ -111,7 +114,10 @@ export const ArrayControl = ({
 			<label className={labelClass}>{label}</label>
 			<button
 			className={buttonClassAdd}
-			onClick={addItem(path, createDefaultValue(schema))}
+			onClick={() => {
+				addItem(path, createDefaultValue(schema))();
+				navigator.goTo('/address/comments/2');
+			}}
 			>
 			Add to {label}
 			</button>

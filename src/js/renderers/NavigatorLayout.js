@@ -110,7 +110,7 @@ export const GutenbergNavigatorlLayoutRenderer = ( {
                 ) }
 
                 { Object.keys( screenContent ).map((  route, index ) => (
-                    <NavigatorScreen path={ `${route}` }>
+                    <NavigatorScreen path={ `${route}` } key={ index }>
                         <Card
                             size="small"
                             isBorderless
