@@ -1,12 +1,10 @@
 import range from "lodash/range"
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
 	createDefaultValue,
-	findUISchema,
 	Helpers
 } from "@jsonforms/core"
 import {
-  JsonFormsDispatch,
   withJsonFormsArrayControlProps
 } from "@jsonforms/react"
 
@@ -15,7 +13,9 @@ import {
 	moreVertical, 
 	edit, 
 	copy, 
-	trash 
+	trash,
+	chevronUp,
+	chevronDown 
 } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
@@ -24,6 +24,7 @@ import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 import {
 	__experimentalUseNavigator as useNavigator,
 	__experimentalHStack as HStack,
+	__experimentalVStack as VStack,
     __experimentalItemGroup as ItemGroup,
 	__experimentalItem as Item,
 	DropdownMenu, 
@@ -55,7 +56,42 @@ const ItemActionsMenu = ( { onEdit, onDuplicate, onRemove } ) => (
     </DropdownMenu>
 );
 
-const { convertToValidClassName } = Helpers
+const ItemMovers = ( { moveUpEnable, onMoveUp, moveDownEnable, onMoveDown } ) => {
+	return (
+		<VStack
+			style={ {
+				gap: 0
+			} }
+		>
+			<Button
+				style={ { 
+					height: '12px',
+					boxSizing: 'border-box',
+					padding: '6px 12px'
+				} }
+				size={ 'small' }
+				icon={ chevronUp }
+				aria-label={ `Move item up` }
+				onClick={ onMoveUp }
+				disabled={ ! moveUpEnable }
+			>
+			</Button>
+			<Button
+				style={ { 
+					height: '12px',
+					boxSizing: 'border-box',
+					padding: '6px 12px'
+				} }
+				size={ 'small' }
+				icon={ chevronDown }
+				aria-label={ `Move item down` }
+				onClick={ onMoveDown }
+				disabled={ ! moveDownEnable }
+			>
+			</Button>	
+		</VStack>
+	);
+}
 
 const AddItemButton = ({ route, path, label, schema, addItem }) => {
 	const navigator = useNavigator();
@@ -102,7 +138,7 @@ export const ArrayControl = ( {
     	<div>
       		<div>{errors}</div>
 	  		<ItemGroup 
-                isBordered={true} 
+                isBordered={false} 
                 isSeparated={true}
                 size="small"
             >
@@ -111,6 +147,12 @@ export const ArrayControl = ( {
                         return (
                             <Item key={ index }>
 								<HStack>
+									<ItemMovers
+										moveUpEnable={ index > 0 }
+										onMoveUp={ () => moveUp( path, index )() }
+										moveDownEnable={ index < data.length - 1 }
+										onMoveDown={ () => moveDown( path, index )() }
+									/>
 									<NavigationButtonAsItem
 										path={ `${ route }/${ index }` }
 										aria-label={ `Item #${ index }` }
