@@ -3,10 +3,11 @@ import React from 'react';
 import {
 	createDefaultValue,
 	Helpers
-} from "@jsonforms/core"
+} from "@jsonforms/core";
 import {
   withJsonFormsArrayControlProps
-} from "@jsonforms/react"
+} from "@jsonforms/react";
+import { resolvePathToRoute } from './util';
 
 import { 
 	plus,
@@ -131,8 +132,7 @@ export const ArrayControl = ( {
 } ) => {
 	const navigator = useNavigator();
 
-	// Util to convert dot path into slash path: eg: address.country -> /address/country
-	const route = '/' + path.split('.').join('/');
+	const route = resolvePathToRoute(path);
 
   	return (
     	<div>

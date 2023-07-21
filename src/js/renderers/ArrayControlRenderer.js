@@ -14,13 +14,13 @@ import {
     ctxDispatchToArrayControlProps
  } from '@jsonforms/react';
 import React, { useMemo, useContext, useEffect } from 'react';
-import { Context as NavigatorContext } from '../component/context'
+import { Context as NavigatorContext } from '../component/context';
+import { resolvePathToRoute } from './util';
 
 import { chevronLeft, chevronRight } from '@wordpress/icons';
 import { isRTL, __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
-
 import {
     __experimentalUseNavigator as useNavigator,
 	__experimentalHStack as HStack,
@@ -85,8 +85,7 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
         [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
     );
 
-    // Util to convert dot path into slash path: eg: address.country -> /address/country
-    const route = '/' + path.split('.').join('/');
+    const route = resolvePathToRoute(path);
 
     const [screenContent, setScreenContent] = useContext(NavigatorContext);
 
