@@ -15,6 +15,7 @@ import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../render
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
+import GutenbergVerticalLayoutRenderer, { gutenbergVerticalLayoutTester } from "../renderers/GutenbergVerticalLayout";
 
 import {
   __experimentalGrid as Grid,
@@ -113,7 +114,8 @@ const renderers = [
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
   // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
-  { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer}
+  { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer},
+  { tester: gutenbergVerticalLayoutTester, renderer: GutenbergVerticalLayoutRenderer}
 ];
 
 export default function App() {

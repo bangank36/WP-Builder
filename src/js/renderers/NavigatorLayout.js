@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import range from 'lodash/range';
 import { 
     rankWith, 
     uiTypeIs, 
@@ -8,25 +7,19 @@ import {
 import { 
     withJsonFormsLayoutProps,
     JsonFormsDispatch,
-    withJsonFormsArrayControlProps 
 } from "@jsonforms/react"
 import { Context as NavigatorContext } from '../component/context'
-import { chevronLeft, chevronRight } from '@wordpress/icons';
-import { isRTL, __ } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import {
     __experimentalNavigatorProvider as NavigatorProvider,
     __experimentalNavigatorScreen as NavigatorScreen,
     __experimentalUseNavigator as useNavigator,
-	__experimentalHStack as HStack,
-    FlexItem,
 	CardBody,
 	Card,
 } from '@wordpress/components';
 
-import { NavigatorLayoutRenderer } from "./NavigatorRenderer";
+import { GutenbergLayoutRenderer } from "./LayoutRenderer";
 import ArrayControlRenderer from "./ArrayLayoutRenderer";
-import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
-import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 import NavigatorTopToolbar from './NavigatorLayout/navigator-top-toolbar';
 
 /**
@@ -99,7 +92,7 @@ export const GutenbergNavigatorlLayoutRenderer = ( {
                             className="jsonforms-navigator-layout-screen"
                         >
                             <CardBody>
-                                <NavigatorLayoutRenderer
+                                <GutenbergLayoutRenderer
                                     { ...childProps }
                                     renderers={ renderers }
                                     cells={ cells }
