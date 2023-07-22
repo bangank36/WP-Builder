@@ -24,17 +24,6 @@ const schema = {
     },
     "nationality": {
       "type": "string",
-      "enum": [
-        "DE",
-        "IT",
-        "JP",
-        "US",
-        "RU",
-        "Other"
-      ]
-    },
-    "provideAddress": {
-      "type": "boolean"
     },
     "address": {
       "type": "object",
