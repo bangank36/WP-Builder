@@ -1,12 +1,12 @@
 import isEmpty from 'lodash/isEmpty';
 import {
-  findUISchema,
-  Generate,
-  isObjectControl,
-  rankWith,
+	findUISchema,
+	Generate,
+	isObjectControl,
+	rankWith,
 } from '@jsonforms/core';
 import { 
-  withJsonFormsDetailProps,
+  	withJsonFormsDetailProps,
  } from '@jsonforms/react';
 import React, { useMemo, useContext, useEffect } from 'react';
 import { Context as NavigatorContext } from '../component/context';
@@ -23,16 +23,16 @@ import {
 } from '@wordpress/components';
 
 export const GutenbergObjectRenderer = ({
-  renderers,
-  cells,
-  uischemas,
-  schema,
-  label,
-  path,
-  visible,
-  enabled,
-  uischema,
-  rootSchema,
+	renderers,
+	cells,
+	uischemas,
+	schema,
+	label,
+	path,
+	visible,
+	enabled,
+	uischema,
+	rootSchema,
 }) => {
   const detailUiSchema = useMemo(
     () =>
@@ -51,9 +51,9 @@ export const GutenbergObjectRenderer = ({
     [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
   );
 
-  const route = resolvePathToRoute(path);
+  const route = resolvePathToRoute( path );
 
-  const [screenContent, setScreenContent] = useContext(NavigatorContext);
+  const [ screenContent, setScreenContent ] = useContext( NavigatorContext );
 
   //UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
   useEffect( () => {
@@ -65,18 +65,18 @@ export const GutenbergObjectRenderer = ({
       ...prevScreenContent,
       [ route ]: {
         rendererProps: ( {
-          renderers,
-          cells,
-          uischemas,
-          schema,
-          label,
-          path,
-          visible,
-          enabled,
-          uischema: detailUiSchema,
-          rootSchema,
+			renderers,
+			cells,
+			uischemas,
+			schema,
+			label,
+			path,
+			visible,
+			enabled,
+			uischema: detailUiSchema,
+			rootSchema,
         } ),
-        label: detailUiSchema.label,
+        label: detailUiSchema.label || label,
         path: path
       }
     } ) )
@@ -84,26 +84,26 @@ export const GutenbergObjectRenderer = ({
 
   return !visible ? null : (
     <>
-      <NavigationButtonAsItem
-        path={route}
-        aria-label={detailUiSchema.label}
-      >
-        <HStack justify="space-between">
-          <FlexItem>
-            {detailUiSchema.label}
-          </FlexItem>
-          <IconWithCurrentColor
-            icon={isRTL() ? chevronLeft : chevronRight}
-          />
-        </HStack>
-      </NavigationButtonAsItem>
+		<NavigationButtonAsItem
+			path={ route }
+			aria-label={ detailUiSchema.label | label }
+		>
+			<HStack justify="space-between">
+			<FlexItem>
+				{ detailUiSchema.label || label }
+			</FlexItem>
+			<IconWithCurrentColor
+				icon={ isRTL() ? chevronLeft : chevronRight }
+			/>
+			</HStack>
+      	</NavigationButtonAsItem>
     </>
   )
 };
 
 export const gutenbergObjectControlTester = rankWith(
-  9,
-  isObjectControl
+	9,
+	isObjectControl
 );
 
 export default withJsonFormsDetailProps(GutenbergObjectRenderer);
