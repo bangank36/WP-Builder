@@ -36,19 +36,19 @@ export const GutenbergObjectRenderer = ({
 }) => {
   const detailUiSchema = useMemo(
     () =>
-      findUISchema(
-        uischemas,
-        schema,
-        uischema.scope,
-        path,
-        () =>
-          isEmpty(path)
-            ? Generate.uiSchema(schema, 'VerticalLayout')
-            : { ...Generate.uiSchema(schema, 'Group'), label },
-        uischema,
-        rootSchema
-      ),
-    [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
+		findUISchema(
+			uischemas,
+			schema,
+			uischema.scope,
+			path,
+			() =>
+			isEmpty(path)
+				? Generate.uiSchema(schema, 'VerticalLayout')
+				: { ...Generate.uiSchema(schema, 'Group'), label },
+			uischema,
+			rootSchema
+		),
+    [ uischemas, schema, uischema.scope, path, label, uischema, rootSchema ]
   );
 
   const route = resolvePathToRoute( path );
