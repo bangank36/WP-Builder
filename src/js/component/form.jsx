@@ -72,8 +72,14 @@ const schema = {
     business: {
       type: 'object',
       properties: {
-        job: { type: 'string' }
-      }
+        job: {
+          type: 'string',
+        },
+        experience: {
+          type: 'string',
+          maxLength: 5,
+        },
+      },
     }
   },
 };
@@ -83,8 +89,23 @@ const uischema = {
   elements: [
     {
       type: 'Control',
-      scope: '#',
-    }
+      scope: '#/properties/business',
+      options: {
+        detail: {
+          type: 'VerticalLayout',
+          elements: [
+            {
+              type: 'Control',  
+              scope: '#/properties/job',
+            },
+            {
+              type: 'Control',
+              scope: '#/properties/experience',
+            }
+          ]
+        }
+      }
+    },
   ],
 }
 
