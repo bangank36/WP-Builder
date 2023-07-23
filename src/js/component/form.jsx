@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {
-  vanillaRenderers as materialRenderers,
-  vanillaCells as materialCells,
-} from "@jsonforms/vanilla-renderers";
+  materialRenderers,
+  materialCells,
+} from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
@@ -11,7 +11,7 @@ import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../rendere
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
 import GutenbergToggleGroupControl, { gutenbergToggleGroupTester } from "../renderers/Primitive/ToggleGroupControl";
 import GutenbergToggleGroupOneOfControl, { gutenbergToggleGroupOneOfTester } from "../renderers/Primitive/ToggleGroupOneOfControl";
-import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
+import GutenbergObjectRenderer, { modifiedMaterialObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
@@ -21,72 +21,79 @@ import {
   __experimentalGrid as Grid,
 } from '@wordpress/components';
 
-const schema = {
-  type: "object",
+export const schema = {
+  type: 'object',
   properties: {
-    address: {
+    occupation: { 
       type: 'object',
       properties: {
-        street_address: { type: 'string' },
-        city: { type: 'string' },
-        state: { type: 'string' },
-        isOffice: { 
-          type: 'boolean',
-          description: 'Is this an office address?',
-        },
-        country: {
-          type: 'object',
-          properties: {
-            name: { type: 'string' },
-          }
-        },
-        gender: {
-          type: "string",
-          enum: [ "male", "female", "other" ],
-          format: 'toggle-group',
-          description: "The gender of the user"
-        },
-        oneOfEnum: {
-          type: 'string',
-          format: 'toggle-group',
-          oneOf: [
-            { const: 'foo', title: 'Foo' },
-            { const: 'bar', title: 'Bar' },
-            { const: 'foobar', title: 'FooBar' },
-          ],
-        },
-        comments: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              comment: { 
-                type: 'string',
-              },
-            }
-            
-          },
-        },
+        name: { type: 'string' },
+        years: { type: 'number' },
       }
     },
-    business: {
-      type: 'object',
-      properties: {
-        job: { type: 'string' }
-      }
-    }
+    comments: {
+      type: 'array',
+      minItems: 2,
+      maxItems: 8,
+      items: {
+        type: 'object',
+        properties: {
+          date: {
+            type: 'string',
+            format: 'date',
+          },
+          message: {
+            type: 'string',
+            maxLength: 5,
+          },
+        },
+      },
+    },
   },
+  required: ['occupation', 'nationality'],
 };
 
-const uischema = {
-  type: 'NavigatorLayout',
+export const uischema = {
+  type: 'VerticalLayout',
   elements: [
     {
       type: 'Control',
-      scope: '#',
+      scope: '#/properties/comments',
+      options: {
+        showSortButtons: true,
+        restrict: true,
+        detail: {
+          type: 'Group',
+          elements: [
+            {
+              type: 'Control',
+              scope: '#/properties/date',
+            }
+          ],
+        },
+      },
+    },
+    {
+      type: 'Control',
+      scope: '#/properties/occupation',
+      options: {
+        detail: {
+          type: 'VerticalLayout',
+          elements: [
+            {
+              type: 'Control',
+              scope: '#/properties/name',
+            },
+            {
+              type: 'Control',
+              scope: '#/properties/years',
+            },
+          ],
+        },
+      },
     }
   ],
-}
+};
 
 const initialData = {
   address: {
@@ -104,18 +111,18 @@ const initialData = {
 const renderers = [
   ...materialRenderers,
   //register custom renderers
-  { tester: textControlTester, renderer: TextControl },
-  { tester: multilineTextControlTester, renderer: MultilineTextControl },
-  { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
-  { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
-  { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
-  { tester: gutenbergToggleGroupTester, renderer: GutenbergToggleGroupControl},
-  { tester: gutenbergToggleGroupOneOfTester, renderer: GutenbergToggleGroupOneOfControl},
-  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
-  { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
-  // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
-  { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer},
-  { tester: gutenbergVerticalLayoutTester, renderer: GutenbergVerticalLayoutRenderer}
+  // { tester: textControlTester, renderer: TextControl },
+  // { tester: multilineTextControlTester, renderer: MultilineTextControl },
+  // { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
+  // { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
+  // { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
+  // { tester: gutenbergToggleGroupTester, renderer: GutenbergToggleGroupControl},
+  // { tester: gutenbergToggleGroupOneOfTester, renderer: GutenbergToggleGroupOneOfControl},
+  { tester: modifiedMaterialObjectControlTester, renderer: GutenbergObjectRenderer},
+  // { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
+  // // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
+  // { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer},
+  // { tester: gutenbergVerticalLayoutTester, renderer: GutenbergVerticalLayoutRenderer}
 ];
 
 export default function App() {

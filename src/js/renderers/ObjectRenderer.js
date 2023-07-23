@@ -1,28 +1,15 @@
-import isEmpty from 'lodash/isEmpty';
+import isEmpty from "lodash/isEmpty"
 import {
   findUISchema,
   Generate,
   isObjectControl,
-  rankWith,
-} from '@jsonforms/core';
-import { 
-  withJsonFormsDetailProps,
- } from '@jsonforms/react';
-import React, { useMemo, useContext, useEffect } from 'react';
-import { Context as NavigatorContext } from '../component/context';
-import { resolvePathToRoute } from './util';
+  rankWith
+} from "@jsonforms/core"
+import { JsonFormsDispatch, withJsonFormsDetailProps } from "@jsonforms/react"
+import { Hidden } from "@mui/material"
+import React, { useMemo } from "react"
 
-import { chevronLeft, chevronRight } from '@wordpress/icons';
-import { isRTL, __ } from '@wordpress/i18n';
-import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
-import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
-
-import {
-	__experimentalHStack as HStack,
-	FlexItem,
-} from '@wordpress/components';
-
-export const GutenbergObjectRenderer = ({
+export const MaterialObjectRenderer = ({
   renderers,
   cells,
   uischemas,
@@ -32,7 +19,7 @@ export const GutenbergObjectRenderer = ({
   visible,
   enabled,
   uischema,
-  rootSchema,
+  rootSchema
 }) => {
   const detailUiSchema = useMemo(
     () =>
@@ -43,67 +30,28 @@ export const GutenbergObjectRenderer = ({
         path,
         () =>
           isEmpty(path)
-            ? Generate.uiSchema(schema, 'VerticalLayout')
-            : { ...Generate.uiSchema(schema, 'Group'), label },
+            ? Generate.uiSchema(schema, "VerticalLayout")
+            : { ...Generate.uiSchema(schema, "Group"), label },
         uischema,
         rootSchema
       ),
     [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
-  );
-
-  const route = resolvePathToRoute(path);
-
-  const [screenContent, setScreenContent] = useContext(NavigatorContext);
-
-  //UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
-  useEffect( () => {
-    if ( !route ) {
-      return;
-    }
-    // Use the callback since the new state is based on the previous state
-    setScreenContent(prevScreenContent => ( {
-      ...prevScreenContent,
-      [ route ]: {
-        rendererProps: ( {
-          renderers,
-          cells,
-          uischemas,
-          schema,
-          label,
-          path,
-          visible,
-          enabled,
-          uischema: detailUiSchema,
-          rootSchema,
-        } ),
-        label: detailUiSchema.label,
-        path: path
-      }
-    } ) )
-  }, [route] )
-
-  return !visible ? null : (
-    <>
-      <NavigationButtonAsItem
-        path={route}
-        aria-label={detailUiSchema.label}
-      >
-        <HStack justify="space-between">
-          <FlexItem>
-            {detailUiSchema.label}
-          </FlexItem>
-          <IconWithCurrentColor
-            icon={isRTL() ? chevronLeft : chevronRight}
-          />
-        </HStack>
-      </NavigationButtonAsItem>
-    </>
   )
-};
+  return (
+    <Hidden xsUp={!visible}>
+      <JsonFormsDispatch
+        visible={visible}
+        enabled={enabled}
+        schema={schema}
+        uischema={detailUiSchema}
+        path={path}
+        renderers={renderers}
+        cells={cells}
+      />
+    </Hidden>
+  )
+}
 
-export const gutenbergObjectControlTester = rankWith(
-  9,
-  isObjectControl
-);
+export const modifiedMaterialObjectControlTester = rankWith(3, isObjectControl)
 
-export default withJsonFormsDetailProps(GutenbergObjectRenderer);
+export default withJsonFormsDetailProps(MaterialObjectRenderer)
