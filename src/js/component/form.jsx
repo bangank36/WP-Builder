@@ -27,12 +27,18 @@ const schema = {
     address: {
       type: 'object',
       properties: {
-        street_address: { type: 'string' },
+        street_address: { 
+          type: 'string',
+        },
         city: { type: 'string' },
         state: { type: 'string' },
         isOffice: { 
           type: 'boolean',
           description: 'Is this an office address?',
+        },
+        roofColor: {
+          type: 'string',
+          format: 'color',
         },
         country: {
           type: 'object',
@@ -46,21 +52,20 @@ const schema = {
           format: 'toggle-group',
           description: "The gender of the user"
         },
-        oneOfEnum: {
+        race: {
           type: 'string',
           format: 'toggle-group',
           oneOf: [
-            { const: 'foo', title: 'Foo' },
-            { const: 'bar', title: 'Bar' },
-            { const: 'foobar', title: 'FooBar' },
+            { const: 'asian', title: 'Asian' },
+            { const: 'latin', title: 'Latin' },
           ],
         },
-        comments: {
+        businessHours: {
           type: 'array',
           items: {
             type: 'object',
             properties: {
-              comment: { 
+              date: { 
                 type: 'string',
               },
             }
@@ -88,30 +93,14 @@ const uischema = {
   type: 'NavigatorLayout',
   elements: [
     {
-      type: 'Control',
-      scope: '#/properties/business',
-      options: {
-        detail: {
-          type: 'VerticalLayout',
-          elements: [
-            {
-              type: 'Control',  
-              scope: '#/properties/job',
-            },
-            {
-              type: 'Control',
-              scope: '#/properties/experience',
-            }
-          ]
-        }
-      }
-    },
+      type: "Control",
+      scope: "#",
+    }
   ],
 }
 
 const initialData = {
   address: {
-    isOffice: false,
     gender: "other",
     comments: [{
       comment: 'test'
@@ -147,7 +136,7 @@ export default function App() {
         <JsonForms
           schema={schema}
           uischema={uischema}
-          data={data}
+          // data={data}
           renderers={renderers}
           cells={materialCells}
           onChange={({ data, _errors }) => {

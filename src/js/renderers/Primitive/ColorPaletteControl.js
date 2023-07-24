@@ -1,21 +1,26 @@
 import React from "react";
-import isEmpty from 'lodash/isEmpty';
 import { withJsonFormsControlProps } from "@jsonforms/react";
-import { rankWith, isStringControl, and, optionIs } from "@jsonforms/core";
+import { 
+	rankWith, 
+	isStringControl, 
+	and, 
+	or, 
+	optionIs,
+	formatIs
+} from "@jsonforms/core";
 import {
 	__experimentalHStack as HStack,
 	__experimentalZStack as ZStack,
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
-  	__experimentalSpacer as Spacer,
 	ColorIndicator,
 	Flex,
 	FlexItem,
 	Dropdown,
 	Button,
 	ColorPalette, 
+	ColorPicker,
 	SlotFillProvider, 
 	Popover,
-	HorizontalRule
 } from '@wordpress/components';
 
 const LabeledColorIndicators = ( { indicators, label } ) => (
@@ -34,100 +39,85 @@ const TextControl = (props) => {
   	const {
 		id,
 		description,
-		errors,
 		label,
 		uischema,
 		path,
-		visible,
-		required,
-		config,
 		data,
-		input,
 		handleChange
   	} = props;
   
-  	const colors = uischema.options.colors || [
-		{ name: 'red', color: '#f00' },
-		{ name: 'white', color: '#fff' },
-		{ name: 'blue', color: '#00f' },
-  	];
+  	const colors = uischema.options?.colors;
 
-  return ( 
-    <>
-        <HStack justify="space-between">
-          	<FlexItem>
-				{ description ? (
-					<Tooltip text={ description }>
+	return ( 
+		<>
+			<HStack justify="space-between">
+				<FlexItem>
+					{ description ? (
+						<Tooltip text={ description }>
+							<label htmlFor={ id }>
+							{ label }
+							</label>
+						</Tooltip>
+					) : ( 
 						<label htmlFor={ id }>
 						{ label }
-						</label>
-					</Tooltip>
-				) : ( 
-					<label htmlFor={ id }>
-					{ label }
-					</label> 
-				) }
-          	</FlexItem>
-          	<FlexItem>
-				<Dropdown
-					popoverProps={ {
-						placement: 'left-start',
-						offset: 36,
-						shift: true,
-					} }
-					className="my-container-class-name"
-					contentClassName="my-dropdown-content-classname"
-					renderToggle={ ( { isOpen, onToggle } ) => (
-						<Button
-							onClick={ onToggle }
-							aria-expanded={ isOpen }
-						>
-							<LabeledColorIndicators
-								indicators={ [ data ] }
-								label={ label }
-							/>
-						</Button>
-				) }
-				renderContent={ () => (
-					<DropdownContentWrapper paddingSize="none">
-						<SlotFillProvider>
-							<ColorPalette
-								colors={ colors }
-								value={ data }
-								onChange={ ( value ) => 
-									handleChange( path, value === '' ? undefined : value )
+						</label> 
+					) }
+				</FlexItem>
+				<FlexItem>
+					<Dropdown
+						popoverProps={ {
+							placement: 'left-start',
+							offset: 36,
+							shift: true,
+						} }
+						className="my-container-class-name"
+						contentClassName="my-dropdown-content-classname"
+						renderToggle={ ( { isOpen, onToggle } ) => (
+							<Button
+								onClick={ onToggle }
+								aria-expanded={ isOpen }
+							>
+								<LabeledColorIndicators
+									indicators={ [ data ] }
+									label={ label }
+								/>
+							</Button>
+					) }
+					renderContent={ () => (
+						<DropdownContentWrapper paddingSize="none">
+							<SlotFillProvider>
+								{
+									!colors || colors.length === 0 ? (
+										<ColorPicker 
+											onChange={ ( value ) => 
+												handleChange( path, value === '' ? undefined : value )
+											} 
+										/>
+									) : (
+										<ColorPalette
+											colors={ colors }
+											value={ data }
+											onChange={ ( value ) => 
+												handleChange( path, value === '' ? undefined : value )
+											}
+										/>
+									)
 								}
-							/>
-							<Popover.Slot />
-						</SlotFillProvider>
-					</DropdownContentWrapper>
-				) }
-				/>
-          	</FlexItem>
-        </HStack>
-        <Spacer marginTop={ 1 } marginBottom={ 1 }>
-          	<HorizontalRule />
-        </Spacer>
-    </>
-  )
+								<Popover.Slot />
+							</SlotFillProvider>
+						</DropdownContentWrapper>
+					) }
+					/>
+				</FlexItem>
+			</HStack>
+		</>
+	)
 };
-
-  const optionIsNotEmpty =
-  (optionName) =>
-  (uischema) => {
-    if (isEmpty(uischema)) {
-      return false;
-    }
-
-    const options = uischema.options;
-    return !isEmpty(options) && !isEmpty(options[optionName]);
-  };
 
 export const colorPaletteControlTester = rankWith(
   6, //increase rank as needed
-  and(isStringControl, optionIs('format', 'color'), optionIsNotEmpty('colors'))
+  and(isStringControl,or(formatIs('color'), optionIs('format', 'color')))
 );
 
 export default withJsonFormsControlProps(TextControl);
-
-//or(formatIs('date-time'), optionIs('format', 'date-time'))

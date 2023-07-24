@@ -3,11 +3,9 @@ import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isBooleanControl } from "@jsonforms/core";
 import {
 	__experimentalHStack as HStack,
-	__experimentalSpacer as Spacer,
 	FormToggle,
 	Tooltip,	
     FlexItem,
-	HorizontalRule
 } from '@wordpress/components';
 
 const ToggleControl = (props) => {
@@ -45,9 +43,6 @@ const ToggleControl = (props) => {
 					/>
 				</FlexItem>
 			</HStack>
-			<Spacer marginTop={2} marginBottom={0}>
-				<HorizontalRule />
-			</Spacer>
 		</>
   	)
 };
