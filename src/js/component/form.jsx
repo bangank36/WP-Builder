@@ -136,7 +136,7 @@ export default function App() {
         <JsonForms
           schema={schema}
           uischema={uischema}
-          // data={data}
+          data={data}
           renderers={renderers}
           cells={materialCells}
           onChange={({ data, _errors }) => {
