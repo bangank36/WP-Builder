@@ -121,23 +121,7 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
                 }),
                 label: detailUiSchema.label,
                 path: path
-            },
-			[ `${route}/new` ]: {
-                rendererProps: ( {    
-                    renderers,
-                    cells,
-                    uischemas,
-                    schema,
-                    label,
-                    path: composePaths(path, `${0}`),
-                    visible,
-                    enabled,
-                    uischema: childUiSchema,
-                    rootSchema,
-                } ),
-                label: detailUiSchema.label,
-                path: path
-            },
+            }
         }))
     }, [ route ] )
 
