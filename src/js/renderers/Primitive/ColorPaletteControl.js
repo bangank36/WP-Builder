@@ -6,12 +6,16 @@ import {
 	__experimentalHStack as HStack,
 	__experimentalZStack as ZStack,
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
+  	__experimentalSpacer as Spacer,
 	ColorIndicator,
 	Flex,
 	FlexItem,
 	Dropdown,
 	Button,
-  ColorPalette, SlotFillProvider, Popover
+	ColorPalette, 
+	SlotFillProvider, 
+	Popover,
+	HorizontalRule
 } from '@wordpress/components';
 
 const LabeledColorIndicators = ( { indicators, label } ) => (
@@ -23,74 +27,87 @@ const LabeledColorIndicators = ( { indicators, label } ) => (
 				</Flex>
 			) ) }
 		</ZStack>
-		<FlexItem
-			className="block-editor-panel-color-gradient-settings__color-name"
-			title={ label }
-		>
-			{ label }
-		</FlexItem>
 	</HStack>
 );
 
 const TextControl = (props) => {
-  const {
-    id,
-    description,
-    errors,
-    label,
-    uischema,
-    path,
-    visible,
-    required,
-    config,
-    data,
-    input,
-    handleChange
-  } = props;
+  	const {
+		id,
+		description,
+		errors,
+		label,
+		uischema,
+		path,
+		visible,
+		required,
+		config,
+		data,
+		input,
+		handleChange
+  	} = props;
   
-  const colors = uischema.options.colors || [
-    { name: 'red', color: '#f00' },
-    { name: 'white', color: '#fff' },
-    { name: 'blue', color: '#00f' },
-  ];
+  	const colors = uischema.options.colors || [
+		{ name: 'red', color: '#f00' },
+		{ name: 'white', color: '#fff' },
+		{ name: 'blue', color: '#00f' },
+  	];
 
   return ( 
     <>
-      <Dropdown
-        popoverProps={ {
-          placement: 'left-start',
-          offset: 36,
-          shift: true,
-        } }
-        className="my-container-class-name"
-        contentClassName="my-dropdown-content-classname"
-        renderToggle={ ( { isOpen, onToggle } ) => (
-          <Button
-            onClick={ onToggle }
-            aria-expanded={ isOpen }
-          >
-            <LabeledColorIndicators
-              indicators={ [ data ] }
-              label={ label }
-            />
-          </Button>
-        ) }
-        renderContent={ () => (
-          <DropdownContentWrapper paddingSize="none">
-            <SlotFillProvider>
-              <ColorPalette
-                colors={ colors }
-                value={ data }
-                onChange={ ( value ) => 
-                  handleChange(path, value === '' ? undefined : value)
-                }
-              />
-              <Popover.Slot />
-            </SlotFillProvider>
-          </DropdownContentWrapper>
-        ) }
-      />
-      
+        <HStack justify="space-between">
+          	<FlexItem>
+				{ description ? (
+					<Tooltip text={ description }>
+						<label htmlFor={ id }>
+						{ label }
+						</label>
+					</Tooltip>
+				) : ( 
+					<label htmlFor={ id }>
+					{ label }
+					</label> 
+				) }
+          	</FlexItem>
+          	<FlexItem>
+				<Dropdown
+					popoverProps={ {
+						placement: 'left-start',
+						offset: 36,
+						shift: true,
+					} }
+					className="my-container-class-name"
+					contentClassName="my-dropdown-content-classname"
+					renderToggle={ ( { isOpen, onToggle } ) => (
+						<Button
+							onClick={ onToggle }
+							aria-expanded={ isOpen }
+						>
+							<LabeledColorIndicators
+								indicators={ [ data ] }
+								label={ label }
+							/>
+						</Button>
+				) }
+				renderContent={ () => (
+					<DropdownContentWrapper paddingSize="none">
+						<SlotFillProvider>
+							<ColorPalette
+								colors={ colors }
+								value={ data }
+								onChange={ ( value ) => 
+									handleChange( path, value === '' ? undefined : value )
+								}
+							/>
+							<Popover.Slot />
+						</SlotFillProvider>
+					</DropdownContentWrapper>
+				) }
+				/>
+          	</FlexItem>
+        </HStack>
+        <Spacer marginTop={ 1 } marginBottom={ 1 }>
+          	<HorizontalRule />
+        </Spacer>
     </>
   )
 };
@@ -112,3 +129,5 @@ export const colorPaletteControlTester = rankWith(
 );
 
 export default withJsonFormsControlProps(TextControl);
+
+//or(formatIs('date-time'), optionIs('format', 'date-time'))
