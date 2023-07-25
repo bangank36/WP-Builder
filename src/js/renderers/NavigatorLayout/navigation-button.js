@@ -8,6 +8,7 @@ import {
 	__experimentalItem as Item,
 	FlexItem,
 	__experimentalHStack as HStack,
+	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
 
 /**
@@ -30,12 +31,18 @@ function GenericNavigationButton( { icon, children, ...props } ) {
 }
 
 function NavigationButtonAsItem( props ) {
-	return <NavigatorButton as={ GenericNavigationButton } { ...props } />;
+	return (
+		<Spacer paddingY={ 2 }>
+			<NavigatorButton as={ GenericNavigationButton } { ...props } style={ { padding: 0 } } />
+		</Spacer>
+	);
 }
 
 function NavigationBackButtonAsItem( props ) {
 	return (
-		<NavigatorToParentButton as={ GenericNavigationButton } { ...props } />
+		<Spacer paddingY={ 2 }>
+			<NavigatorToParentButton as={ GenericNavigationButton } { ...props } style={ { padding: 0 } } />
+		</Spacer>
 	);
 }
 

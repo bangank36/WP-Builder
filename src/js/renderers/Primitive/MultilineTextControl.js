@@ -1,40 +1,56 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isMultiLineControl } from "@jsonforms/core";
-import { TextareaControl } from '@wordpress/components';
+import { 
+	__experimentalVStack as VStack,
+	Tooltip,	
+	FlexItem,
+	TextareaControl
+} from '@wordpress/components';
 
-const TextControl = (props) => {
-  const {
-    id,
-    description,
-    errors,
-    label,
-    uischema,
-    path,
-    visible,
-    required,
-    config,
-    data,
-    input,
-    handleChange
-  } = props;
+const TextControl = ( props ) => {
+	const {
+		id,
+		description,
+		label,
+		path,
+		data,
+		handleChange
+	} = props;
   
   return ( 
-    <TextareaControl
-      help={description}
-      label={label}
-      value={data || ''}
-      onChange={(value) =>
-        handleChange(path, value === '' ? undefined : value)
-      }
-      rows={4}
-    /> 
+    <>
+        <VStack justify="space-between">
+            <FlexItem>
+				{ description ? (
+					<Tooltip text={ description }>
+					<label htmlFor={ id }>
+						{ label }
+					</label>
+				</Tooltip>
+				) : ( 
+					<label htmlFor={ id }>
+						{ label }
+					</label> 
+				) }
+            </FlexItem>
+            <FlexItem>
+				<TextareaControl
+					value={ data || '' }
+					onChange={( value ) =>
+						handleChange( path, value === '' ? undefined : value )
+					}
+					rows={4}
+				/> 
+            </FlexItem>
+        </VStack>
+    </>
   )
 };
 
 export const multilineTextControlTester = rankWith(
-  5, //increase rank as needed
-  isMultiLineControl
+	5, //increase rank as needed
+	isMultiLineControl
 );
 
-export default withJsonFormsControlProps(TextControl);
+export default withJsonFormsControlProps( TextControl );

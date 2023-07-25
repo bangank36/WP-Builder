@@ -21,6 +21,7 @@ import {
 	ColorPicker,
 	SlotFillProvider, 
 	Popover,
+	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
 
 const LabeledColorIndicators = ( { indicators, label } ) => (
@@ -50,67 +51,69 @@ const TextControl = (props) => {
 
 	return ( 
 		<>
-			<HStack justify="space-between">
-				<FlexItem>
-					{ description ? (
-						<Tooltip text={ description }>
+			<Spacer paddingY={ 2 } marginBottom={ 0 }>
+				<HStack justify="space-between">
+					<FlexItem>
+						{ description ? (
+							<Tooltip text={ description }>
+								<label htmlFor={ id }>
+								{ label }
+								</label>
+							</Tooltip>
+						) : ( 
 							<label htmlFor={ id }>
 							{ label }
-							</label>
-						</Tooltip>
-					) : ( 
-						<label htmlFor={ id }>
-						{ label }
-						</label> 
-					) }
-				</FlexItem>
-				<FlexItem>
-					<Dropdown
-						popoverProps={ {
-							placement: 'left-start',
-							offset: 36,
-							shift: true,
-						} }
-						className="my-container-class-name"
-						contentClassName="my-dropdown-content-classname"
-						renderToggle={ ( { isOpen, onToggle } ) => (
-							<Button
-								onClick={ onToggle }
-								aria-expanded={ isOpen }
-							>
-								<LabeledColorIndicators
-									indicators={ [ data ] }
-									label={ label }
-								/>
-							</Button>
-					) }
-					renderContent={ () => (
-						<DropdownContentWrapper paddingSize="none">
-							<SlotFillProvider>
-								{
-									!colors || colors.length === 0 ? (
-										<ColorPicker 
-											onChange={ ( value ) => 
-												handleChange( path, value === '' ? undefined : value )
-											} 
-										/>
-									) : (
-										<ColorPalette
-											colors={ colors }
-											value={ data }
-											onChange={ ( value ) => 
-												handleChange( path, value === '' ? undefined : value )
-											}
-										/>
-									)
-								}
-								<Popover.Slot />
-							</SlotFillProvider>
-						</DropdownContentWrapper>
-					) }
-					/>
-				</FlexItem>
-			</HStack>
+							</label> 
+						) }
+					</FlexItem>
+					<FlexItem>
+						<Dropdown
+							popoverProps={ {
+								placement: 'left-start',
+								offset: 36,
+								shift: true,
+							} }
+							className="my-container-class-name"
+							contentClassName="my-dropdown-content-classname"
+							renderToggle={ ( { isOpen, onToggle } ) => (
+								<Button
+									onClick={ onToggle }
+									aria-expanded={ isOpen }
+								>
+									<LabeledColorIndicators
+										indicators={ [ data ] }
+										label={ label }
+									/>
+								</Button>
+						) }
+						renderContent={ () => (
+							<DropdownContentWrapper paddingSize="none">
+								<SlotFillProvider>
+									{
+										!colors || colors.length === 0 ? (
+											<ColorPicker 
+												onChange={ ( value ) => 
+													handleChange( path, value === '' ? undefined : value )
+												} 
+											/>
+										) : (
+											<ColorPalette
+												colors={ colors }
+												value={ data }
+												onChange={ ( value ) => 
+													handleChange( path, value === '' ? undefined : value )
+												}
+											/>
+										)
+									}
+									<Popover.Slot />
+								</SlotFillProvider>
+							</DropdownContentWrapper>
+						) }
+						/>
+					</FlexItem>
+				</HStack>
+			</Spacer>
 		</>
 	)
 };

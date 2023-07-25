@@ -6,6 +6,7 @@ import {
 	FormToggle,
 	Tooltip,	
     FlexItem,
+	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
 
 const ToggleControl = (props) => {
@@ -20,29 +21,31 @@ const ToggleControl = (props) => {
   
   	return ( 
 		<>
-			<HStack justify="space-between">
-				<FlexItem>
-				{ description ? (
-					<Tooltip text={ description }>
-					<label htmlFor={ id }>
-						{ label }
-					</label>
-				</Tooltip>
-				) : ( 
-					<label htmlFor={ id }>
-						{ label }
-					</label> 
-				) }
-				</FlexItem>
-				<FlexItem>
-					<FormToggle
-						checked={ !!data }
-						onChange={(event) =>
-							handleChange(path, event.target.checked || false)
-						}
-					/>
-				</FlexItem>
-			</HStack>
+			<Spacer paddingY={ 2 } marginBottom={ 0 }>
+				<HStack justify="space-between">
+					<FlexItem>
+					{ description ? (
+						<Tooltip text={ description }>
+						<label htmlFor={ id }>
+							{ label }
+						</label>
+					</Tooltip>
+					) : ( 
+						<label htmlFor={ id }>
+							{ label }
+						</label> 
+					) }
+					</FlexItem>
+					<FlexItem>
+						<FormToggle
+							checked={ !!data }
+							onChange={(event) =>
+								handleChange(path, event.target.checked || false)
+							}
+						/>
+					</FlexItem>
+				</HStack>
+			</Spacer>
 		</>
   	)
 };

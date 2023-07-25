@@ -34,72 +34,74 @@ export const GutenbergObjectRenderer = ({
 	uischema,
 	rootSchema,
 }) => {
-  const detailUiSchema = useMemo(
-    () =>
-		findUISchema(
-			uischemas,
-			schema,
-			uischema.scope,
-			path,
-			() =>
-			isEmpty(path)
-				? Generate.uiSchema(schema, 'VerticalLayout')
-				: { ...Generate.uiSchema(schema, 'Group'), label },
-			uischema,
-			rootSchema
-		),
-    [ uischemas, schema, uischema.scope, path, label, uischema, rootSchema ]
-  );
+	const detailUiSchema = useMemo(
+		() =>
+			findUISchema(
+				uischemas,
+				schema,
+				uischema.scope,
+				path,
+				() =>
+				isEmpty(path)
+					? Generate.uiSchema(schema, 'VerticalLayout')
+					: { ...Generate.uiSchema(schema, 'Group'), label },
+				uischema,
+				rootSchema
+			),
+		[ uischemas, schema, uischema.scope, path, label, uischema, rootSchema ]
+	);
 
-  const route = resolvePathToRoute( path );
+	detailUiSchema.label = detailUiSchema.label || label;
 
-  const [ screenContent, setScreenContent ] = useContext( NavigatorContext );
+  	const route = resolvePathToRoute( path );
 
-  //UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
-  useEffect( () => {
-    if ( !route ) {
-      return;
-    }
-    // Use the callback since the new state is based on the previous state
-    setScreenContent(prevScreenContent => ( {
-      ...prevScreenContent,
-      [ route ]: {
-        rendererProps: ( {
-			renderers,
-			cells,
-			uischemas,
-			schema,
-			label,
-			path,
-			visible,
-			enabled,
-			uischema: detailUiSchema,
-			rootSchema,
-        } ),
-        label: detailUiSchema.label || label,
-        path: path
-      }
-    } ) )
-  }, [route] )
+  	const [ screenContent, setScreenContent ] = useContext( NavigatorContext );
 
-  return !visible ? null : (
-    <>
-		<NavigationButtonAsItem
-			path={ route }
-			aria-label={ detailUiSchema.label | label }
-		>
-			<HStack justify="space-between">
-			<FlexItem>
-				{ detailUiSchema.label || label }
-			</FlexItem>
-			<IconWithCurrentColor
-				icon={ isRTL() ? chevronLeft : chevronRight }
-			/>
-			</HStack>
-      	</NavigationButtonAsItem>
-    </>
-  )
-};
+	//UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
+	useEffect( () => {
+		if ( !route ) {
+		return;
+		}
+		// Use the callback since the new state is based on the previous state
+		setScreenContent(prevScreenContent => ( {
+		...prevScreenContent,
+		[ route ]: {
+			rendererProps: ( {
+				renderers,
+				cells,
+				uischemas,
+				schema,
+				label,
+				path,
+				visible,
+				enabled,
+				uischema: detailUiSchema,
+				rootSchema,
+			} ),
+			label: detailUiSchema.label,
+			path: path
+		}
+		} ) )
+	}, [route] )
+
+	return !visible ? null : (
+		<>
+			<NavigationButtonAsItem
+				path={ route }
+				aria-label={ detailUiSchema.label }
+			>
+				<HStack justify="space-between">
+				<FlexItem>
+					{ detailUiSchema.label }
+				</FlexItem>
+				<IconWithCurrentColor
+					icon={ isRTL() ? chevronLeft : chevronRight }
+				/>
+				</HStack>
+			</NavigationButtonAsItem>
+		</>
+	)
+	};
 
 export const gutenbergObjectControlTester = rankWith(
 	9,
