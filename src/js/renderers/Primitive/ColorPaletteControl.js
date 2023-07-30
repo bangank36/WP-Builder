@@ -85,31 +85,31 @@ const TextControl = (props) => {
 										label={ label }
 									/>
 								</Button>
-						) }
-						renderContent={ () => (
-							<DropdownContentWrapper paddingSize="none">
-								<SlotFillProvider>
-									{
-										!colors || colors.length === 0 ? (
-											<ColorPicker 
-												onChange={ ( value ) => 
-													handleChange( path, value === '' ? undefined : value )
-												} 
-											/>
-										) : (
-											<ColorPalette
-												colors={ colors }
-												value={ data }
-												onChange={ ( value ) => 
-													handleChange( path, value === '' ? undefined : value )
-												}
-											/>
-										)
-									}
-									<Popover.Slot />
-								</SlotFillProvider>
-							</DropdownContentWrapper>
-						) }
+							) }
+							renderContent={ () => (
+								<DropdownContentWrapper paddingSize="none">
+									<SlotFillProvider>
+										{
+											!colors || colors.length === 0 ? (
+												<ColorPicker 
+													onChange={ ( value ) => 
+														handleChange( path, value === '' ? undefined : value )
+													} 
+												/>
+											) : (
+												<ColorPalette
+													colors={ colors }
+													value={ data }
+													onChange={ ( value ) => 
+														handleChange( path, value === '' ? undefined : value )
+													}
+												/>
+											)
+										}
+										<Popover.Slot />
+									</SlotFillProvider>
+								</DropdownContentWrapper>
+							) }
 						/>
 					</FlexItem>
 				</HStack>
