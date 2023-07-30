@@ -5,6 +5,7 @@ import {
 } from "@jsonforms/vanilla-renderers";
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
+import DatepickerControl, { datepickerControlTester } from "../renderers/Primitive/DatepickerControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
 import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/Primitive/ColorPaletteControl";
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/Primitive/BooleanCheckboxControl";
@@ -35,6 +36,10 @@ const schema = {
         isOffice: { 
           type: 'boolean',
           description: 'Is this an office address?',
+        },
+        registeredDate: {
+          type: 'string',
+          format: 'date',
         },
         roofColor: {
           type: 'string',
@@ -115,6 +120,7 @@ const renderers = [
   ...materialRenderers,
   //register custom renderers
   { tester: textControlTester, renderer: TextControl },
+  { tester: datepickerControlTester, renderer: DatepickerControl },
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
   { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
