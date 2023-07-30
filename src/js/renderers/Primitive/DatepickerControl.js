@@ -47,6 +47,7 @@ const TextControl = ( props ) => {
     const dateSaveFormat = appliedUiSchemaOptions.dateSaveFormat ?? 'yyyy-MM-dd';
 
     const value = data ? parse(data, dateSaveFormat, new Date()) : new Date();
+    const formatValue = format(value, dateFormat);
 
     return ( 
         <>
@@ -65,50 +66,46 @@ const TextControl = ( props ) => {
                     ) }
                 </FlexItem>
                 <FlexItem>
-                    <Dropdown
-                        popoverProps={ {
-                            placement: 'left-start',
-                            offset: 72,
-                            shift: true,
-                        } }
-                        className="my-container-class-name"
-                        contentClassName="my-dropdown-content-classname"
-                        renderToggle={ ( { isOpen, onToggle } ) => (
-                            // <UiTextControl
-                            //     value={ data }
-                            //     onClick={ onToggle }
-                            // /> 
-
-                            <InputControl
-                                value={ data }
-                                suffix={
-                                    <>
+                    <InputControl
+                        value={ formatValue }
+                        suffix={
+                            <>
+                                <Dropdown
+                                    popoverProps={ {
+                                        placement: 'bottom-end',
+                                        offset: 0,
+                                        shift: true,
+                                    } }
+                                    className="my-container-class-name"
+                                    contentClassName="my-dropdown-content-classname"
+                                    renderToggle={ ( { isOpen, onToggle } ) => (
                                         <Button
                                             icon={ calendar}
                                             label="Code is poetry"
                                             onClick={ onToggle }
                                         />
-                                    </>}
+                                    ) }
+                                    renderContent={ () => (
+                                        <DropdownContentWrapper paddingSize="none">
+                                            <SlotFillProvider>
+                                                <DatePicker 
+                                                    inline
+                                                    selected={ value }
+                                                    onChange={ ( value ) => {
+                                                            return handleChange( path, value === '' ? undefined : format( value, dateSaveFormat ) )
+                                                        }
+                                                    }
+                                                    dateFormat={ dateFormat }
+                                                    showMonthDropdown
+                                                    showYearDropdown
+                                                ></DatePicker>
+                                                <Popover.Slot />
+                                            </SlotFillProvider>
+                                        </DropdownContentWrapper>
+                                    ) }
                                 />
-                        ) }
-                        renderContent={ () => (
-                            <DropdownContentWrapper paddingSize="none">
-                                <SlotFillProvider>
-                                    <DatePicker 
-                                        inline
-                                        selected={ value }
-                                        onChange={ ( value ) => {
-                                                return handleChange( path, value === '' ? undefined : format( value, dateSaveFormat ) )
-                                            }
-                                        }
-                                        dateFormat={ dateFormat }
-                                        showMonthDropdown
-                                        showYearDropdown
-                                    ></DatePicker>
-                                    <Popover.Slot />
-                                </SlotFillProvider>
-                            </DropdownContentWrapper>
-                        ) }
+                            </>
+                        }
                     />
                 </FlexItem>
             </VStack>
