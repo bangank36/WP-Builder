@@ -16,8 +16,9 @@ import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../render
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
-import GutenbergVerticalLayoutRenderer, { gutenbergVerticalLayoutTester } from "../renderers/GutenbergVerticalLayout";
-import GutenbergHorizontalLayoutRenderer, { gutenbergHorizontalLayoutTester } from "../renderers/GutenbergHorizontalLayout";
+import GutenbergVerticalLayoutRenderer, { gutenbergVerticalLayoutTester } from "../renderers/layouts/GutenbergVerticalLayout";
+import GutenbergHorizontalLayoutRenderer, { gutenbergHorizontalLayoutTester } from "../renderers/layouts/GutenbergHorizontalLayout";
+import GutenbergGroupLayoutRenderer, { gutenbergGroupLayoutTester } from "../renderers/layouts/GutenbergGroupLayout";
 
 import {
   __experimentalGrid as Grid,
@@ -96,7 +97,8 @@ const schema = {
 };
 
 const uischema = {
-  "type": "HorizontalLayout",
+  "type": "GroupLayout",
+  "label": "Address",
   "elements": [
     {
       "type": "Control",
@@ -139,7 +141,8 @@ const renderers = [
   // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer},
   { tester: gutenbergVerticalLayoutTester, renderer: GutenbergVerticalLayoutRenderer},
-  { tester: gutenbergHorizontalLayoutTester, renderer: GutenbergHorizontalLayoutRenderer}
+  { tester: gutenbergHorizontalLayoutTester, renderer: GutenbergHorizontalLayoutRenderer},
+  { tester: gutenbergGroupLayoutTester, renderer: GutenbergGroupLayoutRenderer}
 ];
 
 export default function App() {

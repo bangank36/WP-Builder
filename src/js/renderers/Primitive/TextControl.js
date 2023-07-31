@@ -18,33 +18,33 @@ const TextControl = ( props ) => {
 		handleChange
 	} = props;
   
-  return ( 
-    <>
-        <VStack justify="space-between">
-            <FlexItem>
-				{ description ? (
-					<Tooltip text={ description }>
-					<label htmlFor={ id }>
-						{ label }
-					</label>
-				</Tooltip>
-				) : ( 
-					<label htmlFor={ id }>
-						{ label }
-					</label> 
-				) }
-            </FlexItem>
-            <FlexItem>
-				<UiTextControl
-					value={ data || '' }
-					onChange={ ( value ) =>
-						handleChange( path, value === '' ? undefined : value )
-					}
-				/> 
-            </FlexItem>
-        </VStack>
-    </>
-  )
+	return ( 
+		<>
+			<VStack justify="space-between">
+				<FlexItem>
+					{ description ? (
+						<Tooltip text={ description }>
+						<label htmlFor={ id }>
+							{ label }
+						</label>
+					</Tooltip>
+					) : ( 
+						<label htmlFor={ id }>
+							{ label }
+						</label> 
+					) }
+				</FlexItem>
+				<FlexItem>
+					<UiTextControl
+						value={ data || '' }
+						onChange={ ( value ) =>
+							handleChange( path, value === '' ? undefined : value )
+						}
+					/> 
+				</FlexItem>
+			</VStack>
+		</>
+	)
 };
 
 export const textControlTester = rankWith(

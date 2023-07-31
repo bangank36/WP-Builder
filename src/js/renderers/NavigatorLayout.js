@@ -18,7 +18,7 @@ import {
 	Card,
 } from '@wordpress/components';
 
-import { GutenbergLayoutRenderer } from "./LayoutRenderer";
+import { GutenbergLayoutRenderer } from "./layouts/LayoutRenderer";
 import ArrayControlRenderer from "./ArrayLayoutRenderer";
 import NavigatorTopToolbar from './NavigatorLayout/navigator-top-toolbar';
 

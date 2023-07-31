@@ -21,9 +21,9 @@ export const GutenbergHorizontalLayoutRenderer = ( {
 	renderers,
 	cells
 } ) => {
-  	const HorizontalLayout = uischema
+  	const horizontalLayout = uischema
   	const childProps = {
-		elements: HorizontalLayout.elements,
+		elements: horizontalLayout.elements,
 		schema,
 		path,
 		enabled,
