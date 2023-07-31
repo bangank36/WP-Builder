@@ -4,15 +4,15 @@ import { GutenbergLayoutRenderer } from "./LayoutRenderer";
 import { withJsonFormsLayoutProps } from "@jsonforms/react";
 
 /**
- * Default tester for a vertical layout.
+ * Default tester for a Horizontal layout.
  * @type {RankedTester}
  */
-export const gutenbergVerticalLayoutTester = rankWith(
+export const gutenbergHorizontalLayoutTester = rankWith(
   	4,
-  	uiTypeIs("VerticalLayout")
+  	uiTypeIs("HorizontalLayout")
 )
 
-export const GutenbergVerticalLayoutRenderer = ( {
+export const GutenbergHorizontalLayoutRenderer = ( {
 	uischema,
 	schema,
 	path,
@@ -21,13 +21,13 @@ export const GutenbergVerticalLayoutRenderer = ( {
 	renderers,
 	cells
 } ) => {
-  	const verticalLayout = uischema
+  	const HorizontalLayout = uischema
   	const childProps = {
-		elements: verticalLayout.elements,
+		elements: HorizontalLayout.elements,
 		schema,
 		path,
 		enabled,
-		direction: "column",
+		direction: "row",
 		visible
 	}
 
@@ -40,4 +40,4 @@ export const GutenbergVerticalLayoutRenderer = ( {
 	)
 }
 
-export default withJsonFormsLayoutProps( GutenbergVerticalLayoutRenderer )
+export default withJsonFormsLayoutProps( GutenbergHorizontalLayoutRenderer )
