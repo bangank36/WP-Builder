@@ -4,6 +4,7 @@ import { getAjv } from "@jsonforms/core";
 import { JsonFormsDispatch, useJsonForms } from "@jsonforms/react";
 import {
     __experimentalGrid as Grid,
+    __experimentalView as View,
 } from '@wordpress/components';
 
 export const renderLayoutElements = (
@@ -15,7 +16,7 @@ export const renderLayoutElements = (
     cells
 ) => {
     return elements.map( (child, index) => (
-        <Grid key={ `${ path }-${ index }` }>
+        <View key={ `${ path }-${ index }` }>
             <JsonFormsDispatch
                 uischema={ child }
                 schema={ schema }
@@ -24,7 +25,7 @@ export const renderLayoutElements = (
                 renderers={ renderers }
                 cells={ cells }
             />
-        </Grid>
+        </View>
     ) )
 }
 
@@ -45,6 +46,7 @@ const LayoutRendererComponent = ( {
             !visible ? null : (
                 <Grid
                     gap={ direction === "row" ? 2 : 0 }
+                    columns={ direction === "row" ? elements.length : 1 }
                 >
                 { renderLayoutElements(
                     elements,
@@ -60,7 +62,7 @@ const LayoutRendererComponent = ( {
     }
 }
 export const GutenbergLayoutRenderer = React.memo(
-  LayoutRendererComponent
+    LayoutRendererComponent
 )
 
 // TODO fix @typescript-eslint/ban-types
