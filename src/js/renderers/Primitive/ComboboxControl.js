@@ -15,9 +15,10 @@ import {
     __experimentalVStack as VStack,
 	Tooltip,	
     FlexItem,
+    SelectControl
 } from '@wordpress/components';
 
-export const GutenbergToggleGroup = props => {
+export const GutenbergCombobox = props => {
 	const {
 		config,
 		id,
@@ -60,6 +61,19 @@ export const GutenbergToggleGroup = props => {
 				) }
 				</FlexItem>
 				<FlexItem>
+                <SelectControl
+                    multiple={ true }
+                    value={ data }
+                    onChange={ onChange }
+                    options={[
+                        {
+                            disabled: true,
+                            label: 'Select an Option',
+                            value: ''
+                        },
+                        ...options
+                    ]}
+                    />
 					<ToggleGroupControl 
 						value={ data }
 						isBlock
@@ -80,12 +94,12 @@ export const GutenbergToggleGroup = props => {
 	)
 }
 
-export const GutenbergToggleGroupControl = props => {
-  	return <GutenbergToggleGroup {...props} />
+export const GutenbergComboboxControl = props => {
+  	return <GutenbergCombobox {...props} />
 }
 
-export const gutenbergToggleGroupTester = rankWith(
-	9,
-	and(isEnumControl, formatIs("toggle-group"))
+export const gutenbergComboboxTester = rankWith(
+	10,
+	isEnumControl
 )
-export default withJsonFormsEnumProps(GutenbergToggleGroupControl)
+export default withJsonFormsEnumProps( GutenbergComboboxControl )

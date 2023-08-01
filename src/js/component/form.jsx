@@ -12,6 +12,7 @@ import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../rendere
 import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
 import GutenbergToggleGroupControl, { gutenbergToggleGroupTester } from "../renderers/Primitive/ToggleGroupControl";
 import GutenbergToggleGroupOneOfControl, { gutenbergToggleGroupOneOfTester } from "../renderers/Primitive/ToggleGroupOneOfControl";
+import GutenbergComboboxControl, { gutenbergComboboxTester } from "../renderers/Primitive/ComboboxControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
@@ -97,18 +98,13 @@ const schema = {
 };
 
 const uischema = {
-  "type": "GroupLayout",
+  "type": "NavigatorLayout",
   "label": "Address",
   "elements": [
     {
       "type": "Control",
       "label": "Name",
-      "scope": "#/properties/business/properties/job"
-    },
-    {
-      "type": "Control",
-      "label": "Birth Date",
-      "scope": "#/properties/business/properties/experience"
+      "scope": "#"
     }
   ]
 }
@@ -135,6 +131,7 @@ const renderers = [
   { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
   { tester: gutenbergToggleGroupTester, renderer: GutenbergToggleGroupControl},
+  { tester: gutenbergComboboxTester, renderer: GutenbergComboboxControl},
   { tester: gutenbergToggleGroupOneOfTester, renderer: GutenbergToggleGroupOneOfControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
