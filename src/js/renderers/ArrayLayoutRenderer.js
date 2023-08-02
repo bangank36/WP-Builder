@@ -142,7 +142,7 @@ export const ArrayControl = ( {
                 isSeparated={true}
                 size="small"
             >
-                { ( data )? (
+                { ( data ) ? (
                     range( 0, data.length ).map(( index ) => {
                         return (
                             <Item key={ index }>
@@ -189,7 +189,7 @@ export const ArrayControl = ( {
 						schema={ schema }
 						label={ label } 
 						path={ path }
-						route={ `${ route }/${ data.length }` } 
+						route={ `${ route }/${ data?.length || 0 }` } 
 						addItem={ addItem }
 					/>
 				</Item>
