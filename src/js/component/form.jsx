@@ -13,6 +13,7 @@ import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/P
 import GutenbergToggleGroupControl, { gutenbergToggleGroupTester } from "../renderers/Primitive/ToggleGroupControl";
 import GutenbergToggleGroupOneOfControl, { gutenbergToggleGroupOneOfTester } from "../renderers/Primitive/ToggleGroupOneOfControl";
 import GutenbergComboboxControl, { gutenbergComboboxTester } from "../renderers/Primitive/ComboboxControl";
+import GutenbergComboboxOneOfControl, { gutenbergComboboxOneOfTester } from "../renderers/Primitive/ComboboxOneOfControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
@@ -57,12 +58,10 @@ const schema = {
         gender: {
           type: "string",
           enum: [ "male", "female", "other" ],
-          format: 'toggle-group',
           description: "The gender of the user"
         },
         race: {
           type: 'string',
-          format: 'toggle-group',
           oneOf: [
             { const: 'asian', title: 'Asian' },
             { const: 'latin', title: 'Latin' },
@@ -132,6 +131,7 @@ const renderers = [
   { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
   { tester: gutenbergToggleGroupTester, renderer: GutenbergToggleGroupControl},
   { tester: gutenbergComboboxTester, renderer: GutenbergComboboxControl},
+  { tester: gutenbergComboboxOneOfTester, renderer: GutenbergComboboxOneOfControl},
   { tester: gutenbergToggleGroupOneOfTester, renderer: GutenbergToggleGroupOneOfControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
