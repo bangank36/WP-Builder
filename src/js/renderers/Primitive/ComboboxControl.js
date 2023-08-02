@@ -15,7 +15,8 @@ import {
     __experimentalVStack as VStack,
 	Tooltip,	
     FlexItem,
-    SelectControl
+    SelectControl,
+    ComboboxControl
 } from '@wordpress/components';
 
 export const GutenbergCombobox = props => {
@@ -61,33 +62,29 @@ export const GutenbergCombobox = props => {
 				) }
 				</FlexItem>
 				<FlexItem>
-                <SelectControl
-                    multiple={ true }
-                    value={ data }
-                    onChange={ onChange }
-                    options={[
-                        {
-                            disabled: true,
-                            label: 'Select an Option',
-                            value: ''
-                        },
-                        ...options
-                    ]}
-                    />
-					<ToggleGroupControl 
-						value={ data }
-						isBlock
-						onChange={ onChange }
-					>
-						{options.map((option) => (
-							<ToggleGroupControlOption 
-								value={option.value}
-								key={option.label}
-								label={option.label}
-								disabled={!enabled}
-							/>
-						))}
-					</ToggleGroupControl>
+                    { appliedUiSchemaOptions.autocomplete === false ? (
+                        <SelectControl
+                            value={ data }
+                            onChange={ onChange }
+                            options={[
+                                {
+                                    disabled: true,
+                                    label: 'Select an Option',
+                                    value: ''
+                                },
+                                ...options
+                            ]}
+                        />
+                    ) : (
+                        <ComboboxControl
+                            value={ data }
+                            onChange={ onChange }
+                            options={[
+                                ...options
+                            ]}
+                            allowReset={ false }
+                        />
+                    ) }
 				</FlexItem>
 			</VStack>
 		</>
@@ -99,7 +96,7 @@ export const GutenbergComboboxControl = props => {
 }
 
 export const gutenbergComboboxTester = rankWith(
-	10,
+	8,
 	isEnumControl
 )
 export default withJsonFormsEnumProps( GutenbergComboboxControl )

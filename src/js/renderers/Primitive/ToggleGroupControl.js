@@ -65,12 +65,12 @@ export const GutenbergToggleGroup = props => {
 						isBlock
 						onChange={ onChange }
 					>
-						{options.map((option) => (
+						{options.map( ( option ) => (
 							<ToggleGroupControlOption 
-								value={option.value}
-								key={option.label}
-								label={option.label}
-								disabled={!enabled}
+								value={ option.value }
+								key={ option.label }
+								label={ option.label }
+								disabled={ !enabled }
 							/>
 						))}
 					</ToggleGroupControl>
@@ -86,6 +86,6 @@ export const GutenbergToggleGroupControl = props => {
 
 export const gutenbergToggleGroupTester = rankWith(
 	9,
-	and(isEnumControl, formatIs("toggle-group"))
+	and( isEnumControl, formatIs( "toggle-group" ) )
 )
-export default withJsonFormsEnumProps(GutenbergToggleGroupControl)
+export default withJsonFormsEnumProps( GutenbergToggleGroupControl )

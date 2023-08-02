@@ -66,14 +66,14 @@ export const GutenbergToggleGroupOneOf = props => {
                     isBlock
                     onChange={ onChange }
                 >
-                    {options.map((option) => (
+                    { options.map( ( option ) => (
                         <ToggleGroupControlOption 
-                            value={option.value}
-                            key={option.label}
-                            label={option.label}
-                            disabled={!enabled}
+                            value={ option.value }
+                            key={ option.label }
+                            label={ option.label }
+                            disabled={ !enabled }
                         />
-                    ))}
+                    ) ) }
                 </ToggleGroupControl>
             </FlexItem>
         </VStack>
@@ -86,7 +86,7 @@ export const GutenbergToggleGroupOneOfControl = props => {
 }
 
 export const gutenbergToggleGroupOneOfTester = rankWith(
-  21,
-  and(isOneOfEnumControl, formatIs("toggle-group"))
+  9,
+  and( isOneOfEnumControl, formatIs( "toggle-group" ) )
 )
-export default withJsonFormsOneOfEnumProps(GutenbergToggleGroupOneOfControl)
+export default withJsonFormsOneOfEnumProps( GutenbergToggleGroupOneOfControl )
