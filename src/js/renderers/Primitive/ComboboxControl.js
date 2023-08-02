@@ -15,9 +15,11 @@ import {
     __experimentalVStack as VStack,
 	Tooltip,	
     FlexItem,
+    SelectControl,
+    ComboboxControl
 } from '@wordpress/components';
 
-export const GutenbergToggleGroup = props => {
+export const GutenbergCombobox = props => {
 	const {
 		config,
 		id,
@@ -60,32 +62,41 @@ export const GutenbergToggleGroup = props => {
 				) }
 				</FlexItem>
 				<FlexItem>
-					<ToggleGroupControl 
-						value={ data }
-						isBlock
-						onChange={ onChange }
-					>
-						{options.map( ( option ) => (
-							<ToggleGroupControlOption 
-								value={ option.value }
-								key={ option.label }
-								label={ option.label }
-								disabled={ !enabled }
-							/>
-						))}
-					</ToggleGroupControl>
+                    { appliedUiSchemaOptions.autocomplete === false ? (
+                        <SelectControl
+                            value={ data }
+                            onChange={ onChange }
+                            options={[
+                                {
+                                    disabled: true,
+                                    label: 'Select an Option',
+                                    value: ''
+                                },
+                                ...options
+                            ]}
+                        />
+                    ) : (
+                        <ComboboxControl
+                            value={ data }
+                            onChange={ onChange }
+                            options={[
+                                ...options
+                            ]}
+                            allowReset={ false }
+                        />
+                    ) }
 				</FlexItem>
 			</VStack>
 		</>
 	)
 }
 
-export const GutenbergToggleGroupControl = props => {
-  	return <GutenbergToggleGroup {...props} />
+export const GutenbergComboboxControl = props => {
+  	return <GutenbergCombobox {...props} />
 }
 
-export const gutenbergToggleGroupTester = rankWith(
-	9,
-	and( isEnumControl, formatIs( "toggle-group" ) )
+export const gutenbergComboboxTester = rankWith(
+	8,
+	isEnumControl
 )
-export default withJsonFormsEnumProps( GutenbergToggleGroupControl )
+export default withJsonFormsEnumProps( GutenbergComboboxControl )

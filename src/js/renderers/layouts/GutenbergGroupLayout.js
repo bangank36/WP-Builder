@@ -9,8 +9,6 @@ import {
 	Card,
 	CardHeader,
 	CardBody,
-	CardFooter,
-	Text,
 	__experimentalHeading as Heading,
 } from '@wordpress/components';
   
