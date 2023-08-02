@@ -1,10 +1,10 @@
 import React from "react";
 import merge from "lodash/merge";
 import { 
-    isEnumControl, 
+    isOneOfEnumControl, 
     rankWith 
 } from "@jsonforms/core";
-import { withJsonFormsEnumProps } from "@jsonforms/react";
+import { withJsonFormsOneOfEnumProps } from "@jsonforms/react";
 
 import { isDescriptionHidden } from "@jsonforms/core";
 import {
@@ -15,7 +15,7 @@ import {
     ComboboxControl
 } from '@wordpress/components';
 
-export const GutenbergCombobox = props => {
+export const GutenbergComboboxOneOf = props => {
 	const {
 		config,
 		id,
@@ -88,11 +88,11 @@ export const GutenbergCombobox = props => {
 }
 
 export const GutenbergComboboxControl = props => {
-  	return <GutenbergCombobox {...props} />
+  	return <GutenbergComboboxOneOf {...props} />
 }
 
-export const gutenbergComboboxTester = rankWith(
+export const gutenbergComboboxOneOfTester = rankWith(
 	8,
-	isEnumControl
+	isOneOfEnumControl
 )
-export default withJsonFormsEnumProps( GutenbergComboboxControl )
+export default withJsonFormsOneOfEnumProps( GutenbergComboboxControl )
