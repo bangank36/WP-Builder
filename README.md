@@ -3,6 +3,7 @@ JSON Schema-based forms with Wordpress Components renderer
 
 ## Roadmap
 The goal of this project is to replace all controls in @jsonforms/material-renderers into @wordpress/components to take advantage of the full set of [custom controls](https://jsonforms.io/docs/renderer-sets/) such as: duotone picker, datetime picker...
+[Project view](https://github.com/users/bangank36/projects/1/views/5)
 Introduce the new Layout to display the nested object/array properties into `disclosure` views, bring the app-like UI for the generated forms ( eg: your android phone Settings screen )
 
 ### JSON Schema Features
