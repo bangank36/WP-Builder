@@ -16,6 +16,7 @@ import GutenbergComboboxControl, { gutenbergComboboxTester } from "../renderers/
 import GutenbergComboboxOneOfControl, { gutenbergComboboxOneOfTester } from "../renderers/Primitive/ComboboxOneOfControl";
 import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
 import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
+import GutenbergEnumArrayRenderer, { gutenbergEnumArrayRendererTester } from "../renderers/MultiEnumArrayControl";
 import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
 import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
 import GutenbergVerticalLayoutRenderer, { gutenbergVerticalLayoutTester } from "../renderers/layouts/GutenbergVerticalLayout";
@@ -135,6 +136,7 @@ const renderers = [
   { tester: gutenbergToggleGroupOneOfTester, renderer: GutenbergToggleGroupOneOfControl},
   { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
   { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
+  { tester: gutenbergEnumArrayRendererTester, renderer: GutenbergEnumArrayRenderer},
   // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
   { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer},
   { tester: gutenbergVerticalLayoutTester, renderer: GutenbergVerticalLayoutRenderer},

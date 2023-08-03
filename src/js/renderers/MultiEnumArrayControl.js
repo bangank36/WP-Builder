@@ -112,4 +112,3 @@ export const gutenbergEnumArrayRendererTester = rankWith(
 )
 
 export default withJsonFormsMultiEnumProps( GutenbergEnumArrayRenderer )
-  
