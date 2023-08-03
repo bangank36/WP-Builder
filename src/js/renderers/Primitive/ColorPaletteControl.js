@@ -120,7 +120,7 @@ const TextControl = (props) => {
 
 export const colorPaletteControlTester = rankWith(
   6, //increase rank as needed
-  and(isStringControl,or(formatIs('color'), optionIs('format', 'color')))
+  and( isStringControl, or( formatIs( 'color' ), optionIs( 'format', 'color' ) ) )
 );
 
 export default withJsonFormsControlProps(TextControl);
