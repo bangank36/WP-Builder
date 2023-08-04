@@ -24,6 +24,31 @@ import GutenbergVerticalLayoutRenderer, { gutenbergVerticalLayoutTester } from "
 import GutenbergHorizontalLayoutRenderer, { gutenbergHorizontalLayoutTester } from "../renderers/layouts/GutenbergHorizontalLayout";
 import GutenbergGroupLayoutRenderer, { gutenbergGroupLayoutTester } from "../renderers/layouts/GutenbergGroupLayout";
 
+import { defaultExample, getExamples } from '@jsonforms/examples';
+
+import { DropdownMenu, MenuGroup, MenuItem } from '@wordpress/components';
+import { more, arrowUp, arrowDown, trash } from '@wordpress/icons';
+
+const MyDropdownMenu = () => {
+  const examples = getExamples();
+  console.log(examples);
+
+  return (
+  <DropdownMenu icon={ more } label="Select a direction">
+      { ( { onClose } ) => (
+          <>
+              <MenuGroup>
+                  {  examples.map((example, index) => (
+                    <MenuItem key={index} onClick={ onClose }>
+                      {example.label}
+                    </MenuItem>
+                  ))}
+              </MenuGroup>
+          </>
+      ) }
+  </DropdownMenu>
+)};
+
 import {
   __experimentalGrid as Grid,
 } from '@wordpress/components';
@@ -104,7 +129,6 @@ const uischema = {
   "elements": [
     {
       "type": "Control",
-      "label": "Name",
       "scope": "#"
     }
   ]
@@ -161,6 +185,7 @@ export default function App() {
             setData(data);
           }}
         />
+        <MyDropdownMenu />
         <div>
           <pre>
           {JSON.stringify(data, null, 4)}
