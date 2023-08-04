@@ -5,6 +5,7 @@ import {
 } from "@jsonforms/vanilla-renderers";
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
+import IntegerControl, { integerControlTester } from "../renderers/Primitive/IntegerControl";
 import TextTranformControl, { textTransformControlTester } from "../renderers/Primitive/TextTransformControl";
 import DatepickerControl, { datepickerControlTester } from "../renderers/Primitive/DatepickerControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
@@ -126,6 +127,7 @@ const renderers = [
   ...materialRenderers,
   //register custom renderers
   { tester: textControlTester, renderer: TextControl },
+  { tester: integerControlTester, renderer: IntegerControl },
   { tester: textTransformControlTester, renderer: TextTranformControl },
   { tester: datepickerControlTester, renderer: DatepickerControl },
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
