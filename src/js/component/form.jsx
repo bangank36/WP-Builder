@@ -6,6 +6,7 @@ import {
 import { JsonForms } from "@jsonforms/react";
 import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
 import IntegerControl, { integerControlTester } from "../renderers/Primitive/IntegerControl";
+import NumberControl, { numberControlTester } from "../renderers/Primitive/NumberControl";
 import TextTranformControl, { textTransformControlTester } from "../renderers/Primitive/TextTransformControl";
 import DatepickerControl, { datepickerControlTester } from "../renderers/Primitive/DatepickerControl";
 import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
@@ -35,8 +36,12 @@ const schema = {
     address: {
       type: 'object',
       properties: {
-        street_address: { 
-          type: 'string',
+        houseNumber: { 
+          type: 'number',
+          maximum: 100,
+          minimum: 1,
+          default: 50,
+          multipleOf: 1
         },
         city: { type: 'string' },
         state: { type: 'string' },
@@ -128,6 +133,7 @@ const renderers = [
   //register custom renderers
   { tester: textControlTester, renderer: TextControl },
   { tester: integerControlTester, renderer: IntegerControl },
+  { tester: numberControlTester, renderer: NumberControl },
   { tester: textTransformControlTester, renderer: TextTranformControl },
   { tester: datepickerControlTester, renderer: DatepickerControl },
   { tester: multilineTextControlTester, renderer: MultilineTextControl },
