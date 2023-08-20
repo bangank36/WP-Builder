@@ -3,10 +3,10 @@ import {
     materialCells,
 } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
-import { issue_1948 as exampleData } from '@jsonforms/examples'; 
+import { layout as exampleData } from '@jsonforms/examples'; 
 
 export default {
-  title: 'Example/Form',
+  title: 'Jsonforms Examples/layout',
   component: JsonForms,
   parameters: {
     layout: 'padded',

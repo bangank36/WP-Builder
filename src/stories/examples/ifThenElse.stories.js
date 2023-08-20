@@ -3,10 +3,10 @@ import {
     materialCells,
 } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
-import { issue_1948 as exampleData } from '@jsonforms/examples'; 
+import { ifThenElse as exampleData } from '@jsonforms/examples'; 
 
 export default {
-  title: 'Example/Form',
+  title: 'Jsonforms Examples/ifThenElse',
   component: JsonForms,
   parameters: {
     layout: 'padded',
