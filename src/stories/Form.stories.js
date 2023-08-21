@@ -1,9 +1,8 @@
-import {
-    materialRenderers,
-    materialCells,
-} from "@jsonforms/material-renderers";
+import { materialRenderers, materialCells } from "@jsonforms/material-renderers";
+import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers';
+import { gutenbergRenderers } from '../js/renderers';
 import { JsonForms } from "@jsonforms/react";
-import { issue_1948 as exampleData } from '@jsonforms/examples'; 
+import { enumExample as exampleData } from '@jsonforms/examples'; 
 
 export default {
   title: 'Example/Form',
@@ -13,16 +12,44 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
+
   }
 };
 
-export const Primary = {
+export const ReactMaterial = {
   args: {
-    // assign schema if example has one
     ...( exampleData.schema ? { schema: exampleData.schema } : {} ),
     ...( exampleData.uischema ? { uischema: exampleData.uischema } : {} ),
     ...( exampleData.data ? { data: exampleData.data } : {} ),
     renderers: [ ...materialRenderers ],
     cells: [ ...materialCells ]
+  },
+};
+
+export const ReactVanilla = {
+  args: {
+    ...( exampleData.schema ? { schema: exampleData.schema } : {} ),
+    ...( exampleData.uischema ? { uischema: exampleData.uischema } : {} ),
+    ...( exampleData.data ? { data: exampleData.data } : {} ),
+    renderers: [ ...vanillaRenderers ],
+    cells: [ ...vanillaCells ]
+  },
+};
+
+console.log({
+  "type": "NavigatorLayout",
+  "label": "Address",
+  "elements": [
+    exampleData.uischema
+  ]
+});
+
+export const GutenbergRenderers = {
+  args: {
+    ...( exampleData.schema ? { schema: exampleData.schema } : {} ),
+    ...( exampleData.uischema ? exampleData.uischema : {} ),
+    ...( exampleData.data ? { data: exampleData.data } : {} ),
+    renderers: [ ...gutenbergRenderers ],
+    cells: [ ...vanillaCells ]
   },
 };

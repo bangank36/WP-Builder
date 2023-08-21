@@ -36,7 +36,7 @@ import {
   withJsonFormsArrayControlProps
 } from "@jsonforms/react"
 
-import { Context as NavigatorContext } from '../component/context';
+import { Context as NavigatorContext } from './NavigatorContext';
 
 import { chevronLeft, chevronRight } from '@wordpress/icons';
 import { isRTL, __ } from '@wordpress/i18n';

@@ -14,7 +14,7 @@ import {
     ctxDispatchToArrayControlProps
  } from '@jsonforms/react';
 import React, { useMemo, useContext, useEffect } from 'react';
-import { Context as NavigatorContext } from '../component/context';
+import { Context as NavigatorContext } from './NavigatorContext';
 import { resolvePathToRoute } from './util';
 
 import { chevronLeft, chevronRight } from '@wordpress/icons';

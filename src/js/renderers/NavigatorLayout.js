@@ -8,7 +8,7 @@ import {
     withJsonFormsLayoutProps,
     JsonFormsDispatch,
 } from "@jsonforms/react"
-import { Context as NavigatorContext } from '../component/context'
+import { Context as NavigatorContext } from './NavigatorContext'
 import { __ } from '@wordpress/i18n';
 import {
     __experimentalNavigatorProvider as NavigatorProvider,

@@ -4,7 +4,6 @@
   "engines": {
     "node": "16.x"
   },
-  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
