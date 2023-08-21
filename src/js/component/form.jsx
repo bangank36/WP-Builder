@@ -1,29 +1,8 @@
 import React, { useState } from "react";
-import {
-  vanillaRenderers as materialRenderers,
-  vanillaCells as materialCells,
-} from "@jsonforms/vanilla-renderers";
+import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers';
 import { JsonForms } from "@jsonforms/react";
-import TextControl, { textControlTester } from "../renderers/Primitive/TextControl";
-import IntegerControl, { integerControlTester } from "../renderers/Primitive/IntegerControl";
-import TextTranformControl, { textTransformControlTester } from "../renderers/Primitive/TextTransformControl";
-import DatepickerControl, { datepickerControlTester } from "../renderers/Primitive/DatepickerControl";
-import MultilineTextControl, { multilineTextControlTester } from "../renderers/Primitive/MultilineTextControl";
-import ColorPaletteTextControl, { colorPaletteControlTester } from "../renderers/Primitive/ColorPaletteControl";
-import BooleanCheckboxControl, { booleanCheckboxControlTester } from "../renderers/Primitive/BooleanCheckboxControl";
-import BooleanToggleControl, { booleanToggleControlTester } from "../renderers/Primitive/BooleanToggleControl";
-import GutenbergToggleGroupControl, { gutenbergToggleGroupTester } from "../renderers/Primitive/ToggleGroupControl";
-import GutenbergToggleGroupOneOfControl, { gutenbergToggleGroupOneOfTester } from "../renderers/Primitive/ToggleGroupOneOfControl";
-import GutenbergComboboxControl, { gutenbergComboboxTester } from "../renderers/Primitive/ComboboxControl";
-import GutenbergComboboxOneOfControl, { gutenbergComboboxOneOfTester } from "../renderers/Primitive/ComboboxOneOfControl";
-import GutenbergObjectRenderer, { gutenbergObjectControlTester } from "../renderers/ObjectRenderer";
-import GutenbergArrayRenderer, { gutenbergArrayControlTester } from "../renderers/ArrayControlRenderer";
-import GutenbergEnumArrayRenderer, { gutenbergEnumArrayRendererTester } from "../renderers/MultiEnumArrayControl";
-import PortedArrayRenderer, { portedArrayControlTester } from "../renderers/PortedArrayRenderer";
-import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } from "../renderers/NavigatorLayout";
-import GutenbergVerticalLayoutRenderer, { gutenbergVerticalLayoutTester } from "../renderers/layouts/GutenbergVerticalLayout";
-import GutenbergHorizontalLayoutRenderer, { gutenbergHorizontalLayoutTester } from "../renderers/layouts/GutenbergHorizontalLayout";
-import GutenbergGroupLayoutRenderer, { gutenbergGroupLayoutTester } from "../renderers/layouts/GutenbergGroupLayout";
+import { gutenbergRenderers } from '../renderers';
+import { enumExample as exampleData } from '@jsonforms/examples'; 
 
 import {
   __experimentalGrid as Grid,
@@ -124,28 +103,9 @@ const initialData = {
 
 // list of renderers declared outside the App component
 const renderers = [
-  ...materialRenderers,
+  ...vanillaRenderers,
   //register custom renderers
-  { tester: textControlTester, renderer: TextControl },
-  { tester: integerControlTester, renderer: IntegerControl },
-  { tester: textTransformControlTester, renderer: TextTranformControl },
-  { tester: datepickerControlTester, renderer: DatepickerControl },
-  { tester: multilineTextControlTester, renderer: MultilineTextControl },
-  { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
-  { tester: booleanToggleControlTester, renderer: BooleanToggleControl},
-  { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl},
-  { tester: gutenbergToggleGroupTester, renderer: GutenbergToggleGroupControl},
-  { tester: gutenbergComboboxTester, renderer: GutenbergComboboxControl},
-  { tester: gutenbergComboboxOneOfTester, renderer: GutenbergComboboxOneOfControl},
-  { tester: gutenbergToggleGroupOneOfTester, renderer: GutenbergToggleGroupOneOfControl},
-  { tester: gutenbergObjectControlTester, renderer: GutenbergObjectRenderer},
-  { tester: gutenbergArrayControlTester, renderer: GutenbergArrayRenderer},
-  { tester: gutenbergEnumArrayRendererTester, renderer: GutenbergEnumArrayRenderer},
-  // { tester: portedArrayControlTester, renderer: PortedArrayRenderer},
-  { tester: gutenbergNavigatorLayoutTester, renderer: GutenbergNavigatorlLayoutRenderer},
-  { tester: gutenbergVerticalLayoutTester, renderer: GutenbergVerticalLayoutRenderer},
-  { tester: gutenbergHorizontalLayoutTester, renderer: GutenbergHorizontalLayoutRenderer},
-  { tester: gutenbergGroupLayoutTester, renderer: GutenbergGroupLayoutRenderer}
+  ...gutenbergRenderers
 ];
 
 export default function App() {
@@ -154,11 +114,10 @@ export default function App() {
     <>
       <Grid columns={ 3 }>
         <JsonForms
-          schema={schema}
+          schema={exampleData.schema}
           uischema={uischema}
-          data={data}
           renderers={renderers}
-          cells={materialCells}
+          cells={vanillaCells}
           onChange={({ data, _errors }) => {
             setData(data);
           }}
