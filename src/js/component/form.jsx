@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { vanillaCells, vanillaRenderers } from '@jsonforms/vanilla-renderers';
 import { JsonForms } from "@jsonforms/react";
 import { gutenbergRenderers } from '../renderers';
-import { enumExample as exampleData } from '@jsonforms/examples'; 
 
 import {
   __experimentalGrid as Grid,
@@ -114,7 +113,7 @@ export default function App() {
     <>
       <Grid columns={ 3 }>
         <JsonForms
-          schema={exampleData.schema}
+          schema={schema}
           uischema={uischema}
           renderers={renderers}
           cells={vanillaCells}
