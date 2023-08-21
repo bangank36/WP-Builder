@@ -36,14 +36,6 @@ export const ReactVanilla = {
   },
 };
 
-console.log({
-  "type": "NavigatorLayout",
-  "label": "Address",
-  "elements": [
-    exampleData.uischema
-  ]
-});
-
 export const GutenbergRenderers = {
   args: {
     ...( exampleData.schema ? { schema: exampleData.schema } : {} ),
