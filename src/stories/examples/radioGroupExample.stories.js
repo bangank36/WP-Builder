@@ -12,7 +12,26 @@ export default {
   },
   tags: ['autodocs'],
   argTypes: {
-
+    schema: { 
+      control: false,
+      description: 'The JSON Schema describing the underlying data to the form.'
+    },
+    uischema: {
+      control: false,
+      description: 'A JSON describing the layout of the form.'
+    },
+    data: {
+      control: false,
+      description: 'Represents an object containing the data to be rendered in the form.'
+    },
+    renderers: {
+      control: false,
+      description: 'Available renderers that are used by JSON Forms when rendering.'
+    },
+    cells: {
+      control: false,
+      description: 'Renderers-alike but only represent the data to be displayed and nothing else.'
+    }
   }
 };
 
