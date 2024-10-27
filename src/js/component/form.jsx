@@ -10,350 +10,213 @@ import {
 const schema = {
   type: "object",
   properties: {
-    address: {
-      type: 'object',
+    basic: {
+      type: "object",
       properties: {
-        street_address: { 
-          type: 'string',
-        },
-        city: { type: 'string' },
-        state: { type: 'string' },
-        isOffice: { 
-          type: 'boolean',
-          description: 'Is this an office address?',
-        },
-        registeredDate: {
-          type: 'string',
-          format: 'date',
-        },
-        roofColor: {
-          type: 'string',
-          format: 'color',
-        },
-        country: {
-          type: 'object',
-          properties: {
-            name: { type: 'string' },
-          }
-        },
-        gender: {
+        design: {
           type: "string",
-          enum: [ "male", "female", "other" ],
-          description: "The gender of the user"
+          enum: ["simple"],
+          default: "simple"
         },
-        race: {
-          type: 'string',
-          oneOf: [
-            { const: 'asian', title: 'Asian' },
-            { const: 'latin', title: 'Latin' },
-          ],
+        theme: {
+          type: "string",
+          enum: ["auto"],
+          default: "auto"
         },
-        businessHours: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              date: { 
-                type: 'string',
-              },
-            }
-            
-          },
+        carouselTransition: {
+          type: "string",
+          enum: ["slide"],
+          default: "slide"
         },
+        enableDownload: {
+          type: "boolean",
+          default: false
+        },
+        carouselInfinite: {
+          type: "boolean",
+          default: true
+        },
+        initialThumbnail: {
+          type: "boolean",
+          default: true
+        }
       }
     },
-    business: {
-      type: 'object',
+    caption: {
+      type: "object",
       properties: {
-        job: {
-          type: 'string',
+        captionPosition: {
+          type: "string",
+          enum: ["overlay", "below"],
+          default: "overlay"
         },
-        experience: {
-          type: 'string',
-          maxLength: 5,
+        captionDisplay: {
+          type: "string",
+          enum: ["always", "hover", "none"],
+          default: "always"
+        },
+        hideSectionCaption: {
+          type: "boolean",
+          default: false
         }
-      },
+      }
     },
-    showOnHover: {
-      type: 'boolean',
-      description: 'Show Drawer panel on cart icon or link hover'
+    lightbox: {
+      type: "object",
+      properties: {
+        connectBlockLightbox: {
+          type: "boolean",
+          default: false
+        },
+        forceLightboxGallery: {
+          type: "boolean",
+          default: false
+        },
+        forceLightboxAutolayouts: {
+          type: "boolean",
+          default: false
+        },
+        showLightboxIndicator: {
+          type: "boolean",
+          default: false
+        },
+        lightboxifyPortfolio: {
+          type: "string",
+          default: ""
+        }
+      }
     },
-    position: {
-      type: 'string',
-      enum: ['right', 'left'],
-      description: 'Position of the drawer'
+    display: {
+      type: "object",
+      properties: {
+        idleTimeout: {
+          type: "string",
+          default: "5000"
+        },
+        forceToolbar: {
+          type: "boolean",
+          default: true
+        },
+        hiresZoom: {
+          type: "boolean",
+          default: true
+        },
+        zoomable: {
+          type: "boolean",
+          default: true
+        }
+      }
     },
-    width: {
-      type: 'string',
-      description: 'CSS valid drawer width'
-    },
-    height: {
-      type: 'string',
-      description: 'CSS valid drawer height'
-    },
-    margin: {
-      type: 'string',
-      description: 'CSS valid margin for drawer container'
-    },
-    effect: {
-      type: 'string',
-      enum: ['slide', 'fade'],
-      description: 'Appearing effect of the drawer'
-    },
-    effectDuration: {
-      type: 'string',
-      description: 'Appearing effect duration in ms or s'
-    },
-    effectEasing: {
-      type: 'string',
-      description: 'Valid CSS easing, like: ease, linear, cubic-bezier'
-    },
-    backgroundColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Drawer background color'
-    },
-    color: {
-      type: 'string',
-      format: 'color',
-      description: 'Drawer main text color'
-    },
-    basicFontSize: {
-      type: 'string',
-      description: 'Drawer base font size'
-    },
-    basicFontFamily: {
-      type: 'string',
-      description: 'Set the drawer font'
-    },
-    useCustomScrollbar: {
-      type: 'boolean',
-      description: 'Use custom scrollbar, works in webkit browsers only'
-    },
-    scrollbarTrackColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Webkit browsers scrolltrack color'
-    },
-    scrollbarThumbColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Webkit browsers scrollthumb color'
-    },
-    scrollbarWidth: {
-      type: 'string',
-      description: 'Webkit browsers scrollbar width'
-    },
-    overlayColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Overlay color to fade main site content'
-    },
-    closeIconSize: {
-      type: 'string',
-      description: 'Drawer close icon size'
-    },
-    closeIconColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Drawer close icon color'
-    },
-    closeIconBackgroundColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Drawer close icon background'
-    },
-    closeIconPosition: {
-      type: 'string',
-      enum: ['left', 'right'],
-      description: 'Position of close icon'
-    },
-    closeIconTop: {
-      type: 'string',
-      description: 'CSS top position of icon, 0 is default'
-    },
-    closeIconView: {
-      type: 'string',
-      enum: ['inside', 'outside'],
-      description: 'Close icon view'
-    },
-    headerText: {
-      type: 'string',
-      description: 'Set the text of Cart Header'
-    },
-    headerColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Header text color'
-    },
-    headerFontSize: {
-      type: 'string',
-      description: 'Header text font-size'
-    },
-    headerFontFamily: {
-      type: 'string',
-      description: 'Set the Cart Header font-family'
-    },
-    headerTextAlign: {
-      type: 'string',
-      enum: ['left', 'center', 'right'],
-      description: 'Header text-align'
-    },
-    headerMargin: {
-      type: 'string',
-      description: 'Valid CSS margin for header'
-    },
-    headerTextTransform: {
-      type: 'string',
-      enum: ['uppercase', 'capitalize', 'lowercase', 'none'],
-      description: 'Set valid CSS text-transform'
-    },
-    itemText: {
-      type: 'string',
-      description: 'Set own Item text'
-    },
-    quantityText: {
-      type: 'string',
-      description: 'Set own Quantity text'
-    },
-    productFontSize: {
-      type: 'string',
-      description: 'Set product title font size'
-    },
-    productFontFamily: {
-      type: 'string',
-      description: 'Set product title font-family'
-    },
-    productColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Set product title color'
-    },
-    variantFontSize: {
-      type: 'string',
-      description: 'Set product variant font size'
-    },
-    variantFontFamily: {
-      type: 'string',
-      description: 'Set product variant font-family'
-    },
-    variantColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Set variant options colors'
-    },
-    pricesPreText: {
-      type: 'string',
-      description: 'Add some text to prices'
-    },
-    pricesFontFamily: {
-      type: 'string',
-      description: 'Price font-family'
-    },
-    pricesFontSize: {
-      type: 'string',
-      description: 'Price font size'
-    },
-    pricesColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Price color'
-    },
-    subTotalAlign: {
-      type: 'string',
-      enum: ['left', 'center', 'right'],
-      description: 'Subtotal text-align'
-    },
-    subTotalFontSize: {
-      type: 'string',
-      description: 'Subtotal font-size'
-    },
-    subTotalFontFamily: {
-      type: 'string',
-      description: 'Subtotal font-family'
-    },
-    subTotalText: {
-      type: 'string',
-      description: 'Set the subtotal text'
-    },
-    subTotalColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Set the subtotal text color'
-    },
-    checkoutButtonText: {
-      type: 'string',
-      description: 'Set the text of checkout Button'
-    },
-    checkoutButtonFontSize: {
-      type: 'string',
-      description: 'Checkout button font-size'
-    },
-    checkoutButtonFontFamily: {
-      type: 'string',
-      description: 'Checkout button font-family'
-    },
-    checkoutButtonColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Checkout button color'
-    },
-    checkoutButtonBackgroundColor: {
-      type: 'string',
-      format: 'color',
-      description: 'Checkout button background color'
-    },
-    checkoutButtonAlign: {
-      type: 'string',
-      enum: ['left', 'center', 'right'],
-      description: 'Checkout button align'
-    },
-    showIfCartUpdated: {
-      type: 'boolean',
-      description: 'Show drawer if product was added/removed from cart'
-    },
-    restrictShowOnUpdateUrls: {
-      type: 'string',
-      description: 'URLs where you do not want Cart Drawer to appear after each cart update'
-    },
-    closeOnOverlayClick: {
-      type: 'boolean',
-      description: 'Close drawer if site or overlay is clicked'
-    },
-    onUpdateFunction: {
-      type: ['null', 'string'],
-      description: 'Function called on each cart update and on initial build, has drawer YUI element and cart JSON data in callback: function(el,data){}'
+    pdf: {
+      type: "object",
+      properties: {
+        proxy: {
+          type: "string",
+          enum: ["", "imgix", "imagekit", "gumlet", "google-viewer"],
+          default: ""
+        },
+        proxyUrl: {
+          type: "string",
+          default: ""
+        },
+        viewer: {
+          type: "string",
+          enum: ["basic", "native", "standard", "express"],
+          default: "standard"
+        },
+        useStockViewer: {
+          type: "boolean",
+          default: false
+        },
+        theme: {
+          type: "string",
+          enum: ["light", "dark"],
+          default: "light"
+        },
+        width: {
+          type: "string",
+          default: "1200"
+        },
+        height: {
+          type: "string",
+          default: "1200"
+        }
+      }
     }
-  },
-};
-
-const uischema = {
-  "type": "NavigatorLayout",
-  "label": "Address",
-  "elements": [
-    {
-      "type": "Control",
-      "label": "Name",
-      "scope": "#"
-    }
-  ]
-}
-
-const initialData = {
-  address: {
-    gender: "other",
-    comments: [{
-      comment: 'test'
-    },{
-      comment: 'test1'
-    }]
   }
 };
 
-// list of renderers declared outside the App component
+const uischema = {
+  type: "NavigatorLayout",
+  elements: [
+    {
+      type: "Control",
+      label: "Basic Settings",
+      scope: "#/properties/basic"
+    },
+    {
+      type: "Control",
+      label: "Caption Settings",
+      scope: "#/properties/caption"
+    },
+    {
+      type: "Control",
+      label: "Lightbox Settings",
+      scope: "#/properties/lightbox"
+    },
+    {
+      type: "Control",
+      label: "Display Settings",
+      scope: "#/properties/display"
+    },
+    {
+      type: "Control",
+      label: "PDF Settings",
+      scope: "#/properties/pdf"
+    }
+  ]
+};
+
+const initialData = {
+  basic: {
+    design: 'simple',
+    theme: 'auto',
+    carouselTransition: 'slide',
+    enableDownload: false,
+    carouselInfinite: true,
+    initialThumbnail: true
+  },
+  caption: {
+    captionPosition: 'overlay',
+    captionDisplay: 'always',
+    hideSectionCaption: false
+  },
+  lightbox: {
+    connectBlockLightbox: false,
+    forceLightboxGallery: false,
+    forceLightboxAutolayouts: false,
+    showLightboxIndicator: false,
+    lightboxifyPortfolio: ''
+  },
+  display: {
+    idleTimeout: '5000',
+    forceToolbar: true,
+    hiresZoom: true,
+    zoomable: true
+  },
+  pdf: {
+    proxy: "",
+    proxyUrl: "",
+    viewer: "standard",
+    useStockViewer: false,
+    theme: "light",
+    width: "1200",
+    height: "1200"
+  }
+};
+
 const renderers = [
   ...vanillaRenderers,
-  //register custom renderers
   ...gutenbergRenderers
 ];
 
@@ -361,19 +224,21 @@ export default function App() {
   const [data, setData] = useState(initialData);
   return (
     <>
-      <Grid columns={ 3 }>
+      <Grid columns={2}>
         <JsonForms
           schema={schema}
           uischema={uischema}
+          data={data}
           renderers={renderers}
           cells={vanillaCells}
-          onChange={({ data, _errors }) => {
+          onChange={({ data, errors }) => {
             setData(data);
+            console.log('Validation errors:', errors);
           }}
         />
         <div>
           <pre>
-          {JSON.stringify(data, null, 4)}
+            {JSON.stringify(data, null, 2)}
           </pre>
         </div>
       </Grid>
