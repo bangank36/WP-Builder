@@ -1,2 +1,5 @@
 /node_modules
 /public
+/isolated-block-editor
+/build-browser
+/certs
