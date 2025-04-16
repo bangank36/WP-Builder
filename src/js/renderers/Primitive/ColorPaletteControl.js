@@ -21,6 +21,7 @@ import {
 	ColorPicker,
 	SlotFillProvider, 
 	Popover,
+	Tooltip,
 	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
 

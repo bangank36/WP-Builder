@@ -10,100 +10,232 @@ import {
 const schema = {
   type: "object",
   properties: {
-    address: {
-      type: 'object',
+    basic: {
+      type: "object",
       properties: {
-        street_address: { 
-          type: 'string',
-        },
-        city: { type: 'string' },
-        state: { type: 'string' },
-        isOffice: { 
-          type: 'boolean',
-          description: 'Is this an office address?',
-        },
-        registeredDate: {
-          type: 'string',
-          format: 'date',
-        },
-        roofColor: {
-          type: 'string',
-          format: 'color',
-        },
-        country: {
-          type: 'object',
-          properties: {
-            name: { type: 'string' },
-          }
-        },
-        gender: {
+        design: {
           type: "string",
-          enum: [ "male", "female", "other" ],
-          description: "The gender of the user"
+          enum: ["simple"],
+          default: "simple"
         },
-        race: {
-          type: 'string',
-          oneOf: [
-            { const: 'asian', title: 'Asian' },
-            { const: 'latin', title: 'Latin' },
-          ],
+        theme: {
+          type: "string",
+          enum: ["auto", "dark"],
+          default: "auto"
         },
-        businessHours: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              date: { 
-                type: 'string',
-              },
-            }
-            
-          },
+        carouselTransition: {
+          type: "string",
+          enum: ["slide"],
+          default: "slide"
         },
+        enableDownload: {
+          type: "boolean",
+          default: false
+        },
+        carouselInfinite: {
+          type: "boolean",
+          default: true
+        },
+        initialThumbnail: {
+          type: "boolean",
+          default: true
+        }
       }
     },
-    business: {
-      type: 'object',
+    caption: {
+      type: "object",
       properties: {
-        job: {
-          type: 'string',
+        captionPosition: {
+          type: "string",
+          enum: ["overlay", "below"],
+          default: "overlay"
         },
-        experience: {
-          type: 'string',
-          maxLength: 5,
+        captionDisplay: {
+          type: "string",
+          enum: ["always", "hover", "none"],
+          default: "always"
         },
-      },
+        hideSectionCaption: {
+          type: "boolean",
+          default: false
+        }
+      }
+    },
+    lightbox: {
+      type: "object",
+      properties: {
+        connectBlockLightbox: {
+          type: "boolean",
+          default: false
+        },
+        forceLightboxGallery: {
+          type: "boolean",
+          default: false
+        },
+        forceLightboxAutolayouts: {
+          type: "boolean",
+          default: false
+        },
+        showLightboxIndicator: {
+          type: "boolean",
+          default: false
+        },
+        lightboxifyPortfolio: {
+          type: "string",
+          default: ""
+        }
+      }
+    },
+    display: {
+      type: "object",
+      properties: {
+        idleTimeout: {
+          type: "integer",
+          title: "Idle Timeout (ms)",
+          description: "Time in milliseconds before the interface becomes idle",
+          default: 5000,
+          minimum: 1000,
+          maximum: 20000,
+          multipleOf: 1000
+        },
+        forceToolbar: {
+          type: "boolean",
+          default: true
+        },
+        hiresZoom: {
+          type: "boolean",
+          default: true
+        },
+        zoomable: {
+          type: "boolean",
+          default: true
+        }
+      }
+    },
+    pdf: {
+      type: "object",
+      properties: {
+        proxy: {
+          type: "string",
+          enum: ["", "imgix", "imagekit", "gumlet", "google-viewer"],
+          default: ""
+        },
+        proxyUrl: {
+          type: "string",
+          default: ""
+        },
+        viewer: {
+          type: "string",
+          enum: ["basic", "native", "standard", "express"],
+          default: "standard"
+        },
+        useStockViewer: {
+          type: "boolean",
+          default: false
+        },
+        theme: {
+          type: "string",
+          enum: ["light", "dark"],
+          default: "light"
+        },
+        width: {
+          type: "string",
+          default: "1200"
+        },
+        height: {
+          type: "string",
+          default: "1200"
+        }
+      }
     }
-  },
-};
-
-const uischema = {
-  "type": "NavigatorLayout",
-  "label": "Address",
-  "elements": [
-    {
-      "type": "Control",
-      "label": "Name",
-      "scope": "#"
-    }
-  ]
-}
-
-const initialData = {
-  address: {
-    gender: "other",
-    comments: [{
-      comment: 'test'
-    },{
-      comment: 'test1'
-    }]
   }
 };
 
-// list of renderers declared outside the App component
+const uischema = {
+  type: "NavigatorLayout",
+  elements: [
+    {
+      type: "Control",
+      label: "Basic Settings",
+      scope: "#/properties/basic",
+      options: {
+        detail: {
+          theme: {
+            control: "ToggleGroupControl"
+          }
+        }
+      }
+    },
+    {
+      type: "Control",
+      label: "Caption Settings",
+      scope: "#/properties/caption"
+    },
+    {
+      type: "Control",
+      label: "Lightbox Settings",
+      scope: "#/properties/lightbox"
+    },
+    {
+      type: "Control",
+      label: "Display Settings",
+      scope: "#/properties/display",
+      options: {
+        detail: {
+          idleTimeout: {
+            control: "SliderControl"
+          }
+        }
+      }
+    },
+    {
+      type: "Control",
+      label: "PDF Settings",
+      scope: "#/properties/pdf"
+    }
+  ]
+};
+
+const initialData = {
+  basic: {
+    design: 'simple',
+    theme: 'auto',
+    carouselTransition: 'slide',
+    enableDownload: false,
+    carouselInfinite: true,
+    initialThumbnail: true
+  },
+  caption: {
+    captionPosition: 'overlay',
+    captionDisplay: 'always',
+    hideSectionCaption: false
+  },
+  lightbox: {
+    connectBlockLightbox: false,
+    forceLightboxGallery: false,
+    forceLightboxAutolayouts: false,
+    showLightboxIndicator: false,
+    lightboxifyPortfolio: ''
+  },
+  display: {
+    idleTimeout: 5000,
+    forceToolbar: true,
+    hiresZoom: true,
+    zoomable: true
+  },
+  pdf: {
+    proxy: "",
+    proxyUrl: "",
+    viewer: "standard",
+    useStockViewer: false,
+    theme: "light",
+    width: "1200",
+    height: "1200"
+  }
+};
+
 const renderers = [
   ...vanillaRenderers,
-  //register custom renderers
   ...gutenbergRenderers
 ];
 
@@ -111,19 +243,21 @@ export default function App() {
   const [data, setData] = useState(initialData);
   return (
     <>
-      <Grid columns={ 3 }>
+      <Grid columns={2}>
         <JsonForms
           schema={schema}
           uischema={uischema}
+          data={data}
           renderers={renderers}
           cells={vanillaCells}
-          onChange={({ data, _errors }) => {
+          onChange={({ data, errors }) => {
             setData(data);
+            console.log('Validation errors:', errors);
           }}
         />
         <div>
           <pre>
-          {JSON.stringify(data, null, 4)}
+            {JSON.stringify(data, null, 2)}
           </pre>
         </div>
       </Grid>
