@@ -1,0 +1,47 @@
+.wp-builder-container {
+  /* Define CSS variables for theming */
+  --wp-builder-primary-color: #0085ba;
+  --wp-builder-secondary-color: #0073a1;
+
+  /* Base styles */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1e1e1e;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+
+  .wp-builder-header {
+    margin-bottom: 15px;
+
+    h2 {
+      margin: 0;
+      color: var(--wp-builder-primary-color);
+    }
+  }
+
+  .wp-builder-content {
+    margin-bottom: 15px;
+
+    .wp-builder-textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+  }
+
+  .wp-builder-footer {
+    .wp-builder-save-button {
+      background-color: var(--wp-builder-primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--wp-builder-secondary-color);
+      }
+    }
+  }
+}

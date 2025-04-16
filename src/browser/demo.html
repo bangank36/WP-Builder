@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WP Builder Form Demo</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f0f1;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      color: #1e1e1e;
+    }
+
+    h1 {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    .demo-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+    }
+
+    .demo-container {
+      min-height: 400px;
+      margin-top: 20px;
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      padding: 10px;
+    }
+
+    button {
+      background-color: #0085ba;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #006799;
+    }
+
+    .output {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+
+  <!-- Load React -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Load WP Builder styles -->
+  <link rel="stylesheet" href="/build-browser/core.css">
+  <link rel="stylesheet" href="/build-browser/wp-builder.css">
+  <link rel="stylesheet" href="/build-browser/wordpress-components.css">
+</head>
+<body>
+  <div class="container">
+    <h1>WP Builder Form Demo</h1>
+    <p>This demo showcases the WP Builder Form component with JSONForms and Gutenberg renderers.</p>
+
+    <!-- Main Demo -->
+    <div class="demo-section">
+      <h2>Form Demo</h2>
+      <p>A form with JSONForms and Gutenberg renderers.</p>
+      <div id="main-demo" class="demo-container"></div>
+      <div class="output" id="form-output">Form data will appear here when changed</div>
+    </div>
+  </div>
+
+  <!-- Load WP Builder scripts -->
+  <script src="/build-browser/wordpress-components.js"></script>
+  <script src="/build-browser/wp-builder.js"></script>
+
+  <!-- Check if wpBuilder is defined -->
+  <script>
+    window.addEventListener('load', function() {
+      if (typeof wpBuilder === 'undefined') {
+        console.error('wpBuilder is not defined. Check script loading.');
+        document.body.innerHTML += '<div style="color: red; padding: 20px; background: #ffeeee; margin: 20px; border: 1px solid #ff0000;">Error: wpBuilder is not defined. Check browser console for details.</div>';
+      } else {
+        console.log('wpBuilder loaded successfully:', wpBuilder);
+      }
+    });
+  </script>
+
+  <script>
+    // Initialize demo when the page is fully loaded
+    window.addEventListener('load', function() {
+      try {
+        // Main demo
+        const mainDemo = document.getElementById('main-demo');
+        const formOutput = document.getElementById('form-output');
+
+        if (wpBuilder && mainDemo) {
+          wpBuilder.attachForm(mainDemo, {
+            onChange: (data) => {
+              console.log('Form data:', data);
+              formOutput.textContent = JSON.stringify(data, null, 2);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error initializing demo:', error);
+        document.body.innerHTML += `<div style="color: red; padding: 20px; background: #ffeeee; margin: 20px; border: 1px solid #ff0000;">Error initializing demo: ${error.message}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>

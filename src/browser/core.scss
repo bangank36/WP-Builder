@@ -1,0 +1,46 @@
+/* Core styles for the WP-Builder component */
+
+/* Import WordPress component styles */
+@import '@wordpress/components/build-style/style.css';
+
+/* Reset and base styles */
+.wp-builder-root {
+  box-sizing: border-box;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  button, input, select, textarea {
+    font-family: inherit;
+  }
+
+  /* Ensure WordPress components are properly styled */
+  .components-panel {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+  }
+
+  .components-panel__body {
+    border-top: 1px solid #e0e0e0;
+    padding: 16px;
+  }
+
+  .components-panel__body-title {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  /* Fix for toggle controls */
+  .components-form-toggle {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Fix for slider controls */
+  .components-range-control {
+    width: 100%;
+  }
+}
