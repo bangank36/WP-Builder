@@ -5,7 +5,7 @@ import {
 	isObjectControl,
 	rankWith,
 } from '@jsonforms/core';
-import { 
+import {
   	withJsonFormsDetailProps,
  } from '@jsonforms/react';
 import React, { useMemo, useContext, useEffect } from 'react';
@@ -62,6 +62,32 @@ export const GutenbergObjectRenderer = ({
 		if ( !route ) {
 		return;
 		}
+
+		// Apply detail options from parent uischema to the detail UI schema
+		if (uischema.options && uischema.options.detail) {
+			// For each property in the schema, check if there's a corresponding option in detail
+			if (schema.properties) {
+				Object.keys(schema.properties).forEach(propName => {
+					// If there's a detail option for this property
+					if (uischema.options.detail[propName]) {
+						// Find the corresponding element in the detail UI schema
+						const elements = detailUiSchema.elements || [];
+						const elementIndex = elements.findIndex(element =>
+							element.scope && element.scope.endsWith(propName)
+						);
+
+						if (elementIndex !== -1) {
+							// Apply the options to the element
+							elements[elementIndex].options = {
+								...elements[elementIndex].options,
+								...uischema.options.detail[propName]
+							};
+						}
+					}
+				});
+			}
+		}
+
 		// Use the callback since the new state is based on the previous state
 		setScreenContent(prevScreenContent => ( {
 		...prevScreenContent,

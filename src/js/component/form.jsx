@@ -20,7 +20,7 @@ const schema = {
         },
         theme: {
           type: "string",
-          enum: ["auto"],
+          enum: ["auto", "dark"],
           default: "auto"
         },
         carouselTransition: {
@@ -90,8 +90,13 @@ const schema = {
       type: "object",
       properties: {
         idleTimeout: {
-          type: "string",
-          default: "5000"
+          type: "integer",
+          title: "Idle Timeout (ms)",
+          description: "Time in milliseconds before the interface becomes idle",
+          default: 5000,
+          minimum: 1000,
+          maximum: 20000,
+          multipleOf: 1000
         },
         forceToolbar: {
           type: "boolean",
@@ -152,7 +157,14 @@ const uischema = {
     {
       type: "Control",
       label: "Basic Settings",
-      scope: "#/properties/basic"
+      scope: "#/properties/basic",
+      options: {
+        detail: {
+          theme: {
+            control: "ToggleGroupControl"
+          }
+        }
+      }
     },
     {
       type: "Control",
@@ -167,7 +179,14 @@ const uischema = {
     {
       type: "Control",
       label: "Display Settings",
-      scope: "#/properties/display"
+      scope: "#/properties/display",
+      options: {
+        detail: {
+          idleTimeout: {
+            control: "SliderControl"
+          }
+        }
+      }
     },
     {
       type: "Control",
@@ -199,7 +218,7 @@ const initialData = {
     lightboxifyPortfolio: ''
   },
   display: {
-    idleTimeout: '5000',
+    idleTimeout: 5000,
     forceToolbar: true,
     hiresZoom: true,
     zoomable: true

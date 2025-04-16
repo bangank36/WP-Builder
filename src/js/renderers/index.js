@@ -18,8 +18,20 @@ import GutenbergNavigatorlLayoutRenderer, { gutenbergNavigatorLayoutTester } fro
 import GutenbergVerticalLayoutRenderer, { gutenbergVerticalLayoutTester } from "./layouts/GutenbergVerticalLayout";
 import GutenbergHorizontalLayoutRenderer, { gutenbergHorizontalLayoutTester } from "./layouts/GutenbergHorizontalLayout";
 import GutenbergGroupLayoutRenderer, { gutenbergGroupLayoutTester } from "./layouts/GutenbergGroupLayout";
+import SliderControl from './Primitive/SliderControl';
+import { rankWith, and, isControl, optionIs } from '@jsonforms/core';
+import { or } from '@jsonforms/core';
+
+export const sliderControlTester = rankWith(
+    20,
+    and(
+        isControl,
+        optionIs('control', 'SliderControl')
+    )
+);
 
 export const gutenbergRenderers = [
+    { tester: sliderControlTester, renderer: SliderControl },
     { tester: textControlTester, renderer: TextControl },
     { tester: integerControlTester, renderer: IntegerControl },
     { tester: textTransformControlTester, renderer: TextTranformControl },
