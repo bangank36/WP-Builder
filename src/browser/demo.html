@@ -3,69 +3,179 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WP Builder Form Demo</title>
+  <title>WP Builder Schema Editor</title>
   <style>
+    :root {
+      --primary-color: #0085ba;
+      --primary-hover: #006799;
+      --border-color: #ddd;
+      --background-color: #f0f0f1;
+      --sidebar-width: 40%;
+      --preview-width: 60%;
+      --header-height: 60px;
+      --tab-height: 40px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       margin: 0;
-      padding: 20px;
-      background-color: #f0f0f1;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: white;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    h1, h2 {
+      padding: 0;
+      background-color: var(--background-color);
       color: #1e1e1e;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    h1 {
-      border-bottom: 1px solid #eee;
-      padding-bottom: 10px;
+    .app-header {
+      height: var(--header-height);
+      background-color: white;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      position: relative;
     }
 
-    .demo-section {
-      margin-bottom: 40px;
+    .app-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .app-container {
+      display: flex;
+      height: calc(100vh - var(--header-height));
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: white;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .preview-panel {
+      width: var(--preview-width);
+      background-color: var(--background-color);
       padding: 20px;
-      border: 1px solid #eee;
-      border-radius: 4px;
+      overflow: auto;
     }
 
-    .demo-container {
-      min-height: 400px;
-      margin-top: 20px;
-      border: 1px dashed #ccc;
-      border-radius: 4px;
-      padding: 10px;
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      height: var(--tab-height);
     }
 
-    button {
-      background-color: #0085ba;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
+    .tab {
+      padding: 10px 20px;
       cursor: pointer;
-      margin-right: 10px;
-      margin-bottom: 10px;
+      border-bottom: 2px solid transparent;
+      font-weight: 500;
     }
 
-    button:hover {
-      background-color: #006799;
+    .tab.active {
+      border-bottom-color: var(--primary-color);
+      color: var(--primary-color);
     }
 
-    .output {
-      margin-top: 20px;
-      padding: 15px;
+    .tab-content {
+      display: none;
+      height: calc(100% - var(--tab-height));
+      overflow: auto;
+      padding: 20px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .configurator {
+      height: 100%;
+    }
+
+    .code-view {
+      height: 100%;
+    }
+
+    .code-container {
       background-color: #f8f9fa;
       border-radius: 4px;
+      padding: 15px;
       font-family: monospace;
+      white-space: pre-wrap;
+      height: calc(100% - 40px);
+      overflow: auto;
+      border: 1px solid var(--border-color);
+    }
+
+    .preview-container {
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .preview-header {
+      padding: 15px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 500;
+    }
+
+    .preview-content {
+      flex: 1;
+      padding: 20px;
+      overflow: auto;
+    }
+
+    .preview-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .placeholder-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #666;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .placeholder-message svg {
+      margin-bottom: 20px;
+      color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+
+      .sidebar, .preview-panel {
+        width: 100%;
+        height: 50%;
+      }
+
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
     }
   </style>
 
@@ -79,16 +189,46 @@
   <link rel="stylesheet" href="/build-browser/wordpress-components.css">
 </head>
 <body>
-  <div class="container">
-    <h1>WP Builder Form Demo</h1>
-    <p>This demo showcases the WP Builder Form component with JSONForms and Gutenberg renderers.</p>
+  <header class="app-header">
+    <h1 class="app-title">WP Builder Schema Editors</h1>
+  </header>
 
-    <!-- Main Demo -->
-    <div class="demo-section">
-      <h2>Form Demo</h2>
-      <p>A form with JSONForms and Gutenberg renderers.</p>
-      <div id="main-demo" class="demo-container"></div>
-      <div class="output" id="form-output">Form data will appear here when changed</div>
+  <div class="app-container">
+    <div class="sidebar">
+      <div class="tabs">
+        <div class="tab active" data-tab="configurator">Configurator</div>
+        <div class="tab" data-tab="code">Code</div>
+      </div>
+
+      <div class="tab-content active" id="configurator-tab">
+        <div class="configurator">
+          <div id="configurator-form"></div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="code-tab">
+        <div class="code-view">
+          <h3>Generated JSON</h3>
+          <div class="code-container" id="json-output">// JSON will appear here when form is changed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview-panel">
+      <div class="preview-container">
+        <div class="preview-header">Preview</div>
+        <div class="preview-content">
+          <div class="placeholder-message">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <p>Preview will be displayed here</p>
+            <p>Coming soon...</p>
+          </div>
+          <!-- <iframe id="preview-iframe" class="preview-iframe" src="about:blank"></iframe> -->
+        </div>
+      </div>
     </div>
   </div>
 
@@ -109,24 +249,59 @@
   </script>
 
   <script>
+    // Tab switching functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabs = document.querySelectorAll('.tab');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+
+          // Add active class to clicked tab
+          this.classList.add('active');
+
+          // Hide all tab content
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+
+          // Show the corresponding tab content
+          const tabId = this.getAttribute('data-tab');
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+        });
+      });
+    });
+
     // Initialize demo when the page is fully loaded
     window.addEventListener('load', function() {
       try {
-        // Main demo
-        const mainDemo = document.getElementById('main-demo');
-        const formOutput = document.getElementById('form-output');
+        // Main configurator form
+        const configuratorForm = document.getElementById('configurator-form');
+        const jsonOutput = document.getElementById('json-output');
 
-        if (wpBuilder && mainDemo) {
-          wpBuilder.attachForm(mainDemo, {
+        if (wpBuilder && configuratorForm) {
+          wpBuilder.attachForm(configuratorForm, {
+            showPreview: false, // Hide the JSON preview in the form component
             onChange: (data) => {
               console.log('Form data:', data);
-              formOutput.textContent = JSON.stringify(data, null, 2);
+              jsonOutput.textContent = JSON.stringify(data, null, 2);
+
+              // In the future, we could update the preview iframe here
+              // const previewIframe = document.getElementById('preview-iframe');
+              // updatePreview(previewIframe, data);
             }
           });
         }
+
+        // Function to update the preview (placeholder for now)
+        function updatePreview(iframe, data) {
+          // This would be implemented in the future
+          console.log('Preview would be updated with:', data);
+        }
       } catch (error) {
-        console.error('Error initializing demo:', error);
-        document.body.innerHTML += `<div style="color: red; padding: 20px; background: #ffeeee; margin: 20px; border: 1px solid #ff0000;">Error initializing demo: ${error.message}</div>`;
+        console.error('Error initializing schema editor:', error);
+        document.body.innerHTML += `<div style="color: red; padding: 20px; background: #ffeeee; margin: 20px; border: 1px solid #ff0000;">Error initializing schema editor: ${error.message}</div>`;
       }
     });
   </script>
