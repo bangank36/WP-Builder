@@ -1,8 +1,4 @@
-// Only import wdyr in development mode
-if (process.env.NODE_ENV !== 'production') {
-  // import('./wdyr');
-}
-
+import './wdyr'; // <--- first import
 //import react into the bundle
 import React from "react";
 import ReactDOM from "react-dom";
