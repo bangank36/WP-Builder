@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
@@ -39,10 +40,10 @@ module.exports = {
               loader: "css-loader" // translates CSS into CommonJS
           }]
         }, //css only files
-        { 
+        {
           test: /\.(png|svg|jpg|gif)$/, use: {
             loader: 'file-loader',
-            options: { name: '[name].[ext]' } 
+            options: { name: '[name].[ext]' }
           }
         }, //for images
         { test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)|\.svg($|\?)/, use: ['file-loader'] } //for fonts
@@ -57,12 +58,24 @@ module.exports = {
     hot: true,
     allowedHosts: "all",
     historyApiFallback: true,
-    static: {
-      directory: path.resolve(__dirname, "dist"),
-    },
+    static: [
+      {
+        directory: path.resolve(__dirname, "public"),
+      },
+      {
+        directory: path.resolve(__dirname, "build-browser"),
+        publicPath: '/build-browser',
+      }
+    ],
     client: {
       webSocketURL: publicUrl
     },
+    // HTTPS configuration
+    https: fs.existsSync(path.resolve(__dirname, 'certs/localhost.key')) &&
+           fs.existsSync(path.resolve(__dirname, 'certs/localhost.crt')) ? {
+      key: fs.readFileSync(path.resolve(__dirname, 'certs/localhost.key')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'certs/localhost.crt')),
+    } : false,
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
