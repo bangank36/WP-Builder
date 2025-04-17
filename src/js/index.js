@@ -1,6 +1,6 @@
 // Only import wdyr in development mode
 if (process.env.NODE_ENV !== 'production') {
-  import('./wdyr');
+  // import('./wdyr');
 }
 
 //import react into the bundle
