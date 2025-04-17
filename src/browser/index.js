@@ -32,7 +32,7 @@ const defaultSettings = {
  * @param {boolean} options.showPreview Whether to show the JSON preview
  * @param {Function} options.onChange Callback when form data changes
  */
-function attachForm(container, options = {}) {
+function attachConfigurator(container, options = {}) {
   if (!container || !(container instanceof HTMLElement)) {
     console.error('WP Builder Form requires a valid container element');
     return null;
@@ -96,7 +96,7 @@ function attachToForm(form, options = {}) {
   form.appendChild(hiddenInput);
 
   // Attach the form with onChange handler to update the hidden input
-  return attachForm(container, {
+  return attachConfigurator(container, {
     ...options,
     onChange: (data) => {
       hiddenInput.value = JSON.stringify(data);
@@ -110,7 +110,7 @@ function attachToForm(form, options = {}) {
 // Add to window object for global access
 try {
   window.wpBuilder = {
-    attachForm,
+    attachConfigurator,
     attachToForm
   };
   console.log('wpBuilder object initialized successfully');
@@ -119,4 +119,4 @@ try {
 }
 
 // Export for module usage
-export { attachForm, attachToForm };
+export { attachConfigurator, attachToForm };

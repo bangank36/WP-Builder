@@ -12,7 +12,7 @@ The browser-ready implementation allows you to:
 
 ## Key Files
 
-- **index.js**: Main entry point that exports the `attachForm` and `attachToForm` functions
+- **index.js**: Main entry point that exports the `attachConfigurator` and `attachToForm` functions
 - **FormComponent.js**: React component that renders the JSONForms with Gutenberg renderers
 - **demo.html**: Example implementation showing how to use the components
 - **style.scss** and **form-style.scss**: Isolated styles for the components
@@ -41,7 +41,7 @@ Then use the global `wpBuilder` object to attach forms:
 
 ```javascript
 // Attach to a container element
-wpBuilder.attachForm(document.getElementById('form-container'), {
+wpBuilder.attachConfigurator(document.getElementById('form-container'), {
   onChange: (data) => {
     console.log('Form data:', data);
   }
