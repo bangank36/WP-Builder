@@ -161,9 +161,6 @@ const uischema = {
           type: "Control",
           label: "Theme",
           scope: "#/properties/theme",
-          options: {
-            control: "ToggleGroupControl"
-          }
         },
         {
           type: "Control",
@@ -195,9 +192,6 @@ const uischema = {
           type: "Control",
           label: "Caption Position",
           scope: "#/properties/captionPosition",
-          options: {
-            format: "radio"
-          }
         },
         {
           type: "Control",
