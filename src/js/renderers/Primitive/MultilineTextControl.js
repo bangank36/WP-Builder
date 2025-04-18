@@ -1,11 +1,12 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isMultiLineControl } from "@jsonforms/core";
-import { 
+import {
 	__experimentalVStack as VStack,
-	Tooltip,	
+	Tooltip,
 	FlexItem,
-	TextareaControl
+	TextareaControl,
+	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
 
 const TextControl = ( props ) => {
@@ -17,33 +18,35 @@ const TextControl = ( props ) => {
 		data,
 		handleChange
 	} = props;
-  
-  return ( 
+
+  return (
     <>
-        <VStack justify="space-between">
-            <FlexItem>
-				{ description ? (
-					<Tooltip text={ description }>
-					<label htmlFor={ id }>
-						{ label }
-					</label>
-				</Tooltip>
-				) : ( 
-					<label htmlFor={ id }>
-						{ label }
-					</label> 
-				) }
-            </FlexItem>
-            <FlexItem>
-				<TextareaControl
-					value={ data || '' }
-					onChange={( value ) =>
-						handleChange( path, value === '' ? undefined : value )
-					}
-					rows={4}
-				/> 
-            </FlexItem>
-        </VStack>
+        <Spacer paddingY={ 2 } marginBottom={ 0 }>
+            <VStack justify="space-between">
+                <FlexItem>
+                    { description ? (
+                        <Tooltip text={ description }>
+                        <label htmlFor={ id }>
+                            { label }
+                        </label>
+                    </Tooltip>
+                    ) : (
+                        <label htmlFor={ id }>
+                            { label }
+                        </label>
+                    ) }
+                </FlexItem>
+                <FlexItem>
+                    <TextareaControl
+                        value={ data || '' }
+                        onChange={( value ) =>
+                            handleChange( path, value === '' ? undefined : value )
+                        }
+                        rows={4}
+                    />
+                </FlexItem>
+            </VStack>
+        </Spacer>
     </>
   )
 };
