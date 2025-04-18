@@ -2,8 +2,10 @@ import React from "react";
 import merge from "lodash/merge";
 import { 
     and, 
+	or,
     isEnumControl, 
     formatIs, 
+	optionIs,
     rankWith 
 } from "@jsonforms/core";
 import { withJsonFormsEnumProps } from "@jsonforms/react";
@@ -86,6 +88,9 @@ export const GutenbergToggleGroupControl = props => {
 
 export const gutenbergToggleGroupTester = rankWith(
 	9,
-	and( isEnumControl, formatIs( "toggle-group" ) )
+	and( 
+		isEnumControl,
+		or(formatIs('toggle-group'), optionIs('format', 'toggle-group'))
+	)
 )
 export default withJsonFormsEnumProps( GutenbergToggleGroupControl )

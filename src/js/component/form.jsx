@@ -10,111 +10,105 @@ import {
 const schema = {
   type: "object",
   properties: {
-    basic: {
-      type: "object",
-      properties: {
-        design: {
-          type: "string",
-          enum: ["simple"],
-          default: "simple"
-        },
-        theme: {
-          type: "string",
-          enum: ["auto", "dark"],
-          default: "auto"
-        },
-        carouselTransition: {
-          type: "string",
-          enum: ["slide"],
-          default: "slide"
-        },
-        enableDownload: {
-          type: "boolean",
-          default: false
-        },
-        carouselInfinite: {
-          type: "boolean",
-          default: true
-        },
-        initialThumbnail: {
-          type: "boolean",
-          default: true
-        }
-      }
+    design: {
+      type: "string",
+      enum: ["simple", "extended", "classic"],
+      default: "simple",
+      "format": "toggle-group"
     },
-    caption: {
-      type: "object",
-      properties: {
-        captionPosition: {
-          type: "string",
-          enum: ["overlay", "below"],
-          default: "overlay"
-        },
-        captionDisplay: {
-          type: "string",
-          enum: ["always", "hover", "none"],
-          default: "always"
-        },
-        hideSectionCaption: {
-          type: "boolean",
-          default: false
-        }
-      }
+    theme: {
+      type: "string",
+      enum: ["auto", "light", "dark"],
+      default: "auto",
+      "format": "toggle-group"
     },
-    lightbox: {
-      type: "object",
-      properties: {
-        connectBlockLightbox: {
-          type: "boolean",
-          default: false
-        },
-        forceLightboxGallery: {
-          type: "boolean",
-          default: false
-        },
-        forceLightboxAutolayouts: {
-          type: "boolean",
-          default: false
-        },
-        showLightboxIndicator: {
-          type: "boolean",
-          default: false
-        },
-        lightboxifyPortfolio: {
-          type: "string",
-          default: ""
-        }
-      }
+    carouselTransition: {
+      type: "string",
+      enum: ["slide","classic","crossfade","fade"],
+      default: "slide",
+      "format": "toggle-group"
     },
-    display: {
-      type: "object",
-      properties: {
-        idleTimeout: {
-          type: "integer",
-          title: "Idle Timeout (ms)",
-          description: "Time in milliseconds before the interface becomes idle",
-          default: 5000,
-          minimum: 1000,
-          maximum: 20000,
-          multipleOf: 1000
-        },
-        forceToolbar: {
-          type: "boolean",
-          default: true
-        },
-        hiresZoom: {
-          type: "boolean",
-          default: true
-        },
-        zoomable: {
-          type: "boolean",
-          default: true
-        }
-      }
+    enableDownload: {
+      type: "boolean",
+      default: false
+    },
+    carouselInfinite: {
+      type: "boolean",
+      default: true
+    },
+    initialThumbnail: {
+      type: "boolean",
+      default: true
+    },
+    captionPosition: {
+      type: "string",
+      enum: ["overlay", "below"],
+      default: "overlay",
+      format: "toggle-group"
+    },
+    captionDisplay: {
+      type: "string",
+      enum: ["always", "hover", "none"],
+      default: "always",
+      "format": "toggle-group"
+    },
+    connectBlockLightbox: {
+      type: "boolean",
+      description: "Connect lightbox of all blocks on section or page",
+      default: false
+    },
+    hideSectionCaption: {
+      type: "boolean",
+      default: false
+    },
+    forceLightboxGallery: {
+      type: "boolean",
+      description: "Force lightbox on all galleries",
+      default: false
+    },
+    forceLightboxAutolayouts: {
+      type: "boolean",
+      default: false
+    },
+    showLightboxIndicator: {
+      type: "boolean",
+      default: false
+    },
+    idleTimeout: {
+      type: "integer",
+      title: "Idle Timeout (ms)",
+      description: "Time in milliseconds before the interface becomes idle",
+      default: 5000,
+      minimum: 1000,
+      maximum: 20000,
+      multipleOf: 1000
+    },
+    forceToolbar: {
+      type: "boolean",
+      description: "Force toolbar always show regardless of the slide type",
+      default: true
+    },
+    hiresZoom: {
+      type: "boolean",
+      default: true
+    },
+    zoomable: {
+      type: "boolean",
+      description: "Used to enable/disable zooming on images slides",
+      default: true
+    },
+    lightboxifyPortfolio: {
+      type: "string",
+      description: "Comma separated list of portfolio pathname to lightboxify",
+      default: ""
     },
     pdf: {
       type: "object",
       properties: {
+        enabled: {
+          type: "boolean",
+          default: true
+        },
         proxy: {
           type: "string",
           enum: ["", "imgix", "imagekit", "gumlet", "google-viewer"],
@@ -136,7 +130,8 @@ const schema = {
         theme: {
           type: "string",
           enum: ["light", "dark"],
-          default: "light"
+          default: "light",
+          format: "toggle-group"
         },
         width: {
           type: "string",
@@ -155,75 +150,211 @@ const uischema = {
   type: "NavigatorLayout",
   elements: [
     {
-      type: "Control",
-      label: "Basic Settings",
-      scope: "#/properties/basic",
-      options: {
-        detail: {
-          theme: {
+      type: "VerticalLayout",
+      label: "Design Settings",
+      elements: [
+        {
+          "type": "Control",
+          scope: "#/properties/design",
+        },
+        {
+          type: "Control",
+          label: "Theme",
+          scope: "#/properties/theme",
+          options: {
             control: "ToggleGroupControl"
           }
+        },
+        {
+          type: "Control",
+          label: "Carousel Transition",
+          scope: "#/properties/carouselTransition"
+        },
+        {
+          type: "Control",
+          label: "Enable Download",
+          scope: "#/properties/enableDownload"
+        },
+        {
+          type: "Control",
+          label: "Carousel Infinite",
+          scope: "#/properties/carouselInfinite"
+        },
+        {
+          type: "Control",
+          label: "Initial Thumbnail",
+          scope: "#/properties/initialThumbnail"
         }
-      }
+      ]
     },
     {
-      type: "Control",
+      type: "Group",
       label: "Caption Settings",
-      scope: "#/properties/caption"
+      elements: [
+        {
+          type: "Control",
+          label: "Caption Position",
+          scope: "#/properties/captionPosition",
+          options: {
+            format: "radio"
+          }
+        },
+        {
+          type: "Control",
+          label: "Caption Display",
+          scope: "#/properties/captionDisplay",
+          options: {
+            control: "ToggleGroupControl"
+          }
+        },
+        {
+          type: "Control",
+          label: "Hide Section Caption",
+          scope: "#/properties/hideSectionCaption"
+        }
+      ]
     },
     {
-      type: "Control",
+      type: "Group",
       label: "Lightbox Settings",
-      scope: "#/properties/lightbox"
+      elements: [
+        {
+          type: "Control",
+          label: "Connect Block Lightbox",
+          scope: "#/properties/connectBlockLightbox"
+        },
+        {
+          type: "Control",
+          label: "Force Lightbox Gallery",
+          scope: "#/properties/forceLightboxGallery"
+        },
+        {
+          type: "Control",
+          label: "Force Lightbox Autolayouts",
+          scope: "#/properties/forceLightboxAutolayouts"
+        },
+        {
+          type: "Control",
+          label: "Show Lightbox Indicator",
+          scope: "#/properties/showLightboxIndicator"
+        },
+        {
+          type: "Control",
+          label: "Lightboxify Portfolio",
+          scope: "#/properties/lightboxifyPortfolio"
+        }
+      ]
     },
     {
-      type: "Control",
+      type: "Group",
       label: "Display Settings",
-      scope: "#/properties/display",
-      options: {
-        detail: {
-          idleTimeout: {
+      elements: [
+        {
+          type: "Control",
+          label: "Idle Timeout",
+          scope: "#/properties/idleTimeout",
+          options: {
             control: "SliderControl"
           }
+        },
+        {
+          type: "Control",
+          label: "Force Toolbar",
+          scope: "#/properties/forceToolbar"
+        },
+        {
+          type: "Control",
+          label: "Hires Zoom",
+          scope: "#/properties/hiresZoom"
+        },
+        {
+          type: "Control",
+          label: "Zoomable",
+          scope: "#/properties/zoomable"
         }
-      }
+      ]
     },
     {
-      type: "Control",
+      type: "Group",
       label: "PDF Settings",
-      scope: "#/properties/pdf"
+      elements: [
+        {
+          type: "Control",
+          label: "Enabled",
+          scope: "#/properties/pdf/properties/enabled"
+        },
+        {
+          type: "Control",
+          label: "Proxy",
+          scope: "#/properties/pdf/properties/proxy"
+        },
+        {
+          type: "Control",
+          label: "Proxy URL",
+          scope: "#/properties/pdf/properties/proxyUrl"
+        },
+        {
+          type: "Control",
+          label: "Viewer",
+          scope: "#/properties/pdf/properties/viewer",
+          options: {
+            format: "radio"
+          }
+        },
+        {
+          type: "Control",
+          label: "Use Stock Viewer",
+          scope: "#/properties/pdf/properties/useStockViewer"
+        },
+        {
+          type: "Control",
+          label: "Theme",
+          scope: "#/properties/pdf/properties/theme",
+          options: {
+            control: "ToggleGroupControl"
+          }
+        },
+        {
+          type: "HorizontalLayout",
+          elements: [
+            {
+              type: "Control",
+              label: "Width",
+              scope: "#/properties/pdf/properties/width"
+            },
+            {
+              type: "Control",
+              label: "Height",
+              scope: "#/properties/pdf/properties/height"
+            }
+          ]
+        }
+      ]
     }
   ]
 };
 
 const initialData = {
-  basic: {
-    design: 'simple',
-    theme: 'auto',
-    carouselTransition: 'slide',
-    enableDownload: false,
-    carouselInfinite: true,
-    initialThumbnail: true
-  },
-  caption: {
-    captionPosition: 'overlay',
-    captionDisplay: 'always',
-    hideSectionCaption: false
-  },
-  lightbox: {
-    connectBlockLightbox: false,
-    forceLightboxGallery: false,
-    forceLightboxAutolayouts: false,
-    showLightboxIndicator: false,
-    lightboxifyPortfolio: ''
-  },
-  display: {
-    idleTimeout: 5000,
-    forceToolbar: true,
-    hiresZoom: true,
-    zoomable: true
-  },
+  design: 'simple',
+  theme: 'auto',
+  carouselTransition: 'slide',
+  enableDownload: false,
+  carouselInfinite: true,
+  initialThumbnail: true,
+  captionPosition: 'overlay',
+  captionDisplay: 'always',
+  connectBlockLightbox: false,
+  hideSectionCaption: false,
+  forceLightboxGallery: false,
+  forceLightboxAutolayouts: false,
+  showLightboxIndicator: false,
+  idleTimeout: 5000,
+  forceToolbar: true,
+  hiresZoom: true,
+  zoomable: true,
+  lightboxifyPortfolio: '',
   pdf: {
+    enabled: true,
     proxy: "",
     proxyUrl: "",
     viewer: "standard",
