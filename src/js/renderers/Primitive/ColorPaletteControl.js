@@ -45,12 +45,13 @@ const TextControl = (props) => {
 		uischema,
 		path,
 		data,
+		visible,
 		handleChange
   	} = props;
   
   	const colors = uischema.options?.colors;
 
-	return ( 
+	return !visible ? null : ( 
 		<>
 			<Spacer paddingY={ 2 } marginBottom={ 0 }>
 				<HStack justify="space-between">

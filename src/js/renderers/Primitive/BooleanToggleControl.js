@@ -3,8 +3,9 @@ import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isBooleanControl } from "@jsonforms/core";
 import {
 	__experimentalHStack as HStack,
+	__experimentalVStack as VStack,
 	FormToggle,
-	Tooltip,	
+	__experimentalText as Text,
     FlexItem,
 	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
@@ -16,25 +17,29 @@ const ToggleControl = (props) => {
 		label,
 		path,
 		data,
+		visible,
 		handleChange
 	} = props;
-  
-  	return ( 
+
+  	return !visible ? null : (
 		<>
 			<Spacer paddingY={ 2 } marginBottom={ 0 }>
 				<HStack justify="space-between">
 					<FlexItem>
-					{ description ? (
-						<Tooltip text={ description }>
-						<label htmlFor={ id }>
-							{ label }
-						</label>
-					</Tooltip>
-					) : ( 
-						<label htmlFor={ id }>
-							{ label }
-						</label> 
-					) }
+						<VStack spacing={0}>
+							<FlexItem>
+								<label htmlFor={ id }>
+									{ label }
+								</label>
+							</FlexItem>
+							{description && (
+								<FlexItem>
+									<Text variant="muted" style={{ fontSize: '12px', color: '#757575' }}>
+										{description}
+									</Text>
+								</FlexItem>
+							)}
+						</VStack>
 					</FlexItem>
 					<FlexItem>
 						<FormToggle

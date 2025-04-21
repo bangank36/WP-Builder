@@ -4,7 +4,7 @@ import { rankWith, isStringControl } from "@jsonforms/core";
 import {
 	TextControl as UiTextControl,
     __experimentalVStack as VStack,
-	Tooltip,
+	__experimentalText as Text,
     FlexItem,
 	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
@@ -16,26 +16,28 @@ const TextControl = ( props ) => {
 		label,
 		path,
 		data,
+		visible,
 		handleChange
 	} = props;
 
-	return (
+	return !visible ? null : (
 		<>
 			<Spacer paddingY={ 2 } marginBottom={ 0 }>
 				<VStack justify="space-between">
-					<FlexItem>
-						{ description ? (
-							<Tooltip text={ description }>
+					<VStack spacing={0}>
+						<FlexItem>
 							<label htmlFor={ id }>
 								{ label }
 							</label>
-						</Tooltip>
-						) : (
-							<label htmlFor={ id }>
-								{ label }
-							</label>
-						) }
-					</FlexItem>
+						</FlexItem>
+						{description && (
+							<FlexItem>
+								<Text variant="muted" style={{ fontSize: '12px', color: '#757575' }}>
+									{description}
+								</Text>
+							</FlexItem>
+						)}
+					</VStack>
 					<FlexItem>
 						<UiTextControl
 							value={ data || '' }
