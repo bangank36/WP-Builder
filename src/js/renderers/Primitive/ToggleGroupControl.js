@@ -1,12 +1,12 @@
 import React from "react";
 import merge from "lodash/merge";
-import { 
-    and, 
+import {
+    and,
 	or,
-    isEnumControl, 
-    formatIs, 
+    isEnumControl,
+    formatIs,
 	optionIs,
-    rankWith 
+    rankWith
 } from "@jsonforms/core";
 import { withJsonFormsEnumProps } from "@jsonforms/react";
 
@@ -15,8 +15,9 @@ import {
     __experimentalToggleGroupControl as ToggleGroupControl,
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
     __experimentalVStack as VStack,
-	Tooltip,	
+	__experimentalText as Text,
     FlexItem,
+	__experimentalSpacer as Spacer
 } from '@wordpress/components';
 
 export const GutenbergToggleGroup = props => {
@@ -47,37 +48,40 @@ export const GutenbergToggleGroup = props => {
 
 	return !visible ? null : (
 		<>
-			<VStack justify="space-between">
-				<FlexItem>
-				{ description ? (
-					<Tooltip text={ description }>
-					<label htmlFor={ id }>
-						{ label }
-					</label>
-				</Tooltip>
-				) : ( 
-					<label htmlFor={ id }>
-						{ label }
-					</label> 
-				) }
-				</FlexItem>
-				<FlexItem>
-					<ToggleGroupControl 
-						value={ data }
-						isBlock
-						onChange={ onChange }
-					>
-						{options.map( ( option ) => (
-							<ToggleGroupControlOption 
-								value={ option.value }
-								key={ option.label }
-								label={ option.label }
-								disabled={ !enabled }
-							/>
-						))}
-					</ToggleGroupControl>
-				</FlexItem>
-			</VStack>
+			<Spacer paddingY={ 2 } marginBottom={ 0 }>
+				<VStack justify="space-between">
+					<VStack spacing={0}>
+						<FlexItem>
+							<label htmlFor={ id }>
+								{ label }
+							</label>
+						</FlexItem>
+						{description && (
+							<FlexItem>
+								<Text variant="muted" style={{ fontSize: '12px', color: '#757575' }}>
+									{description}
+								</Text>
+							</FlexItem>
+						)}
+					</VStack>
+					<FlexItem>
+						<ToggleGroupControl
+							value={ data }
+							isBlock
+							onChange={ onChange }
+						>
+							{options.map( ( option ) => (
+								<ToggleGroupControlOption
+									value={ option.value }
+									key={ option.label }
+									label={ option.label }
+									disabled={ !enabled }
+								/>
+							))}
+						</ToggleGroupControl>
+					</FlexItem>
+				</VStack>
+			</Spacer>
 		</>
 	)
 }
@@ -88,7 +92,7 @@ export const GutenbergToggleGroupControl = props => {
 
 export const gutenbergToggleGroupTester = rankWith(
 	9,
-	and( 
+	and(
 		isEnumControl,
 		or(formatIs('toggle-group'), optionIs('format', 'toggle-group'))
 	)

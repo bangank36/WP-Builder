@@ -36,6 +36,7 @@ const TextControl = ( props ) => {
 		label,
 		path,
 		data,
+        visible,
 		handleChange,
         config,
         uischema
@@ -49,7 +50,7 @@ const TextControl = ( props ) => {
     const value = data ? parse(data, dateSaveFormat, new Date()) : new Date();
     const formatValue = format(value, dateFormat);
 
-    return ( 
+    return !visible ? null : ( 
         <>
             <VStack justify="space-between">
                 <FlexItem>

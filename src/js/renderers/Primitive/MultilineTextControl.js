@@ -1,11 +1,12 @@
 import React from "react";
 import { withJsonFormsControlProps } from "@jsonforms/react";
 import { rankWith, isMultiLineControl } from "@jsonforms/core";
-import { 
+import {
 	__experimentalVStack as VStack,
-	Tooltip,	
+	__experimentalText as Text,
 	FlexItem,
-	TextareaControl
+	TextareaControl,
+	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
 
 const TextControl = ( props ) => {
@@ -15,35 +16,39 @@ const TextControl = ( props ) => {
 		label,
 		path,
 		data,
+        visible,
 		handleChange
 	} = props;
-  
-  return ( 
+
+  return !visible ? null : (
     <>
-        <VStack justify="space-between">
-            <FlexItem>
-				{ description ? (
-					<Tooltip text={ description }>
-					<label htmlFor={ id }>
-						{ label }
-					</label>
-				</Tooltip>
-				) : ( 
-					<label htmlFor={ id }>
-						{ label }
-					</label> 
-				) }
-            </FlexItem>
-            <FlexItem>
-				<TextareaControl
-					value={ data || '' }
-					onChange={( value ) =>
-						handleChange( path, value === '' ? undefined : value )
-					}
-					rows={4}
-				/> 
-            </FlexItem>
-        </VStack>
+        <Spacer paddingY={ 2 } marginBottom={ 0 }>
+            <VStack justify="space-between">
+                <VStack spacing={0}>
+                    <FlexItem>
+                        <label htmlFor={ id }>
+                            { label }
+                        </label>
+                    </FlexItem>
+                    {description && (
+                        <FlexItem>
+                            <Text variant="muted" style={{ fontSize: '12px', color: '#757575' }}>
+                                {description}
+                            </Text>
+                        </FlexItem>
+                    )}
+                </VStack>
+                <FlexItem>
+                    <TextareaControl
+                        value={ data || '' }
+                        onChange={( value ) =>
+                            handleChange( path, value === '' ? undefined : value )
+                        }
+                        rows={4}
+                    />
+                </FlexItem>
+            </VStack>
+        </Spacer>
     </>
   )
 };

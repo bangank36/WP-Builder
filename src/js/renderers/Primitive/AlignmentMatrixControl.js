@@ -26,10 +26,11 @@ const AlignmentMatrixControlRenderer = ( props ) => {
 		label,
 		path,
 		data,
+		visible,
 		handleChange
 	} = props;
-  
-  	return ( 
+
+  	return !visible ? null : (
 		<>
 			<Spacer paddingY={ 2 } marginBottom={ 0 }>
 				<HStack justify="space-between">

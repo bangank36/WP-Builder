@@ -27,10 +27,11 @@ const TextControl = ( props ) => {
 		label,
 		path,
 		data,
+		visible,
 		handleChange
 	} = props;
-  
-	return ( 
+
+	return !visible ? null : (
 		<>
 			<VStack justify="space-between">
 				<FlexItem>
