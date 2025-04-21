@@ -12,62 +12,94 @@ const schema = {
   properties: {
     design: {
       type: "string",
-      enum: ["simple", "extended", "classic"],
+      oneOf: [
+        { const: 'simple', title: 'Simple' },
+        { const: 'extended', title: 'Extended' },
+        { const: 'classic', title: 'Classic' },
+      ],
+      description: `Change look & feel of lightbox interface`,
       default: "simple",
       "format": "toggle-group"
     },
     theme: {
       type: "string",
-      enum: ["auto", "light", "dark"],
+      oneOf: [
+        { const: "auto", title: "Auto" },
+        { const: "light", title: "Light" },
+        { const: "dark", title: "Dark" }
+      ],
       default: "auto",
       "format": "toggle-group"
     },
     carouselTransition: {
       type: "string",
-      enum: ["slide","classic","crossfade","fade"],
+      oneOf: [
+        { const: "slide", title: "Slide" },
+        { const: "classic", title: "Classic" },
+        { const: "crossfade", title: "Crossfade" },
+        { const: "fade", title: "Fade" }
+      ],
       default: "slide",
       "format": "toggle-group"
     },
     enableDownload: {
       type: "boolean",
+      description: "Enable download button on image lightbox",
       default: false
     },
     carouselInfinite: {
       type: "boolean",
+      description: "Toggle carousel infinite (loop) mode",
       default: true
     },
     initialThumbnail: {
       type: "boolean",
+      description: "Show thumbnail on initial lightbox load",
       default: true
     },
     captionPosition: {
       type: "string",
-      enum: ["overlay", "below"],
+      oneOf: [
+        { const: "overlay", title: "Overlay" },
+        { const: "below", title: "Below" }
+      ],
       default: "overlay",
       format: "toggle-group"
     },
     captionDisplay: {
       type: "string",
-      enum: ["always", "hover", "none"],
+      oneOf: [
+        { const: "always", title: "Always" },
+        { const: "hover", title: "On Hover" },
+        { const: "none", title: "Hidden" }
+      ],
       default: "always",
       "format": "toggle-group"
     },
     connectBlockLightbox: {
-      type: "boolean",
+      type: "string",
       description: "Connect lightbox of all blocks on section or page",
-      default: false
+      oneOf: [
+        { const: "", title: "None" },
+        { const: "section", title: "Section" },
+        { const: "page", title: "Page" }
+      ],
+      default: "",
+      "format": "toggle-group"
     },
     hideSectionCaption: {
       type: "boolean",
+      description: "Hide slide caption on main 7.1 Gallery sections and show only on lightbox",
       default: false
     },
     forceLightboxGallery: {
       type: "boolean",
-      description: "Force lightbox on all galleries",
+      description: "Force lightbox on all Slideshow Gallery sections",
       default: false
     },
     forceLightboxAutolayouts: {
       type: "boolean",
+      description: "Force lightbox on all Auto layouts sections",
       default: false
     },
     showLightboxIndicator: {
@@ -90,16 +122,18 @@ const schema = {
     },
     hiresZoom: {
       type: "boolean",
+      description: "Toggle high resolution zoom on images slides",
       default: true
     },
     zoomable: {
       type: "boolean",
-      description: "Used to enable/disable zooming on images slides",
+      description: "Toggle zoom feature on images slides",
       default: true
     },
     lightboxifyPortfolio: {
       type: "string",
-      description: "Comma separated list of portfolio pathname to lightboxify",
+      description: "Turn portfolio project's gallery into lightbox, requires commma separated list of portfolio pathname to lightboxify",
+      placeholder: "/portfolio-1,/portfolio-2",
       default: ""
     },
     pdf: {
@@ -111,7 +145,13 @@ const schema = {
         },
         proxy: {
           type: "string",
-          enum: ["", "imgix", "imagekit", "gumlet", "google-viewer"],
+          oneOf: [
+            { const: "", title: "None" },
+            { const: "imgix", title: "Imgix" },
+            { const: "imagekit", title: "ImageKit" },
+            { const: "gumlet", title: "Gumlet" },
+            { const: "google-viewer", title: "Google Viewer" }
+          ],
           default: ""
         },
         proxyUrl: {
@@ -120,16 +160,25 @@ const schema = {
         },
         viewer: {
           type: "string",
-          enum: ["basic", "native", "standard", "express"],
+          oneOf: [
+            { const: "basic", title: "Basic" },
+            { const: "native", title: "Native" },
+            { const: "standard", title: "Standard" },
+            { const: "express", title: "Express" }
+          ],
           default: "standard"
         },
         useStockViewer: {
           type: "boolean",
+          description: "Use stock (mozilla) viewer for Standard viewer",
           default: false
         },
         theme: {
           type: "string",
-          enum: ["light", "dark"],
+          oneOf: [
+            { const: "light", title: "Light" },
+            { const: "dark", title: "Dark" }
+          ],
           default: "light",
           format: "toggle-group"
         },
@@ -156,6 +205,9 @@ const uischema = {
         {
           "type": "Control",
           scope: "#/properties/design",
+          options: {
+            format: "radio"
+          }
         },
         {
           type: "Control",
@@ -192,6 +244,9 @@ const uischema = {
           type: "Control",
           label: "Caption Position",
           scope: "#/properties/captionPosition",
+          options: {
+            format: "radio"
+          }
         },
         {
           type: "Control",
@@ -275,17 +330,34 @@ const uischema = {
         {
           type: "Control",
           label: "Enabled",
-          scope: "#/properties/pdf/properties/enabled"
+          label: "Enable PDF lightbox",
+          scope: "#/properties/pdf/properties/enabled",
         },
         {
           type: "Control",
           label: "Proxy",
-          scope: "#/properties/pdf/properties/proxy"
+          scope: "#/properties/pdf/properties/proxy",
+          rule: {
+            "effect": "SHOW",
+            "condition": {
+              "type": "LEAF",
+              "scope": "#/properties/pdf/properties/enabled",
+              "expectedValue": 'ALWAYS_HIDE'
+            }
+          }
         },
         {
           type: "Control",
           label: "Proxy URL",
-          scope: "#/properties/pdf/properties/proxyUrl"
+          scope: "#/properties/pdf/properties/proxyUrl",
+          rule: {
+            "effect": "SHOW",
+            "condition": {
+              "type": "LEAF",
+              "scope": "#/properties/pdf/properties/enabled",
+              "expectedValue": 'ALWAYS_HIDE'
+            }
+          }
         },
         {
           type: "Control",
@@ -298,7 +370,15 @@ const uischema = {
         {
           type: "Control",
           label: "Use Stock Viewer",
-          scope: "#/properties/pdf/properties/useStockViewer"
+          scope: "#/properties/pdf/properties/useStockViewer",
+          rule: {
+            "effect": "SHOW",
+            "condition": {
+              "type": "LEAF",
+              "scope": "#/properties/pdf/properties/viewer",
+              "expectedValue": 'standard'
+            }
+          }
         },
         {
           type: "Control",
@@ -337,7 +417,7 @@ const initialData = {
   initialThumbnail: true,
   captionPosition: 'overlay',
   captionDisplay: 'always',
-  connectBlockLightbox: false,
+  connectBlockLightbox: '',
   hideSectionCaption: false,
   forceLightboxGallery: false,
   forceLightboxAutolayouts: false,
