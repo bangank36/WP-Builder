@@ -23,7 +23,7 @@ const schema = {
     basic: {
       type: "object",
       properties: {
-        design: {
+        designs: {
           type: "string",
           enum: ["simple"],
           default: "simple"

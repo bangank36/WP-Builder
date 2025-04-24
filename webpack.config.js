@@ -4,6 +4,7 @@ const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const PreventBrowserOpenPlugin = require('./prevent-browser-open-plugin');
 
 const port = 3000;
 let publicUrl = `ws://localhost:${port}/ws`;
@@ -57,7 +58,16 @@ module.exports = {
     port,
     hot: true,
     allowedHosts: "all",
-    historyApiFallback: true,
+    open: false, // Prevent opening new browser tabs automatically
+    liveReload: true,
+    historyApiFallback: {
+      rewrites: [
+        // Serve browser-demo from /demo-browser path
+        { from: /^\/demo-browser/, to: '/browser-demo/index.html' },
+        // Serve main app from root
+        { from: /./, to: '/index.html' }
+      ]
+    },
     static: [
       {
         directory: path.resolve(__dirname, "public"),
@@ -68,7 +78,16 @@ module.exports = {
       }
     ],
     client: {
-      webSocketURL: publicUrl
+      webSocketURL: publicUrl,
+      progress: true,
+      overlay: {
+        errors: true,
+        warnings: false
+      },
+      logging: 'error'
+    },
+    devMiddleware: {
+      writeToDisk: true
     },
     // HTTPS configuration
     https: fs.existsSync(path.resolve(__dirname, 'certs/localhost.key')) &&
@@ -86,5 +105,6 @@ module.exports = {
         favicon: '4geeks.ico',
         template: 'template.html'
     }),
+    new PreventBrowserOpenPlugin(),
   ]
 };
