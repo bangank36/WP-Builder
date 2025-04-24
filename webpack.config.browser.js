@@ -4,6 +4,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const PreventBrowserOpenPlugin = require('./prevent-browser-open-plugin');
 
 module.exports = {
   mode: 'production',
@@ -79,6 +80,8 @@ module.exports = {
       process: 'process/browser',
       Buffer: ['buffer', 'Buffer'],
     }),
+    // Prevent browser from opening automatically
+    new PreventBrowserOpenPlugin(),
   ],
   // Optimization settings
   optimization: {
