@@ -56,10 +56,7 @@ module.exports = {
       },
     ],
   },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-  },
+  // React and ReactDOM are bundled (not external) for standalone usage
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     alias: {

@@ -1,32 +1,29 @@
 .wp-builder-form-container {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   color: #1e1e1e;
-  padding: 20px;
-  
+  // No padding/background to blend with parent
+
   .group-layout {
-    padding: 20px;
+    // Minimal padding for grouping
   }
 
   .wp-builder-form {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    // No background/shadow to blend with parent
   }
-  
+
   .wp-builder-preview {
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    
+
     h3 {
       margin-top: 0;
       margin-bottom: 16px;
       font-size: 18px;
       font-weight: 500;
     }
-    
+
     pre {
       background-color: #f1f1f1;
       padding: 16px;
@@ -37,25 +34,43 @@
       line-height: 1.5;
     }
   }
-  
+
   // Override some Gutenberg styles to ensure they work in isolation
   .components-base-control {
     margin-bottom: 24px;
   }
-  
+
+  // Remove padding and border from Card (used in Group layout)
+  .components-card {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    margin-top: 12px !important;
+  }
+
+  .components-card__header {
+    padding: 0 !important;
+    border-bottom: none !important;
+    margin-bottom: 12px !important;
+  }
+
+  .components-card__body {
+    padding: 0 !important;
+  }
+
   .components-panel__row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
   }
-  
+
   .components-toggle-control .components-base-control__field {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .components-text-control__input,
   .components-textarea-control__input {
     width: 100%;
@@ -63,7 +78,7 @@
     border: 1px solid #ddd;
     border-radius: 4px;
   }
-  
+
   .components-button {
     display: inline-flex;
     align-items: center;
@@ -74,9 +89,48 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    
+
     &:hover {
       -background-color: #006799;
     }
+  }
+
+  // Toggle switch (FormToggle) colors
+  .components-form-toggle {
+    .components-form-toggle__track {
+      background-color: #a1a1aa !important; // Match Ground Control Apply button blue
+      border-color: #a1a1aa !important;
+    }
+
+    // When checked (on)
+    &.is-checked {
+      .components-form-toggle__track {
+        background-color: #0096d6 !important; // Match Ground Control Apply button blue
+        border-color: #0096d6 !important;
+      }
+    }
+
+    .components-form-toggle__thumb {
+      background-color: #fff !important;
+      border-color: #fff !important;
+    }
+
+  }
+
+  // ToggleGroupControl colors
+  .components-toggle-group-control {
+    background: #f0f4f4;
+    border-color: #f0f4f4;
+
+    // Selected/active option - multiple selectors for specificity
+    .components-toggle-group-control-option[aria-checked="true"],
+    .components-toggle-group-control-option-base[aria-checked="true"],
+    .components-toggle-group-control__button[aria-checked="true"],
+    button[aria-checked="true"],
+    [data-active="true"] {
+      background-color: #fff !important; // Match Ground Control Apply button blue
+      color: #000 !important;
+    }
+
   }
 }
