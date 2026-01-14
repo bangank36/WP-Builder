@@ -6,12 +6,12 @@ import {
 	__experimentalVStack as VStack,
 	FormToggle,
 	__experimentalText as Text,
-    FlexItem,
+	FlexItem,
 	__experimentalSpacer as Spacer,
 } from '@wordpress/components';
 
 const ToggleControl = (props) => {
-  	const {
+	const {
 		id,
 		description,
 		label,
@@ -21,15 +21,15 @@ const ToggleControl = (props) => {
 		handleChange
 	} = props;
 
-  	return !visible ? null : (
+	return !visible ? null : (
 		<>
-			<Spacer paddingY={ 2 } marginBottom={ 0 }>
+			<Spacer paddingY={2} marginBottom={0}>
 				<HStack justify="space-between">
 					<FlexItem>
 						<VStack spacing={0}>
 							<FlexItem>
-								<label htmlFor={ id }>
-									{ label }
+								<label htmlFor={id}>
+									{label}
 								</label>
 							</FlexItem>
 							{description && (
@@ -41,18 +41,21 @@ const ToggleControl = (props) => {
 							)}
 						</VStack>
 					</FlexItem>
-					<FlexItem>
+					<FlexItem
+						// Set fixed width for toggle to prevent label overflow
+						style={{ minWidth: '40px' }}
+					>
 						<FormToggle
-							checked={ !!data }
+							checked={!!data}
 							onChange={(event) =>
 								handleChange(path, event.target.checked || false)
 							}
 						/>
 					</FlexItem>
 				</HStack>
-			</Spacer>
+			</Spacer >
 		</>
-  	)
+	)
 };
 
 export const booleanToggleControlTester = rankWith(
