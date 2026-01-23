@@ -16,6 +16,7 @@ import {
 import React, { useMemo, useContext, useEffect } from 'react';
 import { Context as NavigatorContext } from './NavigatorContext';
 import { resolvePathToRoute } from './util';
+import { ArrayControl } from './ArrayLayoutRenderer';
 
 import { chevronLeft, chevronRight } from '@wordpress/icons';
 import { isRTL, __ } from '@wordpress/i18n';
@@ -51,6 +52,10 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
         rootSchema,
     } = props;
 
+    // Check if inline layout mode is enabled
+    // See: https://jsonforms.io/examples/list-with-detail
+    const isInlineLayout = uischema.options?.detail?.type === 'VerticalLayout';
+
     const detailUiSchema = useMemo(
         () =>
         findUISchema(
@@ -85,26 +90,30 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
         [uischemas, schema, uischema.scope, path, label, uischema, rootSchema]
     );
 
+    detailUiSchema.label = detailUiSchema.label || label;
+
     const route = resolvePathToRoute(path);
 
     const [screenContent, setScreenContent] = useContext(NavigatorContext);
 
     const navigator = useNavigator();
-    console.log(navigator);
 
     //UseEffect to fix the issue Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate.
     useEffect(() => {
         // Use the callback since the new state is based on the previous state
         setScreenContent(prevScreenContent => ({
             ...prevScreenContent,
-            [ `${route}` ]: {
-                rendererProps: ( {
-                    ...ownControlProps
-                } ),
-                label: detailUiSchema.label,
-                path: path,
-                contentType: 'array'
-            },
+            // If inline layout detected, do not render main array into own screen
+            ...( !isInlineLayout ? {
+                [ `${route}` ]: {
+                    rendererProps: ( {
+                        ...ownControlProps
+                    } ),
+                    label: detailUiSchema.label,
+                    path: path,
+                    contentType: 'array'
+                },
+            } : {}),
             [ `${route}/:index` ]: {
                 rendererProps: (
                 {    
@@ -125,7 +134,36 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
         }))
     }, [ route ] )
 
-    return !visible ? null : (
+    if (!visible) {
+        return null;
+    }
+
+    // Inline layout: render array list directly on current screen
+    if (isInlineLayout) {
+        return (
+            <>
+                <FlexItem>
+                    { detailUiSchema.label }
+                </FlexItem>
+                <ArrayControl
+                    data={stateProps.data}
+                    label={detailUiSchema.label || label}
+                    path={path}
+                    schema={schema}
+                    errors={stateProps.errors}
+                    addItem={dispatchProps.addItem}
+                    removeItems={dispatchProps.removeItems}
+                    moveUp={dispatchProps.moveUp}
+                    moveDown={dispatchProps.moveDown}
+                    draggable={detailUiSchema.draggable || false}
+                    labelItemAttribute={detailUiSchema.labelItemAttribute}
+                />
+            </>
+        );
+    }
+
+    // Default: render navigation button
+    return (
         <>
             <NavigationButtonAsItem
                 path={`${route}`}
@@ -141,7 +179,7 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
                 </HStack>
             </NavigationButtonAsItem>
         </>
-  )
+    )
 };
 
 export const gutenbergArrayControlTester = rankWith(

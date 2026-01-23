@@ -16,7 +16,8 @@ import {
 	copy, 
 	trash,
 	chevronUp,
-	chevronDown 
+	chevronDown,
+	dragHandle
 } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
@@ -128,7 +129,9 @@ export const ArrayControl = ( {
 	addItem,
 	removeItems,
 	moveUp,
-	moveDown
+	moveDown,
+	draggable,
+	labelItemAttribute
 } ) => {
 	const navigator = useNavigator();
 
@@ -146,22 +149,23 @@ export const ArrayControl = ( {
                     range( 0, data.length ).map(( index ) => {
                         return (
                             <Item key={ index }>
-								<HStack>
-									<ItemMovers
+								<HStack justify="space-between">
+									<FlexItem>
+										{ draggable ? <IconWithCurrentColor
+											icon={ dragHandle }
+										/> : <ItemMovers
 										moveUpEnable={ index > 0 }
 										onMoveUp={ () => moveUp( path, index )() }
 										moveDownEnable={ index < data.length - 1 }
 										onMoveDown={ () => moveDown( path, index )() }
-									/>
+									/>}
+									</FlexItem>
 									<NavigationButtonAsItem
+										style={{ flex: 1 }}
 										path={ `${ route }/${ index }` }
 										aria-label={ `Item #${ index }` }
 									>
-										<HStack justify="space-between">
-											<FlexItem>
-												item #{ index }
-											</FlexItem>
-										</HStack>
+										{ labelItemAttribute && data[ index ] && data[ index ][ labelItemAttribute ] ? data[ index ][ labelItemAttribute ] : `item #${ index }` }
 									</NavigationButtonAsItem>
 									<ItemActionsMenu 
 										onEdit={ () => navigator.goTo( `${ route }/${ index }` ) }

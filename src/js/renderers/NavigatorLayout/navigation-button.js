@@ -30,10 +30,10 @@ function GenericNavigationButton( { icon, children, ...props } ) {
 	);
 }
 
-function NavigationButtonAsItem( props ) {
+function NavigationButtonAsItem( { style, ...props } ) {
 	return (
-		<Spacer paddingY={ 2 }>
-			<NavigatorButton as={ GenericNavigationButton } { ...props } style={ { padding: 0 } } />
+		<Spacer paddingY={ 2 } marginBottom={ 0 } style={{ flex: style?.flex }}>
+			<NavigatorButton as={ GenericNavigationButton } { ...props } style={ { padding: 0, textAlign: 'left', ...style, flex: undefined } } />
 		</Spacer>
 	);
 }
