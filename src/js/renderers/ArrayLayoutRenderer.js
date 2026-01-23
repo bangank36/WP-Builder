@@ -165,7 +165,7 @@ export const ArrayControl = ( {
 										path={ `${ route }/${ index }` }
 										aria-label={ `Item #${ index }` }
 									>
-										{ labelItemAttribute && data[ index ][ labelItemAttribute ] ? data[ index ][ labelItemAttribute ] : `item #${ index }` }
+										{ labelItemAttribute && data[ index ] && data[ index ][ labelItemAttribute ] ? data[ index ][ labelItemAttribute ] : `item #${ index }` }
 									</NavigationButtonAsItem>
 									<ItemActionsMenu 
 										onEdit={ () => navigator.goTo( `${ route }/${ index }` ) }
