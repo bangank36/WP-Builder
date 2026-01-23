@@ -130,7 +130,8 @@ export const ArrayControl = ( {
 	removeItems,
 	moveUp,
 	moveDown,
-	draggable
+	draggable,
+	labelItemAttribute
 } ) => {
 	const navigator = useNavigator();
 
@@ -164,7 +165,7 @@ export const ArrayControl = ( {
 										path={ `${ route }/${ index }` }
 										aria-label={ `Item #${ index }` }
 									>
-										item #{ index }
+										{ labelItemAttribute && data[ index ][ labelItemAttribute ] ? data[ index ][ labelItemAttribute ] : `item #${ index }` }
 									</NavigationButtonAsItem>
 									<ItemActionsMenu 
 										onEdit={ () => navigator.goTo( `${ route }/${ index }` ) }
