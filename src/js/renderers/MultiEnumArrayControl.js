@@ -26,7 +26,7 @@ export const GutenbergEnumArrayRenderer = ( {
 	errors,
 	path,
 	options,
-	data,
+	data = [],
 	addItem,
 	removeItem,
 	handleChange: _handleChange,
