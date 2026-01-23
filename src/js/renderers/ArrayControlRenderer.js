@@ -155,6 +155,7 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
                     removeItems={dispatchProps.removeItems}
                     moveUp={dispatchProps.moveUp}
                     moveDown={dispatchProps.moveDown}
+                    draggable={detailUiSchema.draggable || false}
                 />
             </>
         );
