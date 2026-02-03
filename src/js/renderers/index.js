@@ -2,6 +2,7 @@ import TextControl, { textControlTester } from "./Primitive/TextControl";
 import IntegerControl, { integerControlTester } from "./Primitive/IntegerControl";
 import TextTranformControl, { textTransformControlTester } from "./Primitive/TextTransformControl";
 import DatepickerControl, { datepickerControlTester } from "./Primitive/DatepickerControl";
+import DateRangeRenderer, { dateRangeRendererTester } from "./Primitive/DateRangeRenderer";
 import MultilineTextControl, { multilineTextControlTester } from "./Primitive/MultilineTextControl";
 import ColorPaletteTextControl, { colorPaletteControlTester } from "./Primitive/ColorPaletteControl";
 import BooleanCheckboxControl, { booleanCheckboxControlTester } from "./Primitive/BooleanCheckboxControl";
@@ -36,6 +37,7 @@ export const gutenbergRenderers = [
     { tester: integerControlTester, renderer: IntegerControl },
     { tester: textTransformControlTester, renderer: TextTranformControl },
     { tester: datepickerControlTester, renderer: DatepickerControl },
+    { tester: dateRangeRendererTester, renderer: DateRangeRenderer },
     { tester: multilineTextControlTester, renderer: MultilineTextControl },
     { tester: colorPaletteControlTester, renderer: ColorPaletteTextControl },
     { tester: booleanCheckboxControlTester, renderer: BooleanCheckboxControl },
