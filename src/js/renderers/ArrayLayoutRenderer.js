@@ -1,7 +1,6 @@
 import range from "lodash/range"
 import React from 'react';
 import {
-	createDefaultValue,
 	Helpers
 } from "@jsonforms/core";
 import {
@@ -9,16 +8,7 @@ import {
 } from "@jsonforms/react";
 import { resolvePathToRoute } from './util';
 
-import { 
-	plus,
-	moreVertical, 
-	edit, 
-	copy, 
-	trash,
-	chevronUp,
-	chevronDown,
-	dragHandle
-} from '@wordpress/icons';
+import { dragHandle } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { IconWithCurrentColor } from './NavigatorLayout/icon-with-current-color';
 import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
@@ -26,98 +16,17 @@ import { NavigationButtonAsItem } from './NavigatorLayout/navigation-button';
 import {
 	__experimentalUseNavigator as useNavigator,
 	__experimentalHStack as HStack,
-	__experimentalVStack as VStack,
     __experimentalItemGroup as ItemGroup,
 	__experimentalItem as Item,
-	DropdownMenu, 
-	MenuGroup, 
-	MenuItem,
 	FlexItem,
-	Button
 } from '@wordpress/components';
 
-const ItemActionsMenu = ( { onEdit, onDuplicate, onRemove } ) => (
-    <DropdownMenu icon={ moreVertical } label="Select an action">
-        { () => (
-            <>
-                <MenuGroup>
-                    <MenuItem icon={ edit } onClick={ onEdit }>
-                        Edit
-                    </MenuItem>
-                    <MenuItem icon={ copy } onClick={ onDuplicate }>
-                        Duplicate
-                    </MenuItem>
-                </MenuGroup>
-                <MenuGroup>
-                    <MenuItem icon={ trash } onClick={ onRemove }>
-                        Remove
-                    </MenuItem>
-                </MenuGroup>
-            </>
-        ) }
-    </DropdownMenu>
-);
-
-const ItemMovers = ( { moveUpEnable, onMoveUp, moveDownEnable, onMoveDown } ) => {
-	return (
-		<VStack
-			style={ {
-				gap: 0
-			} }
-		>
-			<Button
-				style={ { 
-					height: '12px',
-					boxSizing: 'border-box',
-					padding: '6px 12px'
-				} }
-				size={ 'small' }
-				icon={ chevronUp }
-				aria-label={ `Move item up` }
-				onClick={ onMoveUp }
-				disabled={ ! moveUpEnable }
-			>
-			</Button>
-			<Button
-				style={ { 
-					height: '12px',
-					boxSizing: 'border-box',
-					padding: '6px 12px'
-				} }
-				size={ 'small' }
-				icon={ chevronDown }
-				aria-label={ `Move item down` }
-				onClick={ onMoveDown }
-				disabled={ ! moveDownEnable }
-			>
-			</Button>	
-		</VStack>
-	);
-}
-
-const AddItemButton = ({ route, path, label, schema, addItem }) => {
-	const navigator = useNavigator();
-	
-	return (
-		<Button
-			aria-label={ `Add new item` }
-			onClick={ () => {
-				addItem( path, createDefaultValue(schema) )();
-				navigator.goTo( route );
-			} }
-		>
-			<HStack 
-				justify="center"
-			>
-			<FlexItem>
-				<IconWithCurrentColor
-					icon={ plus }
-				/>Add { label }
-			</FlexItem>
-			</HStack>
-		</Button>
-	);
-}
+// Import shared components
+import { 
+	ItemMovers, 
+	ItemActionsMenu, 
+	AddItemButton,
+} from './array-utils';
 
 export const ArrayControl = ( {
 	classNames,
@@ -193,8 +102,8 @@ export const ArrayControl = ( {
 						schema={ schema }
 						label={ label } 
 						path={ path }
-						route={ `${ route }/${ data?.length || 0 }` } 
 						addItem={ addItem }
+						onClick={ () => navigator.goTo( `${ route }/${ data?.length || 0 }` ) }
 					/>
 				</Item>
             </ItemGroup>

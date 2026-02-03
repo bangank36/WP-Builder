@@ -17,6 +17,7 @@ import React, { useMemo, useContext, useEffect } from 'react';
 import { Context as NavigatorContext } from './NavigatorContext';
 import { resolvePathToRoute } from './util';
 import { ArrayControl } from './ArrayLayoutRenderer';
+import { ArrayTableControl } from './ArrayTableRenderer';
 
 import { chevronLeft, chevronRight } from '@wordpress/icons';
 import { isRTL, __ } from '@wordpress/i18n';
@@ -55,6 +56,9 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
     // Check if inline layout mode is enabled
     // See: https://jsonforms.io/examples/list-with-detail
     const isInlineLayout = uischema.options?.detail?.type === 'VerticalLayout';
+    
+    // Check if table layout mode is enabled
+    const isTableLayout = uischema.options?.detail?.type === 'TableLayout';
 
     const detailUiSchema = useMemo(
         () =>
@@ -103,8 +107,8 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
         // Use the callback since the new state is based on the previous state
         setScreenContent(prevScreenContent => ({
             ...prevScreenContent,
-            // If inline layout detected, do not render main array into own screen
-            ...( !isInlineLayout ? {
+            // If inline layout or table layout detected, do not render main array into own screen
+            ...( !isInlineLayout && !isTableLayout ? {
                 [ `${route}` ]: {
                     rendererProps: ( {
                         ...ownControlProps
@@ -114,28 +118,57 @@ export const GutenbergArrayRenderer = (ownControlProps) => {
                     contentType: 'array'
                 },
             } : {}),
-            [ `${route}/:index` ]: {
-                rendererProps: (
-                {    
-                    renderers,
-                    cells,
-                    uischemas,
-                    schema,
-                    label,
-                    path: composePaths(path, `${0}`),
-                    visible,
-                    enabled,
-                    uischema: childUiSchema,
-                    rootSchema,
-                }),
-                label: detailUiSchema.label,
-                path: path
-            }
+            // Only register individual item routes if NOT using inline/table layout
+            ...( !isTableLayout ? {
+                [ `${route}/:index` ]: {
+                    rendererProps: (
+                    {    
+                        renderers,
+                        cells,
+                        uischemas,
+                        schema,
+                        label,
+                        path: composePaths(path, `${0}`),
+                        visible,
+                        enabled,
+                        uischema: childUiSchema,
+                        rootSchema,
+                    }),
+                    label: detailUiSchema.label,
+                    path: path
+                }
+            } : {})
         }))
     }, [ route ] )
 
     if (!visible) {
         return null;
+    }
+
+    // Table layout: render array as table with controls in each row
+    if (isTableLayout) {
+        return (
+            <>
+                <FlexItem>
+                    { detailUiSchema.label }
+                </FlexItem>
+                <ArrayTableControl
+                    data={stateProps.data}
+                    label={detailUiSchema.label || label}
+                    path={path}
+                    schema={schema}
+                    errors={stateProps.errors}
+                    addItem={dispatchProps.addItem}
+                    removeItems={dispatchProps.removeItems}
+                    moveUp={dispatchProps.moveUp}
+                    moveDown={dispatchProps.moveDown}
+                    renderers={renderers}
+                    cells={cells}
+                    rootSchema={rootSchema}
+                    draggable={detailUiSchema.draggable || false}
+                />
+            </>
+        );
     }
 
     // Inline layout: render array list directly on current screen
